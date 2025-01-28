@@ -1,28 +1,25 @@
-from langchain_openai import OpenAIEmbeddings
-from langchain.evaluation import load_evaluator
-from dotenv import load_dotenv
-import openai
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from sentence_transformers import util
 import os
 
-# Load environment variables. Assumes that project contains .env file with API keys
-load_dotenv()
-#---- Set OpenAI API key 
-# Change environment variable name from "OPENAI_API_KEY" to the name given in 
-# your .env file.
-openai.api_key = os.environ['OPENAI_API_KEY']
 
 def main():
+
+    word1, word2 = "apple", "orange"
+
     # Get embedding for a word.
-    embedding_function = OpenAIEmbeddings()
-    vector = embedding_function.embed_query("apple")
-    print(f"Vector for 'apple': {vector}")
+    embedding_function = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    vector = embedding_function.embed_query(word1)
+    print(f"Vector for '{word1}': {vector}")
     print(f"Vector length: {len(vector)}")
 
-    # Compare vector of two words
-    evaluator = load_evaluator("pairwise_embedding_distance")
-    words = ("apple", "iphone")
-    x = evaluator.evaluate_string_pairs(prediction=words[0], prediction_b=words[1])
-    print(f"Comparing ({words[0]}, {words[1]}): {x}")
+    #  Compute cosine similarity
+    vector2 = embedding_function.embed_query(word2)
+    print(f"Vector for '{word2}': {vector2}")
+    print(f"Vector length: {len(vector2)}")
+    cosine_similarity = util.cos_sim(vector, vector2)
+
+    print(f"Cosine Similarity between '{word1}' and '{word2}': {cosine_similarity.item():.4f}")
 
 
 if __name__ == "__main__":

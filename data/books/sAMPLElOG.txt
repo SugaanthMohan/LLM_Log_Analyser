@@ -1,0 +1,119 @@
+2025-01-28 10:00:01,123 [INFO] [UI] [TraceID: 12345] User initiated login process.
+2025-01-28 10:00:01,125 [DEBUG] [UI] [TraceID: 12345] Captured user credentials: {username: "johndoe", password: "********"}.
+2025-01-28 10:00:01,150 [INFO] [UI] [TraceID: 12345] Sending login request to server.
+
+2025-01-28 10:00:01,152 [INFO] [Server] [TraceID: 12345] Received SOAP request at endpoint /LoginService.
+2025-01-28 10:00:01,154 [DEBUG] [Server] [TraceID: 12345] Parsing SOAP request: 
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:auth="http://example.com/auth">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <auth:LoginRequest>
+         <auth:username>johndoe</auth:username>
+         <auth:password>password123</auth:password>
+      </auth:LoginRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2025-01-28 10:00:01,157 [INFO] [Server] [TraceID: 12345] Validating credentials.
+2025-01-28 10:00:01,159 [DEBUG] [DB] [TraceID: 12345] Executing SQL query: SELECT user_id, password_hash FROM users WHERE username = 'johndoe';
+2025-01-28 10:00:01,162 [INFO] [DB] [TraceID: 12345] Query execution successful. Rows returned: 1.
+2025-01-28 10:00:01,164 [DEBUG] [DB] [TraceID: 12345] Retrieved user data: {user_id: 101, password_hash: "5f4dcc3b5aa765d61d8327deb882cf99"}.
+
+2025-01-28 10:00:01,165 [DEBUG] [Server] [TraceID: 12345] Password validation successful.
+2025-01-28 10:00:01,167 [INFO] [Server] [TraceID: 12345] Generating SOAP response.
+2025-01-28 10:00:01,170 [DEBUG] [Server] [TraceID: 12345] SOAP response generated: 
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:auth="http://example.com/auth">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <auth:LoginResponse>
+         <auth:status>SUCCESS</auth:status>
+         <auth:message>Login successful.</auth:message>
+      </auth:LoginResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2025-01-28 10:00:01,173 [INFO] [Server] [TraceID: 12345] Sending SOAP response to client.
+
+2025-01-28 10:00:01,175 [INFO] [UI] [TraceID: 12345] Received server response: {status: SUCCESS, message: "Login successful."}.
+2025-01-28 10:00:01,177 [DEBUG] [UI] [TraceID: 12345] Redirecting user to dashboard.
+2025-01-28 10:00:01,200 [INFO] [UI] [TraceID: 12345] Dashboard loaded successfully for user: johndoe.
+
+2025-01-28 10:00:02,123 [INFO] [UI] [TraceID: 12346] User initiated login process.
+2025-01-28 10:00:02,125 [DEBUG] [UI] [TraceID: 12346] Captured user credentials: {username: "janedoe", password: "********"}.
+2025-01-28 10:00:02,150 [INFO] [UI] [TraceID: 12346] Sending login request to server.
+
+2025-01-28 10:00:02,152 [INFO] [Server] [TraceID: 12346] Received SOAP request at endpoint /LoginService.
+2025-01-28 10:00:02,154 [DEBUG] [Server] [TraceID: 12346] Parsing SOAP request: 
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:auth="http://example.com/auth">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <auth:LoginRequest>
+         <auth:username>janedoe</auth:username>
+         <auth:password>password456</auth:password>
+      </auth:LoginRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2025-01-28 10:00:02,157 [INFO] [Server] [TraceID: 12346] Validating credentials.
+2025-01-28 10:00:02,159 [DEBUG] [DB] [TraceID: 12346] Executing SQL query: SELECT user_id, password_hash FROM users WHERE username = 'janedoe';
+2025-01-28 10:00:02,162 [INFO] [DB] [TraceID: 12346] Query execution successful. Rows returned: 1.
+2025-01-28 10:00:02,164 [DEBUG] [DB] [TraceID: 12346] Retrieved user data: {user_id: 102, password_hash: "e99a18c428cb38d5f260853678922e03"}.
+
+2025-01-28 10:00:02,165 [DEBUG] [Server] [TraceID: 12346] Password validation successful.
+2025-01-28 10:00:02,167 [INFO] [Server] [TraceID: 12346] Generating SOAP response.
+2025-01-28 10:00:02,170 [DEBUG] [Server] [TraceID: 12346] SOAP response generated: 
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:auth="http://example.com/auth">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <auth:LoginResponse>
+         <auth:status>SUCCESS</auth:status>
+         <auth:message>Login successful.</auth:message>
+      </auth:LoginResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2025-01-28 10:00:02,173 [INFO] [Server] [TraceID: 12346] Sending SOAP response to client.
+
+2025-01-28 10:00:02,175 [INFO] [UI] [TraceID: 12346] Received server response: {status: SUCCESS, message: "Login successful."}.
+2025-01-28 10:00:02,177 [DEBUG] [UI] [TraceID: 12346] Redirecting user to dashboard.
+2025-01-28 10:00:02,200 [INFO] [UI] [TraceID: 12346] Dashboard loaded successfully for user: janedoe.
+
+2025-01-28 10:00:01,123 [INFO] [UI] [TraceID: 12345] User initiated login process.
+2025-01-28 10:00:01,125 [DEBUG] [UI] [TraceID: 12345] Captured user credentials: {username: "jerry", password: "********"}.
+2025-01-28 10:00:01,150 [INFO] [UI] [TraceID: 12345] Sending login request to server.
+
+2025-01-28 10:00:01,152 [INFO] [Server] [TraceID: 12345] Received SOAP request at endpoint /LoginService.
+2025-01-28 10:00:01,154 [DEBUG] [Server] [TraceID: 12345] Parsing SOAP request: 
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:auth="http://example.com/auth">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <auth:LoginRequest>
+         <auth:username>jerry</auth:username>
+         <auth:password>password123</auth:password>
+      </auth:LoginRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2025-01-28 10:00:01,157 [INFO] [Server] [TraceID: 12345] Validating credentials.
+2025-01-28 10:00:01,159 [DEBUG] [DB] [TraceID: 12345] Executing SQL query: SELECT user_id, password_hash FROM users WHERE username = 'jerry';
+2025-01-28 10:00:01,162 [INFO] [DB] [TraceID: 12345] Query execution successful. Rows returned: 1.
+2025-01-28 10:00:01,164 [DEBUG] [DB] [TraceID: 12345] Retrieved user data: {user_id: 102, password_hash: "5f4daefe5aa765d61d8327deb882cf99"}.
+
+2025-01-28 10:00:01,165 [DEBUG] [Server] [TraceID: 12345] Password validation unsuccessful.
+2025-01-28 10:00:01,167 [INFO] [Server] [TraceID: 12345] Generating SOAP response.
+2025-01-28 10:00:01,170 [DEBUG] [Server] [TraceID: 12345] SOAP response generated: 
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:auth="http://example.com/auth">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <auth:LoginResponse>
+         <auth:status>NOT SUCCESSSFUL</auth:status>
+         <auth:message>Login failed.</auth:message>
+      </auth:LoginResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
