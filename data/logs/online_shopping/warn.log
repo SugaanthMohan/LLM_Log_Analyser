@@ -1,0 +1,106 @@
+2025-01-29 08:10:15.234 INFO  [app-service] [requestId=req-001] [userId=101] OrderService - Order placed: orderId=ORD-98760, items=3, total=$149.99
+2025-01-29 08:10:16.678 WARN  [app-service] [requestId=req-001] [userId=101] PaymentService - Payment authorization failed: txnId=TXN-45677, amount=$149.99, reason=insufficient funds
+2025-01-29 08:10:17.123 ERROR [app-service] [requestId=req-001] [userId=101] OrderService - Payment error detected for orderId=ORD-98760, retrying payment...
+2025-01-29 08:10:20.234 INFO  [app-service] [requestId=req-002] [userId=102] OrderService - Order placed: orderId=ORD-98761, items=2, total=$199.99
+2025-01-29 08:10:21.345 WARN  [app-service] [requestId=req-002] [userId=102] PaymentService - Payment authorization failed: txnId=TXN-45678, amount=$199.99, reason=network timeout
+2025-01-29 08:10:22.567 ERROR [app-service] [requestId=req-002] [userId=102] OrderService - Payment error detected for orderId=ORD-98761, retrying payment...
+2025-01-29 08:10:30.123 INFO  [payment-retry-service] [requestId=req-002] [userId=102] PaymentService - Payment retry initiated for txnId=TXN-45678, amount=$199.99
+2025-01-29 08:15:10.234 INFO  [app-service] [requestId=req-003] [userId=103] CartService - Item added to cart: productId=PRD-55555, quantity=1
+2025-01-29 08:15:11.678 ERROR [cart-service] [requestId=req-003] [userId=103] CartService - Error updating cart: cartId=CART-78946, error=invalid productId
+2025-01-29 08:15:12.234 INFO  [app-service] [requestId=req-003] [userId=103] CartService - Attempting to recover from error for cartId=CART-78946
+2025-01-29 08:15:15.567 WARN  [app-service] [requestId=req-003] [userId=103] CartService - Cart recovery failed: cartId=CART-78946, error=unknown server error
+2025-01-29 08:15:17.123 ERROR [cart-service] [requestId=req-003] [userId=103] CartService - Cart recovery aborted, user notified of failure
+2025-01-29 08:20:00.789 INFO  [app-service] [requestId=req-004] [userId=104] OrderService - Order placed: orderId=ORD-98762, items=1, total=$249.99
+2025-01-29 08:20:02.345 ERROR [app-service] [requestId=req-004] [userId=104] PaymentService - Payment authorization failed: txnId=TXN-45679, amount=$249.99, reason=invalid payment method
+2025-01-29 08:20:05.678 INFO  [app-service] [requestId=req-004] [userId=104] OrderService - Order canceled: orderId=ORD-98762, reason=payment authorization failure
+2025-01-29 08:25:10.234 INFO  [app-service] [requestId=req-005] [userId=105] AuthController - User login successful: userId=105, ip=192.168.1.20
+2025-01-29 08:25:11.345 ERROR [auth-service] [requestId=req-005] [userId=105] AuthController - Failed to load user data for userId=105, reason=database timeout
+2025-01-29 08:25:13.678 INFO  [app-service] [requestId=req-005] [userId=105] AuthController - User login attempt blocked: userId=105, reason=multiple failed attempts
+2025-01-29 08:30:25.678 INFO  [app-service] [requestId=req-006] [userId=106] ProductService - Product added to cart: productId=PRD-66666, quantity=1
+2025-01-29 08:30:26.789 ERROR [cart-service] [requestId=req-006] [userId=106] CartService - Error: product stock insufficient for productId=PRD-66666
+2025-01-29 08:30:28.123 INFO  [app-service] [requestId=req-006] [userId=106] CartService - Cart update failed for userId=106, retrying with alternative product
+2025-01-29 08:30:30.456 ERROR [app-service] [requestId=req-006] [userId=106] CartService - Cart recovery failed for userId=106, error=product not available in inventory
+2025-01-29 08:30:32.678 INFO  [app-service] [requestId=req-006] [userId=106] CartService - Cart reset for userId=106, clearing items due to failure
+2025-01-29 08:35:40.234 INFO  [app-service] [requestId=req-007] [userId=107] ProductService - Product added to cart: productId=PRD-77777, quantity=1
+2025-01-29 08:35:41.123 WARN  [cart-service] [requestId=req-007] [userId=107] CartService - Product already in cart: productId=PRD-77777, quantity=1
+2025-01-29 08:35:43.456 ERROR [cart-service] [requestId=req-007] [userId=107] CartService - Cart validation failed for userId=107, invalid product state detected
+2025-01-29 08:35:45.678 INFO  [app-service] [requestId=req-007] [userId=107] CartService - Attempting to fix cart state for userId=107
+2025-01-29 08:35:50.123 ERROR [app-service] [requestId=req-007] [userId=107] CartService - Cart recovery failed for userId=107, error=cart inconsistency detected
+2025-01-29 08:40:15.234 INFO  [app-service] [requestId=req-008] [userId=108] OrderService - Order placed: orderId=ORD-98763, items=4, total=$99.99
+2025-01-29 08:40:16.678 INFO  [payment-service] [requestId=req-008] [userId=108] PaymentService - Payment authorized: txnId=TXN-45680, amount=$99.99, method=PayPal
+2025-01-29 08:40:18.123 INFO  [app-service] [requestId=req-008] [userId=108] OrderService - Order confirmation sent: orderId=ORD-98763, emailNotification=sent
+2025-01-29 08:40:20.567 INFO  [app-service] [requestId=req-009] [userId=109] ProductService - Product viewed: productId=PRD-88888, viewedAt=2025-01-29T08:40:20
+2025-01-29 08:40:21.234 INFO  [app-service] [requestId=req-009] [userId=109] ProductService - Product added to cart: productId=PRD-88888, quantity=1
+2025-01-29 08:40:22.345 INFO  [app-service] [requestId=req-009] [userId=109] CartService - Cart updated: cartId=CART-78947, itemsInCart=1
+2025-01-29 08:40:23.567 INFO  [app-service] [requestId=req-009] [userId=109] CartService - Cart viewed: cartId=CART-78947, totalAmount=$19.99
+2025-01-29 08:40:24.789 INFO  [payment-service] [requestId=req-009] [userId=109] PaymentService - Payment authorized: txnId=TXN-45681, amount=$19.99, method=CreditCard
+2025-01-29 08:40:30.123 INFO  [app-service] [requestId=req-010] [userId=110] OrderService - Order placed: orderId=ORD-98764, items=2, total=$129.99
+2025-01-29 08:40:32.345 INFO  [app-service] [requestId=req-010] [userId=110] OrderService - Order confirmation sent: orderId=ORD-98764, emailNotification=sent
+2025-01-29 08:45:00.234 INFO  [app-service] [requestId=req-011] [userId=111] CartService - Item added to cart: productId=PRD-99999, quantity=2
+2025-01-29 08:45:01.456 INFO  [app-service] [requestId=req-011] [userId=111] CartService - Cart updated: cartId=CART-78948, itemsInCart=2
+2025-01-29 08:45:02.789 INFO  [app-service] [requestId=req-011] [userId=111] CartService - Cart viewed: cartId=CART-78948, totalAmount=$59.99
+2025-01-29 08:45:04.123 INFO  [payment-service] [requestId=req-011] [userId=111] PaymentService - Payment authorized: txnId=TXN-45682, amount=$59.99, method=ApplePay
+2025-01-29 08:45:10.567 INFO  [app-service] [requestId=req-012] [userId=112] CartService - Item added to cart: productId=PRD-10101, quantity=3
+2025-01-29 08:45:11.678 INFO  [app-service] [requestId=req-012] [userId=112] CartService - Cart updated: cartId=CART-78949, itemsInCart=3
+2025-01-29 08:45:13.123 INFO  [payment-service] [requestId=req-012] [userId=112] PaymentService - Payment authorized: txnId=TXN-45683, amount=$79.99, method=CreditCard
+2025-01-29 08:50:00.234 INFO  [app-service] [requestId=req-013] [userId=113] CartService - Item added to cart: productId=PRD-11111, quantity=4
+2025-01-29 08:50:01.567 INFO  [app-service] [requestId=req-013] [userId=113] CartService - Cart updated: cartId=CART-78950, itemsInCart=4
+2025-01-29 08:50:02.890 INFO  [app-service] [requestId=req-013] [userId=113] CartService - Cart viewed: cartId=CART-78950, totalAmount=$99.99
+2025-01-29 08:50:04.123 INFO  [app-service] [requestId=req-013] [userId=113] CartService - Cart updated: cartId=CART-78950, itemsInCart=4
+2025-01-29 08:50:05.234 INFO  [app-service] [requestId=req-013] [userId=113] CartService - Cart updated: cartId=CART-78950, itemsInCart=5, error=incorrect cart state
+2025-01-29 08:50:07.456 WARN  [payment-service] [requestId=req-013] [userId=113] PaymentService - Payment retry initiated due to timeout: txnId=TXN-45684, amount=$99.99, method=PayPal
+2025-01-29 08:50:08.678 INFO  [app-service] [requestId=req-014] [userId=114] OrderService - Order placed: orderId=ORD-98765, items=2, total=$159.99
+2025-01-29 08:50:09.789 WARN  [app-service] [requestId=req-014] [userId=114] OrderService - Order placed with mismatched inventory: orderId=ORD-98765, productId=PRD-12121, availableStock=0
+2025-01-29 08:50:12.345 INFO  [app-service] [requestId=req-014] [userId=114] OrderService - Order confirmation sent: orderId=ORD-98765, emailNotification=sent
+2025-01-29 08:55:10.234 INFO  [app-service] [requestId=req-015] [userId=115] CartService - Item added to cart: productId=PRD-13131, quantity=1
+2025-01-29 08:55:11.456 INFO  [app-service] [requestId=req-015] [userId=115] CartService - Cart updated: cartId=CART-78951, itemsInCart=1
+2025-01-29 08:55:12.678 INFO  [app-service] [requestId=req-015] [userId=115] CartService - Cart viewed: cartId=CART-78951, totalAmount=$49.99
+2025-01-29 08:55:13.789 INFO  [payment-service] [requestId=req-015] [userId=115] PaymentService - Payment authorized: txnId=TXN-45685, amount=$49.99, method=CreditCard
+2025-01-29 08:55:14.123 INFO  [app-service] [requestId=req-016] [userId=116] CartService - Item added to cart: productId=PRD-14141, quantity=2
+2025-01-29 08:55:15.234 WARN  [app-service] [requestId=req-016] [userId=116] CartService - Cart state anomaly detected: productId=PRD-14141, quantity mismatch
+2025-01-29 08:55:16.567 INFO  [app-service] [requestId=req-016] [userId=116] CartService - Cart update failed, item not added: productId=PRD-14141
+2025-01-29 08:55:17.890 INFO  [payment-service] [requestId=req-016] [userId=116] PaymentService - Payment pending due to item availability mismatch: txnId=TXN-45686, amount=$119.98
+2025-01-29 08:55:19.234 INFO  [app-service] [requestId=req-017] [userId=117] CartService - Item added to cart: productId=PRD-15151, quantity=3
+2025-01-29 08:55:20.345 INFO  [app-service] [requestId=req-017] [userId=117] CartService - Cart updated: cartId=CART-78952, itemsInCart=3
+2025-01-29 08:55:22.567 INFO  [app-service] [requestId=req-017] [userId=117] CartService - Cart viewed: cartId=CART-78952, totalAmount=$179.97
+2025-01-29 08:55:24.789 INFO  [payment-service] [requestId=req-017] [userId=117] PaymentService - Payment authorized: txnId=TXN-45687, amount=$179.97, method=ApplePay
+2025-01-29 09:00:10.234 INFO  [app-service] [requestId=req-018] [userId=118] OrderService - Order placed: orderId=ORD-98766, items=3, total=$89.99
+2025-01-29 09:00:12.678 INFO  [app-service] [requestId=req-018] [userId=118] PaymentService - Payment initiated: txnId=TXN-45688, amount=$89.99, method=CreditCard
+2025-01-29 09:00:15.234 INFO  [app-service] [requestId=req-018] [userId=118] OrderService - Order confirmation sent: orderId=ORD-98766, emailNotification=sent
+2025-01-29 09:00:16.789 WARN  [payment-service] [requestId=req-018] [userId=118] PaymentService - Payment delay detected: txnId=TXN-45688, latency=350ms
+2025-01-29 09:00:17.890 INFO  [app-service] [requestId=req-018] [userId=118] OrderService - Order processing completed: orderId=ORD-98766, status=completed
+2025-01-29 09:00:22.345 INFO  [app-service] [requestId=req-019] [userId=119] ProductService - Product viewed: productId=PRD-16161, viewedAt=2025-01-29T09:00:22
+2025-01-29 09:00:23.567 INFO  [app-service] [requestId=req-019] [userId=119] CartService - Cart updated: cartId=CART-78953, itemsInCart=2
+2025-01-29 09:00:25.678 INFO  [app-service] [requestId=req-019] [userId=119] CartService - Cart viewed: cartId=CART-78953, totalAmount=$29.99
+2025-01-29 09:00:26.789 INFO  [payment-service] [requestId=req-019] [userId=119] PaymentService - Payment authorized: txnId=TXN-45689, amount=$29.99, method=PayPal
+2025-01-29 09:05:00.123 INFO  [app-service] [requestId=req-020] [userId=120] CartService - Item added to cart: productId=PRD-17171, quantity=1
+2025-01-29 09:05:03.567 INFO  [app-service] [requestId=req-020] [userId=120] CartService - Cart updated: cartId=CART-78954, itemsInCart=1
+2025-01-29 09:05:06.123 INFO  [app-service] [requestId=req-020] [userId=120] PaymentService - Payment initiated: txnId=TXN-45690, amount=$19.99, method=CreditCard
+2025-01-29 09:05:08.234 INFO  [app-service] [requestId=req-020] [userId=120] CartService - Cart viewed: cartId=CART-78954, totalAmount=$19.99
+2025-01-29 09:05:10.567 INFO  [payment-service] [requestId=req-020] [userId=120] PaymentService - Payment authorization failed: txnId=TXN-45690, reason=network timeout
+2025-01-29 09:05:12.678 WARN  [app-service] [requestId=req-020] [userId=120] CartService - Payment failed, retrying payment for cartId=CART-78954, totalAmount=$19.99
+2025-01-29 09:05:15.234 INFO  [app-service] [requestId=req-020] [userId=120] CartService - Cart update delayed: cartId=CART-78954, retry delay=180ms
+2025-01-29 09:05:17.123 INFO  [payment-service] [requestId=req-020] [userId=120] PaymentService - Payment retry initiated for txnId=TXN-45690
+2025-01-29 09:05:18.567 INFO  [app-service] [requestId=req-021] [userId=121] OrderService - Order placed: orderId=ORD-98767, items=2, total=$119.99
+2025-01-29 09:05:20.234 INFO  [app-service] [requestId=req-021] [userId=121] OrderService - Order confirmation sent: orderId=ORD-98767, emailNotification=sent
+2025-01-29 09:11:05.678 INFO  [app-service] [requestId=req-031] [userId=131] CartService - Cart updated: cartId=CART-78957, itemsInCart=2
+2025-01-29 09:11:08.123 INFO  [app-service] [requestId=req-031] [userId=131] CartService - Cart viewed: cartId=CART-78957, totalAmount=$49.99
+2025-01-29 09:11:10.234 INFO  [payment-service] [requestId=req-031] [userId=131] PaymentService - Payment authorized: txnId=TXN-45696, amount=$49.99, method=PayPal
+2025-01-29 09:11:12.567 INFO  [app-service] [requestId=req-031] [userId=131] OrderService - Order placed: orderId=ORD-98772, items=2, total=$49.99
+2025-01-29 09:11:14.789 WARN  [app-service] [requestId=req-031] [userId=131] OrderService - Order placed with incorrect price: orderId=ORD-98772, expectedPrice=$49.99, actualPrice=$59.99
+2025-01-29 09:11:16.123 INFO  [app-service] [requestId=req-031] [userId=131] OrderService - Order confirmation sent: orderId=ORD-98772, emailNotification=sent
+2025-01-29 09:11:18.234 WARN  [app-service] [requestId=req-031] [userId=131] PaymentService - Payment pending due to price mismatch: txnId=TXN-45696, expectedAmount=$49.99, actualAmount=$59.99
+2025-01-29 09:11:20.567 INFO  [app-service] [requestId=req-032] [userId=132] CartService - Item added to cart: productId=PRD-20202, quantity=2
+2025-01-29 09:11:22.678 INFO  [app-service] [requestId=req-032] [userId=132] CartService - Cart updated: cartId=CART-78958, itemsInCart=3
+2025-01-29 09:11:24.789 INFO  [payment-service] [requestId=req-032] [userId=132] PaymentService - Payment authorized: txnId=TXN-45697, amount=$109.99, method=ApplePay
+2025-01-29 09:11:26.234 INFO  [app-service] [requestId=req-032] [userId=132] OrderService - Order placed: orderId=ORD-98773, items=3, total=$109.99
+2025-01-29 09:11:28.345 INFO  [app-service] [requestId=req-032] [userId=132] OrderService - Order confirmation sent: orderId=ORD-98773, emailNotification=sent
+2025-01-29 09:11:30.567 INFO  [payment-service] [requestId=req-032] [userId=132] PaymentService - Payment authorized: txnId=TXN-45697, amount=$109.99, method=ApplePay
+2025-01-29 09:11:32.789 ERROR [app-service] [requestId=req-033] [userId=133] OrderService - Order submission failed: orderId=ORD-98774, error=payment-failure, message=transaction-aborted, txnId=TXN-45698
+2025-01-29 09:11:35.123 WARN  [app-service] [requestId=req-033] [userId=133] CartService - Cart update delayed: cartId=CART-78959, retry delay=200ms
+2025-01-29 09:11:37.234 ERROR [payment-service] [requestId=req-033] [userId=133] PaymentService - Payment failed: txnId=TXN-45698, amount=$159.99, error=system-timeout
+2025-01-29 09:11:40.345 INFO  [app-service] [requestId=req-033] [userId=133] CartService - Cart viewed: cartId=CART-78959, totalAmount=$159.99
+2025-01-29 09:11:42.567 INFO  [app-service] [requestId=req-034] [userId=134] CartService - Item added to cart: productId=PRD-21212, quantity=3
+2025-01-29 09:11:45.789 INFO  [app-service] [requestId=req-034] [userId=134] CartService - Cart updated: cartId=CART-78960, itemsInCart=4
+2025-01-29 09:11:47.890 ERROR [payment-service] [requestId=req-034] [userId=134] PaymentService - Payment failed: txnId=TXN-45699, amount=$149.99, error=insufficient-funds
+2025-01-29 09:00:00.234 INFO  [app-service] Application - End of log generation, all tasks completed successfully.

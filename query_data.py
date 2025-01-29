@@ -2,8 +2,8 @@ import argparse
 import os
 from langchain_chroma import Chroma
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
-from langchain.prompts import ChatPromptTemplate
-from langchain_community.llms import HuggingFaceHub
+from langchain_core.prompts import PromptTemplate
+from langchain_huggingface import HuggingFaceEndpoint   
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,13 +15,23 @@ os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_token
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+[ROLE] Log Analysis Engineer
+[TASK] Analyze error patterns and identify happy path deviations
 
+[CONTEXT]
 {context}
 
----
+[ANALYSIS FRAMEWORK]
+1. Error Pattern Identification
+2. Temporal Analysis (error frequency)
+3. Dependency Mapping
+4. Happy Path Deviation Points
 
-Answer the question based on the above context: {question}
+[OUTPUT FORMAT]
+**Summary**: <concise problem statement>
+**Root Cause**: <primary suspect>
+**Happy Path Flow**: <ideal sequence>
+**Recommendations**: <actionable items>
 """
 
 
@@ -33,32 +43,39 @@ def main():
     query_text = args.query_text
 
     # Prepare the DB.
-    embedding_function = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    embedding_function = HuggingFaceEmbeddings(model_name="Snowflake/snowflake-arctic-embed-m-long", model_kwargs={'trust_remote_code': True})
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
-
-    # Search the DB.
-    results = db.similarity_search_with_relevance_scores(query_text, k=3)
-    # if len(results) == 0 or results[0][1] < 0.7:
-    #     print(f"Unable to find matching results.")
-    #     return
-
-    context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    prompt = prompt_template.format(context=context_text, question=query_text)
-    print(prompt)
-
-    llm = HuggingFaceHub(
-        repo_id="meta-llama/Llama-3.2-3B-Instruct", 
-        model_kwargs={"temperature": 0.2, "max_length": 64,"max_new_tokens":512}
+    
+    retriever = db.as_retriever(
+        search_type="mmr",  # Max marginal relevance
+        search_kwargs={
+            'k': 7,                   # Final results
+            'fetch_k': 20,            # Initial candidate pool
+            'lambda_mult': 0.65,      # 65% relevance, 35% diversity
+            'score_threshold': 0.6    # Minimum relevance floor
+        }
     )
 
-    response_text = llm.invoke(prompt)
-    print(response_text)
+    results = retriever.get_relevant_documents(query_text)
+    
+    context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
 
+    prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
 
-    sources = [doc.metadata.get("source", None) for doc, _score in results]
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
-    print(formatted_response)
+    llm = HuggingFaceEndpoint(
+        repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", 
+        max_length=128,
+        max_new_tokens=512,
+        top_k=10,
+        top_p=0.95,
+        typical_p=0.95,
+        temperature=0.01,
+        repetition_penalty=1.03
+    )
+
+    llm_chain = prompt | llm
+    response_text = llm_chain.invoke({"context": context_text, "question": query_text})
+    print("\n\n\nResponse:", response_text)
 
 
 if __name__ == "__main__":

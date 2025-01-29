@@ -1,6 +1,5 @@
-# from langchain.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import DirectoryLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import TokenTextSplitter
 from langchain.schema import Document
 from langchain_chroma import Chroma
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
@@ -10,7 +9,7 @@ import shutil
 
 
 CHROMA_PATH = "chroma"
-DATA_PATH = "data/books"
+DATA_PATH = "data/logs/banking_app"
 
 
 def main():
@@ -24,23 +23,22 @@ def generate_data_store():
 
 
 def load_documents():
-    loader = DirectoryLoader(DATA_PATH, glob="*.txt")
+    loader = DirectoryLoader(DATA_PATH, glob="*.log")
     documents = loader.load()
-    print(documents)
     return documents
 
 
 def split_text(documents: list[Document]):
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
-        chunk_overlap=100,
-        length_function=len,
-        add_start_index=True,
+    text_splitter = TokenTextSplitter(
+        chunk_size=1500,  # Increased for complete log sequences
+        chunk_overlap=500,
+        separators=["\n\n", "\n", "(timestamp)", "|"],  # Log-specific separators
+        keep_separator=True
     )
     chunks = text_splitter.split_documents(documents)
     print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
 
-    document = chunks[10]
+    document = chunks[-1]
     print(document.page_content)
     print(document.metadata)
 
@@ -54,7 +52,7 @@ def save_to_chroma(chunks: list[Document]):
 
     # Create a new DB from the documents.
     db = Chroma.from_documents(
-        chunks, HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2"), persist_directory=CHROMA_PATH
+        chunks, HuggingFaceEmbeddings(model_name="Snowflake/snowflake-arctic-embed-m-long", model_kwargs={'trust_remote_code': True}), persist_directory=CHROMA_PATH
     )
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
 

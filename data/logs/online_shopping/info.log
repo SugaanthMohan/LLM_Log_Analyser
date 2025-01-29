@@ -1,0 +1,95 @@
+2025-01-29 08:00:00.123 INFO  [app-service] [requestId=req-001] SystemStartup - Application starting... 
+2025-01-29 08:00:02.456 INFO  [database-service] DatabaseConnection - Connected to primary database: jdbc:mysql://db-cluster-01
+2025-01-29 08:00:03.789 INFO  [cache-service] CacheManager - Redis cache initialized successfully
+2025-01-29 08:00:05.001 INFO  [apache-server] HTTPServer - Apache server started on port 443
+2025-01-29 08:00:06.234 INFO  [app-service] [requestId=req-002] HealthCheck - Application health check passed, status=UP
+2025-01-29 08:05:12.567 INFO  [app-service] [requestId=req-003] [userId=101] AuthController - User login successful: userId=101, ip=192.168.1.10
+2025-01-29 08:05:13.876 INFO  [apache-server] [requestId=req-003] AccessLog - 200 POST /login userId=101 duration=120ms
+2025-01-29 08:05:14.321 INFO  [ui-service] [requestId=req-003] RenderComponent - Dashboard rendered for userId=101
+2025-01-29 08:10:20.897 INFO  [app-service] [requestId=req-004] [userId=101] OrderService - Order placed: orderId=ORD-98765, items=3, total=$129.99
+2025-01-29 08:10:21.234 INFO  [database-service] TransactionManager - Transaction committed for orderId=ORD-98765
+2025-01-29 08:10:22.567 INFO  [apache-server] [requestId=req-004] AccessLog - 200 POST /checkout userId=101 duration=250ms
+2025-01-29 08:10:23.678 INFO  [app-service] [requestId=req-004] [userId=101] PaymentService - Payment authorized: txnId=TXN-45678, method=CreditCard, amount=$129.99
+2025-01-29 08:10:25.002 INFO  [ui-service] [requestId=req-004] RenderComponent - Order confirmation page loaded for orderId=ORD-98765
+2025-01-29 08:15:30.123 INFO  [app-service] [requestId=req-005] [userId=101] OrderService - Order shipped: orderId=ORD-98765, shipmentId=SHIP-54321
+2025-01-29 08:15:31.456 INFO  [shipping-service] ShipmentManager - Shipment dispatched to carrier: carrier=FedEx, estimatedDelivery=2025-02-01
+2025-01-29 08:15:32.789 INFO  [apache-server] [requestId=req-005] AccessLog - 200 POST /shipment userId=101 duration=180ms
+2025-01-29 08:20:05.234 INFO  [app-service] [requestId=req-006] [userId=102] AuthController - User login successful: userId=102, ip=192.168.1.15
+2025-01-29 08:20:06.345 INFO  [apache-server] [requestId=req-006] AccessLog - 200 POST /login userId=102 duration=130ms
+2025-01-29 08:20:07.890 INFO  [ui-service] [requestId=req-006] RenderComponent - Dashboard rendered for userId=102
+2025-01-29 08:22:10.123 INFO  [app-service] [requestId=req-007] [userId=102] ProductService - Product added to cart: productId=PRD-12345, quantity=2
+2025-01-29 08:22:11.234 INFO  [database-service] CartManager - Cart updated for userId=102, cartId=CART-78945
+2025-01-29 08:22:12.567 INFO  [apache-server] [requestId=req-007] AccessLog - 200 POST /cart/add userId=102 duration=250ms
+2025-01-29 08:25:15.234 INFO  [app-service] [requestId=req-008] [userId=102] OrderService - Order placed: orderId=ORD-98766, items=2, total=$89.99
+2025-01-29 08:25:16.789 INFO  [database-service] TransactionManager - Transaction committed for orderId=ORD-98766
+2025-01-29 08:25:18.012 INFO  [apache-server] [requestId=req-008] AccessLog - 200 POST /checkout userId=102 duration=220ms
+2025-01-29 08:25:19.123 INFO  [app-service] [requestId=req-008] [userId=102] PaymentService - Payment authorized: txnId=TXN-45679, method=PayPal, amount=$89.99
+2025-01-29 08:25:20.234 INFO  [ui-service] [requestId=req-008] RenderComponent - Order confirmation page loaded for orderId=ORD-98766
+2025-01-29 08:30:25.345 INFO  [app-service] [requestId=req-009] [userId=102] OrderService - Order shipped: orderId=ORD-98766, shipmentId=SHIP-54322
+2025-01-29 08:30:26.567 INFO  [shipping-service] ShipmentManager - Shipment dispatched to carrier: carrier=UPS, estimatedDelivery=2025-02-02
+2025-01-29 08:30:28.012 INFO  [apache-server] [requestId=req-009] AccessLog - 200 POST /shipment userId=102 duration=175ms
+2025-01-29 08:40:10.234 INFO  [app-service] [requestId=req-010] [userId=103] AuthController - User login successful: userId=103, ip=192.168.1.20
+2025-01-29 08:40:11.567 INFO  [apache-server] [requestId=req-010] AccessLog - 200 POST /login userId=103 duration=150ms
+2025-01-29 08:40:12.890 INFO  [ui-service] [requestId=req-010] RenderComponent - Dashboard rendered for userId=103
+2025-01-29 08:42:15.789 INFO  [app-service] [requestId=req-011] [userId=103] ProductService - Product added to cart: productId=PRD-67890, quantity=1
+2025-01-29 08:42:16.123 INFO  [database-service] CartManager - Cart updated for userId=103, cartId=CART-78946
+2025-01-29 08:42:17.456 INFO  [apache-server] [requestId=req-011] AccessLog - 200 POST /cart/add userId=103 duration=210ms
+2025-01-29 08:45:20.789 INFO  [app-service] [requestId=req-012] [userId=103] OrderService - Order placed: orderId=ORD-98767, items=1, total=$59.99
+2025-01-29 08:45:21.123 INFO  [database-service] TransactionManager - Transaction committed for orderId=ORD-98767
+2025-01-29 08:45:22.567 INFO  [apache-server] [requestId=req-012] AccessLog - 200 POST /checkout userId=103 duration=230ms
+2025-01-29 08:45:23.789 INFO  [app-service] [requestId=req-012] [userId=103] PaymentService - Payment authorized: txnId=TXN-45680, method=CreditCard, amount=$59.99
+2025-01-29 08:45:24.234 INFO  [ui-service] [requestId=req-012] RenderComponent - Order confirmation page loaded for orderId=ORD-98767
+2025-01-29 09:00:05.456 INFO  [app-service] [requestId=req-013] [userId=103] ProductService - Product removed from cart: productId=PRD-67890, quantity=1
+2025-01-29 09:00:06.789 INFO  [database-service] CartManager - Cart updated for userId=103, cartId=CART-78946, removed productId=PRD-67890
+2025-01-29 09:00:08.123 INFO  [apache-server] [requestId=req-013] AccessLog - 200 POST /cart/remove userId=103 duration=180ms
+2025-01-29 09:05:11.234 INFO  [app-service] [requestId=req-014] [userId=104] AuthController - User login successful: userId=104, ip=192.168.1.25
+2025-01-29 09:05:12.345 INFO  [apache-server] [requestId=req-014] AccessLog - 200 POST /login userId=104 duration=100ms
+2025-01-29 09:05:13.567 INFO  [ui-service] [requestId=req-014] RenderComponent - Dashboard rendered for userId=104
+2025-01-29 09:10:25.678 INFO  [app-service] [requestId=req-015] [userId=104] ProductService - Product added to cart: productId=PRD-11111, quantity=1
+2025-01-29 09:10:26.789 INFO  [database-service] CartManager - Cart updated for userId=104, cartId=CART-78947
+2025-01-29 09:10:28.123 INFO  [apache-server] [requestId=req-015] AccessLog - 200 POST /cart/add userId=104 duration=220ms
+2025-01-29 09:12:15.345 INFO  [app-service] [requestId=req-016] [userId=104] OrderService - Order placed: orderId=ORD-98768, items=1, total=$199.99
+2025-01-29 09:12:16.789 INFO  [database-service] TransactionManager - Transaction committed for orderId=ORD-98768
+2025-01-29 09:12:18.012 INFO  [apache-server] [requestId=req-016] AccessLog - 200 POST /checkout userId=104 duration=210ms
+2025-01-29 09:12:19.234 INFO  [app-service] [requestId=req-016] [userId=104] PaymentService - Payment authorized: txnId=TXN-45681, method=CreditCard, amount=$199.99
+2025-01-29 09:12:20.678 INFO  [ui-service] [requestId=req-016] RenderComponent - Order confirmation page loaded for orderId=ORD-98768
+2025-01-29 09:15:30.123 INFO  [app-service] [requestId=req-017] [userId=105] AuthController - User login successful: userId=105, ip=192.168.1.30
+2025-01-29 09:15:31.234 INFO  [apache-server] [requestId=req-017] AccessLog - 200 POST /login userId=105 duration=115ms
+2025-01-29 09:15:32.567 INFO  [ui-service] [requestId=req-017] RenderComponent - Dashboard rendered for userId=105
+2025-01-29 09:20:40.234 INFO  [app-service] [requestId=req-018] [userId=105] BackgroundTask - Daily report generation started for userId=105
+2025-01-29 09:20:45.567 INFO  [job-scheduler] JobScheduler - Scheduled job: Daily report generation for userId=105, jobId=JOB-987, scheduledAt=2025-01-29T09:20:45
+2025-01-29 09:22:30.123 INFO  [app-service] [requestId=req-018] [userId=105] BackgroundTask - Daily report generation completed successfully for userId=105, jobId=JOB-987, reportPath=/reports/user_105_daily_report.pdf
+2025-01-29 09:25:12.345 INFO  [app-service] [requestId=req-019] [userId=106] AuthController - User login successful: userId=106, ip=192.168.1.35
+2025-01-29 09:25:13.567 INFO  [apache-server] [requestId=req-019] AccessLog - 200 POST /login userId=106 duration=125ms
+2025-01-29 09:25:14.789 INFO  [ui-service] [requestId=req-019] RenderComponent - Dashboard rendered for userId=106
+2025-01-29 09:30:35.678 INFO  [app-service] [requestId=req-020] [userId=106] CartService - Item added to cart: productId=PRD-22222, quantity=2
+2025-01-29 09:30:36.234 INFO  [database-service] CartManager - Cart updated for userId=106, cartId=CART-78948
+2025-01-29 09:30:37.567 INFO  [apache-server] [requestId=req-020] AccessLog - 200 POST /cart/add userId=106 duration=200ms
+2025-01-29 09:35:20.789 INFO  [app-service] [requestId=req-021] [userId=106] OrderService - Order placed: orderId=ORD-98769, items=2, total=$89.99
+2025-01-29 09:35:21.234 INFO  [database-service] TransactionManager - Transaction committed for orderId=ORD-98769
+2025-01-29 09:35:22.345 INFO  [apache-server] [requestId=req-021] AccessLog - 200 POST /checkout userId=106 duration=210ms
+2025-01-29 09:35:23.567 INFO  [app-service] [requestId=req-021] [userId=106] PaymentService - Payment authorized: txnId=TXN-45682, method=ApplePay, amount=$89.99
+2025-01-29 09:35:24.789 INFO  [ui-service] [requestId=req-021] RenderComponent - Order confirmation page loaded for orderId=ORD-98769
+2025-01-29 09:40:30.567 INFO  [app-service] [requestId=req-022] [userId=106] OrderService - Order shipped: orderId=ORD-98769, shipmentId=SHIP-54323
+2025-01-29 09:40:32.123 INFO  [shipping-service] ShipmentManager - Shipment dispatched to carrier: carrier=DHL, estimatedDelivery=2025-02-05
+2025-01-29 09:40:33.234 INFO  [apache-server] [requestId=req-022] AccessLog - 200 POST /shipment userId=106 duration=250ms
+2025-01-29 09:45:10.234 INFO  [app-service] [requestId=req-023] [userId=107] AuthController - User login successful: userId=107, ip=192.168.1.40
+2025-01-29 09:45:11.345 INFO  [apache-server] [requestId=req-023] AccessLog - 200 POST /login userId=107 duration=140ms
+2025-01-29 09:45:12.567 INFO  [ui-service] [requestId=req-023] RenderComponent - Dashboard rendered for userId=107
+2025-01-29 09:50:20.123 INFO  [app-service] [requestId=req-024] [userId=107] CartService - Item added to cart: productId=PRD-33333, quantity=3
+2025-01-29 09:50:21.456 INFO  [database-service] CartManager - Cart updated for userId=107, cartId=CART-78949
+2025-01-29 09:50:22.789 INFO  [apache-server] [requestId=req-024] AccessLog - 200 POST /cart/add userId=107 duration=220ms
+2025-01-29 09:55:30.123 INFO  [app-service] [requestId=req-025] [userId=107] OrderService - Order placed: orderId=ORD-98770, items=3, total=$159.99
+2025-01-29 09:55:31.234 INFO  [database-service] TransactionManager - Transaction committed for orderId=ORD-98770
+2025-01-29 09:55:32.567 INFO  [apache-server] [requestId=req-025] AccessLog - 200 POST /checkout userId=107 duration=200ms
+2025-01-29 09:55:33.789 INFO  [app-service] [requestId=req-025] [userId=107] PaymentService - Payment authorized: txnId=TXN-45683, method=CreditCard, amount=$159.99
+2025-01-29 09:55:34.890 INFO  [ui-service] [requestId=req-025] RenderComponent - Order confirmation page loaded for orderId=ORD-98770
+2025-01-29 10:00:25.123 INFO  [app-service] [requestId=req-026] [userId=107] OrderService - Order shipped: orderId=ORD-98770, shipmentId=SHIP-54324
+2025-01-29 10:00:26.456 INFO  [shipping-service] ShipmentManager - Shipment dispatched to carrier: carrier=USPS, estimatedDelivery=2025-02-07
+2025-01-29 10:00:27.890 INFO  [apache-server] [requestId=req-026] AccessLog - 200 POST /shipment userId=107 duration=190ms
+2025-01-29 10:05:10.234 INFO  [app-service] [requestId=req-027] ApplicationShutdown - Gracefully shutting down the application...
+2025-01-29 10:05:12.345 INFO  [database-service] DatabaseConnection - Closing database connections...
+2025-01-29 10:05:13.567 INFO  [cache-service] CacheManager - Shutting down Redis cache connection...
+2025-01-29 10:05:14.789 INFO  [apache-server] HTTPServer - Stopping Apache server on port 443...
+2025-01-29 10:05:16.012 INFO  [app-service] [requestId=req-027] ApplicationShutdown - Application shutdown completed, exitCode=0
+2025-01-29 10:05:17.234 INFO  [app-service] Application - End of log generation, application successfully shut down.
