@@ -32,8 +32,6 @@ def split_text(documents: list[Document]):
     text_splitter = TokenTextSplitter(
         chunk_size=1500,  # Increased for complete log sequences
         chunk_overlap=500,
-        separators=["\n\n", "\n", "(timestamp)", "|"],  # Log-specific separators
-        keep_separator=True
     )
     chunks = text_splitter.split_documents(documents)
     print(f"Split {len(documents)} documents into {len(chunks)} chunks.")

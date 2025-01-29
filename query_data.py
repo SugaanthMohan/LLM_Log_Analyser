@@ -63,7 +63,7 @@ def main():
     prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
 
     llm = HuggingFaceEndpoint(
-        repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", 
+        repo_id="mistralai/Mistral-7B-Instruct-v0.2", 
         max_length=128,
         max_new_tokens=512,
         top_k=10,

@@ -21,17 +21,20 @@ body {
     line-height: 1.6;
 }
 
+
 .container {
     max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
+    transform: scale(0.8); /* Adjust the scale factor (e.g., 0.9 = 90% zoom) */
+    transform-origin: top center; /* Keeps scaling centered */
 }
+
 
 /* Header Styles */
 .main-header {
     background: linear-gradient(135deg, var(--primary-red), var(--accent-orange));
     color: white;
-    padding: 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
@@ -58,6 +61,7 @@ body {
     grid-template-columns: 1fr 1.2fr;
     gap: 2.5rem;
     margin-top: 2rem;
+
 }
 
 /* Form Section */
