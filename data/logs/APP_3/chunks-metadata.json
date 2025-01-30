@@ -1,0 +1,8 @@
+{
+    "APP_ID": "APP_3",
+    "Timestamp": "2024-06-19T10:05:12.345Z ",
+    "LogLevel": " INFO ",
+    "SourceComponent": " TELLER-AUTH ",
+    "TraceId": " TRACE_TV_1A2B3C ",
+    "EventType": " - "
+}

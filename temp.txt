@@ -1,0 +1,26 @@
+Understand the below log snippets and extract all the metadata for them in a dictionary format.
+        Say you find timestamp, user/session Id, trace Id, log level and so on.
+
+        {log_snippet}
+
+        Generate a dictionary as:
+        {{
+            timestamp: [timestamp1, timestamp2 ... ],
+            userId: [uerId1, userId2 ... ],
+            sessionId: [sessionId1, sessionId2 ... ],
+            traceId: [traceId1, traceId2... ]
+            log level: [log level1, log level2 ... ],
+            ....so on
+        }}
+
+        For you reference, here is the metadata you generated already that you can make use of to stick 
+        with naming convention and syntax:
+        
+        {prev_metadata}
+        
+        If prev_metadata is empty, feel free to make use of your naming convention and syntax.
+
+
+timezone
+query box
+chat interface 

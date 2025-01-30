@@ -5,6 +5,9 @@ from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate
 from langchain_huggingface import HuggingFaceEndpoint   
 from dotenv import load_dotenv
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+
+import attribute_info
 
 load_dotenv()
 
@@ -52,7 +55,7 @@ Below are the contexts for you to refer:
 
 Below is the query for you to answer:
 
-{query}
+{QUERY}
 
 """
 
@@ -68,22 +71,10 @@ def main():
     embedding_function = HuggingFaceEmbeddings(model_name="Snowflake/snowflake-arctic-embed-m-long", model_kwargs={'trust_remote_code': True})
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
     
-    retriever = db.as_retriever(
-        search_type="mmr",  # Max marginal relevance
-        search_kwargs={
-            'k': 7,                   # Final results
-            'fetch_k': 20,            # Initial candidate pool
-            'lambda_mult': 0.65,      # 65% relevance, 35% diversity
-            'score_threshold': 0.6    # Minimum relevance floor
-        }
-    )
+    metadata_field_info = attribute_info.get_attribute_info()
 
-    results = retriever.get_relevant_documents(query_text)
+    document_content_description = "Log snippets of an enterprise software application"
     
-    context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
-
-    prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
-
     llm = HuggingFaceEndpoint(
         repo_id="mistralai/Mistral-7B-Instruct-v0.2", 
         max_length=128,
@@ -95,8 +86,21 @@ def main():
         repetition_penalty=1.03
     )
 
+
+    retriever = SelfQueryRetriever.from_llm(
+        llm, db, document_content_description, metadata_field_info, verbose=True,
+        enable_limit=True,
+        search_kwargs={"k": 20}
+    )
+
+    results = retriever.get_relevant_documents(query_text)
+    
+    context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
+
+    prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
+
     llm_chain = prompt | llm
-    response_text = llm_chain.invoke({"context": context_text, "query": query_text})
+    response_text = llm_chain.invoke({"context": context_text, "question": query_text})
     print("\n\n\nResponse:", response_text)
 
 

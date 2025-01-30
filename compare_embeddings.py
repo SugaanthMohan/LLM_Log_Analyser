@@ -5,7 +5,7 @@ from sentence_transformers import util
 
 def main():
 
-    word1, word2 = "apple", "orange"
+    word1, word2 = "apple fruit", "apple iphone"
 
     # Get embedding for a word.
     embedding_function = HuggingFaceEmbeddings(model_name="Snowflake/snowflake-arctic-embed-m-long", model_kwargs={'trust_remote_code': True})
