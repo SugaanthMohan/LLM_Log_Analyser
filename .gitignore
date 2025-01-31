@@ -4,3 +4,5 @@ chroma
 .DS_Store
 venv*
 __pycache__/
+
+metadata-retrieval/

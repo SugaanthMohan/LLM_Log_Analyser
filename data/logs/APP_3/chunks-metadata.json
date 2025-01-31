@@ -1,8 +1,9 @@
 {
     "APP_ID": "APP_3",
-    "Timestamp": "2024-06-19T10:05:12.345Z ",
+    "Timestamp": 1710497112345,
     "LogLevel": " INFO ",
     "SourceComponent": " TELLER-AUTH ",
-    "TraceId": " TRACE_TV_1A2B3C ",
-    "EventType": " - "
+    "TraceId": " TRACE_ERR_1A2B3C ",
+    "MessageType": " - ",
+    "AdditionalInfo": " Teller"
 }

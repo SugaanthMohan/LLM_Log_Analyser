@@ -3,11 +3,8 @@ from langchain_core.prompts import PromptTemplate
 from langchain_huggingface import HuggingFaceEndpoint
 import json
 
-APP_ID = "APP_3"
-DATA_PATH = f"data/logs/{APP_ID}"
 
-
-def get_metadata_info(metadata):
+def get_metadata_info(DATA_PATH, metadata):
     PROMPT_TEMPLATE = '''
         Below is the JSON of some metadata information.
         {metadata}
@@ -16,7 +13,7 @@ def get_metadata_info(metadata):
         that tells more about each field.
         - name
         - description
-        - type
+        - type (integer, string, float)
 
         Only give me the entire json for it.
 
@@ -36,7 +33,6 @@ def get_metadata_info(metadata):
 
     llm_chain = prompt | llm
     response_text = llm_chain.invoke({"metadata": metadata})
-
     metadata_info = json.loads(response_text)
 
     with open(f"{DATA_PATH}/metadata-info.json", "w+") as file:
@@ -44,12 +40,13 @@ def get_metadata_info(metadata):
 
     return metadata_info
 
-def get_attribute_info():
+def get_attribute_info(APP_ID):
 
+    DATA_PATH = f"data/logs/{APP_ID}"
     with open(f"{DATA_PATH}/chunks-metadata.json", 'r') as file:
         metadata = file.read()
     
-    metadata_info = get_metadata_info(metadata)
+    metadata_info = get_metadata_info(DATA_PATH, metadata)
 
     metadata_field_info = [AttributeInfo(name=metadata, description=info['description'], type=info['type']) for metadata, info in metadata_info.items()]
 

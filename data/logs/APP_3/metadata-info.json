@@ -6,8 +6,8 @@
     },
     "Timestamp": {
         "name": "Timestamp",
-        "description": "The date and time when the log entry was generated.",
-        "type": "string"
+        "description": "The time at which the log entry was generated.",
+        "type": "integer"
     },
     "LogLevel": {
         "name": "Log Level",
@@ -24,9 +24,14 @@
         "description": "A unique identifier for the trace that contains this log entry.",
         "type": "string"
     },
-    "EventType": {
-        "name": "Event Type",
-        "description": "The type of event that caused the log entry to be generated.",
+    "MessageType": {
+        "name": "Message Type",
+        "description": "The type of message that was logged.",
+        "type": "string"
+    },
+    "AdditionalInfo": {
+        "name": "Additional Information",
+        "description": "Any additional information related to the log entry.",
         "type": "string"
     }
 }
