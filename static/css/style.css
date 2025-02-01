@@ -21,21 +21,19 @@ body {
     line-height: 1.6;
 }
 
-
 .container {
     max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
-    transform: scale(0.8); /* Adjust the scale factor (e.g., 0.9 = 90% zoom) */
-    transform-origin: top center; /* Keeps scaling centered */
+    transform: scale(0.8);
+    transform-origin: top center;
 }
-
 
 /* Header Styles */
 .main-header {
     background: linear-gradient(135deg, var(--primary-red), var(--accent-orange));
     color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -57,21 +55,34 @@ body {
 
 /* Main Layout */
 .dashboard {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     margin-top: 2rem;
 
 }
 
-/* Form Section */
+/* Configuration Panel */
 .config-panel {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.form-container {
+    width: 48%;
     background: white;
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+h2 {
+    margin-bottom: 1rem;
+}
+
+/* Form Group */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -96,7 +107,7 @@ label {
 .input-field:focus {
     border-color: var(--accent-orange);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(245,124,0,0.1);
+    box-shadow: 0 0 0 3px rgba(245, 124, 0, 0.1);
 }
 
 .time-range-group {
@@ -110,9 +121,9 @@ label {
     background: white;
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    display: flex;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     flex-direction: column;
+    margin-top: 2rem;
 }
 
 .results-tabs {
@@ -149,7 +160,7 @@ label {
 .ai-analysis {
     margin-top: 1.5rem;
     padding: 1.5rem;
-    background: rgba(255,213,79,0.1);
+    background: rgba(255, 213, 79, 0.1);
     border-radius: 8px;
     border-left: 4px solid var(--highlight-yellow);
 }
@@ -178,48 +189,21 @@ label {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .dashboard {
-        grid-template-columns: 1fr;
+    .config-panel {
+        flex-direction: column;
+    }
+
+    .form-container {
+        width: 100%;
     }
 }
 
-.host-port-container, .username-password-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.host-port-container input, .username-password-container input {
-    width: 45%;
-}
-
-#SplunkLoginForm {
-    margin-bottom: 20px;
-}
-
-h2 {
-    margin-top: 20px;
-}
-
-#SplunkLoginForm + h2 {
-    margin-top: 20px;
-}
-
-.disabled-form {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-.prompt {
-    color: green;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-
-.log-display {
-  height: 200px; /* adjust this value to set the height of the element */
-  width: 800px;
-  overflow-y: auto;
-  overflow-x: auto;
+/* CSS FOR THE SPINNER */
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #333;
 }

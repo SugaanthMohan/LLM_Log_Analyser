@@ -25,59 +25,68 @@
         <div class="dashboard">
             <!-- Configuration Panel -->
             <section class="config-panel">
-                <h2>Splunk Login</h2>
-                <form id="SplunkLoginForm">
+                <!-- Splunk Login Form Container -->
+                <div class="form-container">
+                    <h2>Splunk Login</h2>
+                    <form id="SplunkLoginForm">
                         <div class="form-group">
-                            <div class="host-port-container">
+                                <label>Host</label>
                                 <input type="text" class="input-field" placeholder="Host" id="splunk-host" required>
-                                <input type="number" class="input-field" placeholder="Port" id="splunk-port" required>
-                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Authentication</label>
-                            <div class="username-password-container">
-                                <input type="text" class="input-field" placeholder="Username" id="splunk-user" required>
-                                <input type="password" class="input-field" placeholder="Password" id="splunk-token" required>
-                            </div>
+                                <label>Port</label>
+                                <input type="number" class="input-field" placeholder="Port" id="splunk-port" required>
+                        </div>
+                        <div class="form-group">
+                            <label>User Name</label>
+                            <input type="text" class="input-field" placeholder="Username" id="splunk-user" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="input-field" placeholder="Password" id="splunk-token" required>
                         </div>
                         <button type="button" class="btn btn-primary" id="testConnectionButton">Test Connection</button>
-                </form>
+                    </form>
+                </div>
 
-                <h2>Splunk Configuration</h2>
+                <!-- Splunk Configuration Form Container -->
+                <div class="form-container">
+                    <h2>Splunk Configuration</h2>
                     <form id="logConfigForm">
-                    <div class="form-group">
-                        <label>Source Type</label>
-                        <select class="input-field" id="source-type" required>
-                            <option value="">Select Source Type</option>
-                            <option>syslog</option>
-                            <option>http:access</option>
-                            <option>custom:app</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group time-range-group">
-                        <div>
-                            <label>Start Time</label>
-                            <input type="datetime-local" class="input-field" id="start-time" required>
+                        <div class="form-group">
+                            <label>Source Type</label>
+                            <select class="input-field" id="source-type" required>
+                                <option value="">Select Source Type</option>
+                                <option>syslog</option>
+                                <option>http:access</option>
+                                <option>custom:app</option>
+                            </select>
                         </div>
-                        <div>
-                            <label>End Time</label>
-                            <input type="datetime-local" class="input-field" id="end-time" required>
+
+                        <div class="form-group time-range-group">
+                            <div>
+                                <label>Start Time</label>
+                                <input type="datetime-local" class="input-field" id="start-time" required>
+                            </div>
+                            <div>
+                                <label>End Time</label>
+                                <input type="datetime-local" class="input-field" id="end-time" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label>Application Name</label>
-                        <input type="text" class="input-field" id="application-name" required>
-                    </div>
+                        <div class="form-group">
+                            <label>Application Name</label>
+                            <input type="text" class="input-field" id="application-name" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="query">Query</label>
-                        <input type="text" class="input-field" id="input-query" placeholder="Enter your query" required>
-                    </div>
-                    
-                    <button type="submit" class="btn-primary" id="analyze-logs-button">Analyze Logs</button>
-                </form>
+                        <div class="form-group">
+                            <label for="query">Query</label>
+                            <input type="text" class="input-field" id="input-query" placeholder="Enter your query" required>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="analyze-logs-button">Analyze Logs</button>
+                    </form>
+                </div>
             </section>
 
             <!-- Analysis Panel -->
@@ -88,19 +97,17 @@
                     <button class="tab-button" id="happyPath-tab-button">Happy Path</button>
                 </div>
 
-                <pre class="log-display" id="logOutput">
-                </pre>
+                <pre class="log-display" id="logOutput"></pre>
 
                 <div class="ai-analysis">
                     <h3>RAG-Powered Analysis</h3>
-                    <p>🔍 Detected recurring database connection issues during peak load times. 
-                    Comparison with successful logs shows missing connection pool configuration 
-                    in error cases. Recommended action: Increase connection pool size and 
+                    <p>🔍 Detected recurring database connection issues during peak load times.
+                    Comparison with successful logs shows missing connection pool configuration
+                    in error cases. Recommended action: Increase connection pool size and
                     implement retry logic.</p>
                 </div>
             </section>
         </div>
     </main>
-
 </body>
 </html>
