@@ -5,14 +5,35 @@ const logConfigForm = document.getElementById('logConfigForm');
 // Get Test Connection Button
 const testConnectionButton = document.getElementById('testConnectionButton');
 
+// Analyze Logs Button
 const analyzeLogsButton = document.getElementById('analyze-logs-button');
+
+// Get the tab buttons
+const rawLogsTabButton = document.getElementById('rawLogs-tab-button');
+const AiAnalysisTabButton = document.getElementById('AIAnalysis-tab-button');
+const happyPathTabButton = document.getElementById('happyPath-tab-button');
+
 
 // Get the Analyze Logs button
 logConfigForm.classList.add('disabled-form');
 
+// Create an object to store the results-tab-data fetched data
+const resultsTabData = {
+    "RawLogs": "",
+    "AIAnalysis": "",
+    "HappyPath": ""
+};
+
 
 // Add an event listener to the Analyze Logs button
 analyzeLogsButton.addEventListener('click', () => {
+
+    // PREVENT DOM RELOAD ACTION
+    event.preventDefault()
+
+    // Show loading state
+    const logOutput = document.getElementById('logOutput');
+    logOutput.textContent = "Analyzing logs...";
 
     // Get the values from the form elements
     const sourceType = document.getElementById('source-type').value;
@@ -39,7 +60,18 @@ analyzeLogsButton.addEventListener('click', () => {
         body: JSON.stringify(payload)
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+
+        // Store the fetched data in the resultsData object
+        resultsTabData.RawLogs = data.RawLogs;
+        resultsTabData.AIAnalysis = data.AIAnalysis;
+        resultsTabData.HappyPath = data.HappyPath;
+
+        // Set Active & Load the RawLogs tab content by default
+        rawLogsTabButton.classList.add('active');
+        loadTabContent('RawLogs');
+
+    })
     .catch(error => console.error(error));
 });
 
@@ -89,6 +121,9 @@ testConnectionButton.addEventListener('click', () => {
 
             // Disable the SplunkLoginForm
             testConnectionButton.disabled = true;
+            testConnectionButton.style.background = 'grey';
+            testConnectionButton.style.color = 'white';
+            testConnectionButton.style.cursor = 'not-allowed';
             document.getElementById('splunk-host').disabled = true;
             document.getElementById('splunk-port').disabled = true;
             document.getElementById('splunk-user').disabled = true;
@@ -124,20 +159,6 @@ testConnectionButton.addEventListener('click', () => {
 });
 
 
-// Add an event listener to the testConnectionButton
-testConnectionButton.addEventListener('click', () => {
-    // Simulate a connection test (replace with actual connection test code)
-    const isConnected = true; // Replace with actual connection test result
-
-    if (isConnected) {
-        // Enable the logConfigForm if the connection is successful
-        logConfigForm.disabled = false;
-    } else {
-        // Keep the logConfigForm disabled if the connection fails
-        logConfigForm.disabled = true;
-    }
-});
-
 // Tab Switching Logic
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
@@ -147,23 +168,6 @@ document.querySelectorAll('.tab-button').forEach(button => {
     });
 });
 
-// Form Submission Handler
-document.getElementById('logConfigForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Show loading state
-    const logOutput = document.getElementById('logOutput');
-    logOutput.textContent = "Analyzing logs...";
-    
-    // Simulated API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Update with sample response
-    logOutput.textContent = 
-        `[SIMULATED RESPONSE]\nFound 12 errors in specified timeframe\n` +
-        `Matching happy path logs detected in 3 instances\n` +
-        `Recommended resolution: Check database connection pool settings`;
-});
 
 // Add hover effect to buttons
 document.querySelectorAll('.btn-primary').forEach(button => {
@@ -175,3 +179,31 @@ document.querySelectorAll('.btn-primary').forEach(button => {
         button.style.transform = 'translateY(0)';
     });
 });
+
+
+// Add event listeners to the tab buttons
+rawLogsTabButton.addEventListener('click', () => {
+    loadTabContent('RawLogs');
+});
+
+AiAnalysisTabButton.addEventListener('click', () => {
+    loadTabContent('AIAnalysis');
+});
+
+happyPathTabButton.addEventListener('click', () => {
+    loadTabContent('HappyPath');
+});
+
+// Function to load the tab content
+function loadTabContent(tabName) {
+    const tabContentElement = document.getElementById('logOutput');
+
+    // Load the content from the resultsData object
+    if (tabName === 'RawLogs') {
+        tabContentElement.innerHTML = resultsTabData.RawLogs;
+    } else if (tabName === 'AIAnalysis') {
+        tabContentElement.innerHTML = resultsTabData.AIAnalysis;
+    } else if (tabName === 'HappyPath') {
+        tabContentElement.innerHTML = resultsTabData.HappyPath;
+    }
+}
