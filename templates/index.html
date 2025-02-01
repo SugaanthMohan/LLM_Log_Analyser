@@ -25,13 +25,27 @@
         <div class="dashboard">
             <!-- Configuration Panel -->
             <section class="config-panel">
-                <h2>Splunk Configuration</h2>
-                <form id="logConfigForm">
-                    <div class="form-group">
-                        <label>Host/Environment</label>
-                        <input type="text" class="input-field" required>
-                    </div>
+                <h2>Splunk Login</h2>
+                <form id="SplunkLoginForm">
+                        <div class="form-group">
+                            <label>Splunk Configuration</label>
+                            <div class="host-port-container">
+                                <input type="text" class="input-field" placeholder="Host" required>
+                                <input type="number" class="input-field" placeholder="Port" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Authentication</label>
+                            <div class="username-password-container">
+                                <input type="text" class="input-field" placeholder="Username" required>
+                                <input type="password" class="input-field" placeholder="Password" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="testConnectionButton">Test Connection</button>
+                </form>
 
+                <h2>Splunk Configuration</h2>
+                    <form id="logConfigForm">
                     <div class="form-group">
                         <label>Source Type</label>
                         <select class="input-field" required>

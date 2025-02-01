@@ -1,3 +1,66 @@
+// Get the forms and button elements
+const splunkLoginForm = document.getElementById('SplunkLoginForm');
+const logConfigForm = document.getElementById('logConfigForm');
+const testConnectionButton = document.getElementById('testConnectionButton');
+logConfigForm.classList.add('disabled-form');
+
+
+// Add an event listener to the testConnectionButton
+testConnectionButton.addEventListener('click', () => {
+    // Simulate a connection test (replace with actual connection test code)
+    const isConnected = true; // Replace with actual connection test result
+
+    const promptElement = document.createElement('div');
+
+
+    if (isConnected) {
+         // Create a prompt element
+
+        // Connection Successful
+        promptElement.textContent = 'Connection successful!';
+        promptElement.style.color = 'green';
+
+        logConfigForm.classList.remove('disabled-form');
+
+    } else {
+
+        logConfigForm.classList.add('disabled-form');
+
+        promptElement.textContent = 'Connection failed. Please try again.';
+        promptElement.style.color = 'red';
+
+    }
+
+    promptElement.style.fontSize = '14px';
+    promptElement.style.fontWeight = 'bold';
+    promptElement.style.marginBottom = '10px';
+
+    // Insert the prompt element above the test connection button
+    testConnectionButton.parentNode.insertBefore(promptElement, testConnectionButton);
+
+    // Make the prompt disappear after 3 seconds
+    setTimeout(() => {
+        promptElement.remove();
+    }, 3000);
+
+
+});
+
+
+// Add an event listener to the testConnectionButton
+testConnectionButton.addEventListener('click', () => {
+    // Simulate a connection test (replace with actual connection test code)
+    const isConnected = true; // Replace with actual connection test result
+
+    if (isConnected) {
+        // Enable the logConfigForm if the connection is successful
+        logConfigForm.disabled = false;
+    } else {
+        // Keep the logConfigForm disabled if the connection fails
+        logConfigForm.disabled = true;
+    }
+});
+
 // Tab Switching Logic
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {

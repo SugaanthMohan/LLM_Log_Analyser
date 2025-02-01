@@ -182,3 +182,36 @@ label {
         grid-template-columns: 1fr;
     }
 }
+
+.host-port-container, .username-password-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.host-port-container input, .username-password-container input {
+    width: 45%;
+}
+
+#SplunkLoginForm {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+#SplunkLoginForm + h2 {
+    margin-top: 20px;
+}
+
+.disabled-form {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.prompt {
+    color: green;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
