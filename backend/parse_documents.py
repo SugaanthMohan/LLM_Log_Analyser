@@ -20,51 +20,43 @@ def parse_unix_epoch_timestamp(timestamp_str):
         return None
 
 
-
-def ensure_blank_lines_inplace(file_path):
-
-    """Modifies a log file in-place, adding a blank line between consecutive log entries if missing."""
-    
-    with open(file_path, 'r+', encoding='utf-8') as file:
-        lines = file.readlines()  # Read all lines into memory
-        updated_lines = []
-        
-        prev_line = None  # Track the previous line to check spacing
-
-        for line in lines:
-            stripped_line = line.strip()  # Remove leading/trailing spaces but keep empty lines
-            
-            if prev_line is not None:
-                updated_lines.append(prev_line + "\n")  # Write previous line
-                
-                # If previous line is not empty and current line is not empty, add a blank line
-                if prev_line.strip() and stripped_line:
-                    updated_lines.append("\n")
-            
-            prev_line = line.rstrip()  # Store the current line without trailing newline
-        
-        # Append the last line (if file is not empty)
-        if prev_line is not None:
-            updated_lines.append(prev_line + "\n")
-
-        # Move the file pointer to the beginning and overwrite the file with updated content
-        file.seek(0)
-        file.writelines(updated_lines)
-        file.truncate()  # Remove any leftover content if new content is shorter than the original
-
-
-
 def process_all_log_files(directory):
 
     """Processes all log files in the specified directory and ensures proper spacing."""
     
     log_files = glob.glob(os.path.join(directory, "*.log"))  # Adjust the extension if needed
+    # for file in log_files:
+    #     add_delimiter_on_trace_change(file)
     add_delimiter(log_files)    
+
+
+def add_delimiter_on_trace_change(input_file):
+    with open(input_file, 'r+', encoding='utf-8') as f:
+        lines = f.readlines()
+
+        previous_trace_id = None
+        modified_lines = []
+
+        for line in lines:
+            # Extract traceId using regex (assuming format like '[TRACE1234]')
+            match = re.search(r'\[(TRACE[0-9]+)\]', line)
+            trace_id = match.group(1) if match else None
+
+            if trace_id and trace_id != previous_trace_id:
+                line = '|||' + line  # Add delimiter when traceId changes
+
+            modified_lines.append(line)
+            previous_trace_id = trace_id  # Update previous traceId
+
+        f.writelines(modified_lines)
+
+
 
 
 def add_delimiter(log_files):
     for file in log_files:
         with open(file, "r+", encoding="utf-8") as f:
+            
             content = f.read()
             content = content.replace('|||', '')
             processed = preprocess_logs(content)
@@ -74,6 +66,7 @@ def add_delimiter(log_files):
 def preprocess_logs(log_text: str) -> str:
     # Regex to match common timestamp formats (customize as needed)
     TIMESTAMP_PATTERN = r"""
+    ^
     (
         \[\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\] |  # e.g., [2023-10-05 12:34:56]
         \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z      |  # ISO 8601 (UTC)
@@ -88,7 +81,7 @@ def preprocess_logs(log_text: str) -> str:
         pattern=TIMESTAMP_PATTERN,
         repl=r"|||\1",  # Insert delimiter before the timestamp
         string=log_text,
-        flags=re.VERBOSE
+        flags=re.VERBOSE | re.MULTILINE
     )
 
     # Remove leading '|||' if present

@@ -1,27 +1,11 @@
 from langchain_core.prompts import PromptTemplate
 
-def get_relevant_snippets(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY, PROMPT_TEMPLATE):
-    retriever = db.as_retriever(
-                search_type="mmr",  # Maximal Marginal Relevance
-                search_kwargs={
-                    'k': 10,  # Final results
-                    'fetch_k': 20,  # Initial candidate pool
-                    'lambda_mult': 0.65,  # 65% relevance, 35% diversity
-                    'score_threshold': 0.6,  # Minimum relevance floor
-                    'where': {   # Metadata filtering
-                        "$and": [
-                            {"APP_ID": APP_ID},  
-                            {"Timestamp": {"$gte": TIME_FROM}},  
-                            {"Timestamp": {"$lte": TIME_TO}}  
-                        ]
-                    }
-                }
-            )
+def get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE, results):
     
     prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
 
      # Using the 'invoke' method instead of 'get_relevant_documents'
-    results = retriever.invoke(QUERY)
+    
     context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
 
     # Update the prompt with conversation history
@@ -36,87 +20,74 @@ def get_relevant_snippets(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY, PROMPT_TEM
 
 
 
-def error_flow(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
+def error_flow(llm, QUERY, results):
 
     PROMPT_TEMPLATE="""
-[TASK] To understand the context, correlate and collate the error log snippets
+[TASK] Extract and present only the relevant error log snippets.
 
-You will be provided with some bunch of log snippets that are related to one another and a user query.
+You are given a set of log snippets and a user query. Your task is to:
+1. Identify and extract the exact log snippet that directly corresponds to the error in the query.
+2. Identify and extract other log snippets that led to this error.
+3. Present these logs in sequence to depict the flow leading to the error.
 
-Carefully interpret and figure out the error logs relevant to the user query. Once you are able to
-extract the exact error snippet the query is referring, you are to now extract other snippets of logs
-that has led to this error.
+STRICT INSTRUCTIONS:
+- Your response MUST contain ONLY log snippets. No explanations, summaries, or additional words.
+- Do NOT repeat or reformat the logs. Keep them exactly as they appear in the provided context.
+- Do NOT mention or include any analysis. Simply present the raw log snippets in order.
+- Do NOT print the provided context in full. Extract only relevant log snippets.
 
-Analyse the available context and create a meaningful flow on log snippets that have led to this error.
-Be very precise, and only use the provided context to creat this flow. Don't hallucinate. 
+--- START OF RESPONSE ---
 
-Lay down the snippets one by one.
+Log snippets depicting the flow of events causing the error:
 
-*** YOUR RESPONSE SHOULD ONLY CONTAIN THE LOG SNIPPETS AND NO OTHER WORDINGS ***
-*** DON'T PRINT BACK THE CONTEXT AT ANY TIME. SUMMARIZE YOURSELF AND ONLY PROVIDE THE OUTPUT LOG SNIPPETS ***
+<Only log snippets in exact order, without any additional space or explanation>
 
+--- END OF RESPONSE ---
 
-Context for your refernce:
+Context for your reference:
 {context}
 
 Query to answer:
 {query}
-
-Response Format:
-<A one line short summary>
-
-<snippet 1>
-<snippet 2>
-<snippet 3>
-<snippet 4>
-<snippet 5>
-
--*- END OF RESPONSE -*-
 """
 
-    return get_relevant_snippets(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY, PROMPT_TEMPLATE)
+
+    return get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE, results)
 
 
 
 
-def success_flow(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
+def success_flow(llm, QUERY, results):
 
     PROMPT_TEMPLATE="""
-[TASK] To understand the context, correlate and collate the happy path log snippets
+[TASK] Extract and present only the "happy path" log snippets.
 
-You will be provided with some bunch of log snippets that are related to one another and a user query.
+You are given a set of log snippets and a user query. Your task is to:
+1. Identify and extract only the successful log snippets related to the query.
+2. Construct a "happy path" log sequence by excluding any error or warning logs.
+3. Present the logs in the exact format and sequence as they should appear in an ideal, error-free scenario.
 
-Carefully interpret and figure out the error logs relevant to the user query. Once you are able to
-extract the exact error snippet the query is referring, you are to now extract other snippets of logs
-that has led to this error.
+STRICT INSTRUCTIONS:
+- Your response MUST contain ONLY log snippets. No explanations, summaries, or additional words.
+- Do NOT include any ERROR or WARN log entries.
+- Do NOT repeat, reformat, or modify the logs. Keep them exactly as they appear in the provided context.
+- Do NOT mention or include any analysis. Simply present the raw log snippets in order.
+- Do NOT print the provided context in full. Extract only relevant log snippets.
+- Do NOT print anything in plain English. Only the technical log snippets.
+- Your whole response shouldn't exceed more than 10 lines
+- Understand your context window limit and try to summarize the whole flow without truncating 
 
-Analyse the available context and create a meaningful flow on log snippets that have led to this error.
+--- START OF RESPONSE ---
 
-Once you have the flow of logs that led to error, examine the context once again to create the ideal scenario.
-That is, create a happy path flow that should represent what would have the logs looked like if the error
-didn't occur. Be very precise, and only use the provided context to creat this flow. Don't hallucinate. 
+Log snippets depicting the flow of events in case the error didn't occur:
+<Only successful log snippets in exact order, without any additional space, unnecessary blanks/symbols or explanation>
 
-*** YOUR RESPONSE SHOULD ONLY CONTAIN THE LOG SNIPPETS AND NO OTHER WORDINGS ***
-*** THERE SHOULDN'T BE ANY ERROR / WARN LOG ENTRIES ***
-*** DON'T PRINT BACK THE CONTEXT AT ANY TIME. SUMMARIZE YOURSELF AND ONLY PROVIDE THE OUTPUT LOG SNIPPETS ***
+--- END OF RESPONSE ---
 
-Context for your refernce:
+Context for your reference:
 {context}
 
 Query to answer:
 {query}
-
-Response Format:
-<A one line short summary>
-
-<snippet 1>
-<snippet 2>
-<snippet 3>
-<snippet 4>
-<snippet 5>
-
--*- END OF RESPONSE -*-
 """
-    TIME_FROM = 0
-    TIME_TO = 1735689600000
-    return get_relevant_snippets(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY, PROMPT_TEMPLATE)
+    return get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE, results)

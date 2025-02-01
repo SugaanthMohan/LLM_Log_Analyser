@@ -57,20 +57,20 @@ if __name__ == "__main__":
    # print(f"\n\nAnalysing {len(filtered_docs['ids'])} log entries...\n\n")
    
    # First usecase - to summarise in plain English about the problem noticed 
-   try:
-      analysis = analyzer.analyze_with_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-      print("\n\nBelow is my analysis with metadata usage based on your query")
-      print(analysis)
-      # raise RuntimeError
-   except:
-      analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-      print("Below is my analysis without metadata usage based on your query")
-      print(analysis)
+   # try:
+   #    analysis = analyzer.analyze_with_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+   #    print("\n\nBelow is my analysis with metadata usage based on your query")
+   #    print(analysis)
+   #    raise RuntimeError
+   # except:
+   results, analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+   print("Below is my analysis without metadata usage based on your query")
+   print(analysis)
 
    # Second usecase - to extract the error log snippets and happy path log snippets
 
-   error_snippet = extract_snippets.error_flow(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-   happy_path_snippet = extract_snippets.success_flow(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+   error_snippet = extract_snippets.error_flow(llm, QUERY, results)
+   happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results)
 
    print("\nError snippet: \n")
    print(error_snippet)
