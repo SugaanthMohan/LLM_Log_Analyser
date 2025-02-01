@@ -1,6 +1,12 @@
 // Get the forms and button elements
 const splunkLoginForm = document.getElementById('SplunkLoginForm');
 const logConfigForm = document.getElementById('logConfigForm');
+const logConfigForm_source_type = document.getElementById('source-type');
+const logConfigForm_start_time = document.getElementById('start-time');
+const logConfigForm_end_time = document.getElementById('end-time');
+const logConfigForm_application_name = document.getElementById('application-name');
+const logConfigForm_input_query = document.getElementById('input-query');
+
 
 // Get Test Connection Button
 const testConnectionButton = document.getElementById('testConnectionButton');
@@ -14,8 +20,17 @@ const AiAnalysisTabButton = document.getElementById('AIAnalysis-tab-button');
 const happyPathTabButton = document.getElementById('happyPath-tab-button');
 
 
-// Get the Analyze Logs button
+// DISABLE LOG CONFIG FORM ELEMENTS
 logConfigForm.classList.add('disabled-form');
+logConfigForm_source_type.disabled = true;
+logConfigForm_start_time.disabled = true;
+logConfigForm_end_time.disabled = true;
+logConfigForm_application_name.disabled = true;
+logConfigForm_input_query.disabled = true;
+analyzeLogsButton.disabled = true;
+analyzeLogsButton.style.background = 'grey';
+analyzeLogsButton.style.cursor = 'not-allowed';
+
 
 
 
@@ -33,16 +48,21 @@ analyzeLogsButton.addEventListener('click', async() => {
     // PREVENT DOM RELOAD ACTION
     event.preventDefault()
 
+    // DISABLE THE BUTTON AND ACTIONS
+    analyzeLogsButton.disabled = true;
+    analyzeLogsButton.style.cursor = 'not-allowed';
+    analyzeLogsButton.style.background = 'grey';
+
     // Show loading state
     const logOutput = document.getElementById('logOutput');
     logOutput.textContent = "Analyzing logs...";
 
     // Get the values from the form elements
-    const sourceType = document.getElementById('source-type').value;
-    const startTime = document.getElementById('start-time').value;
-    const endTime = document.getElementById('end-time').value;
-    const applicationName = document.getElementById('application-name').value;
-    const query = document.getElementById('input-query').value;
+    const sourceType = logConfigForm_source_type.value;
+    const startTime = logConfigForm_start_time.value;
+    const endTime = logConfigForm_end_time.value;
+    const applicationName = logConfigForm_application_name.value;
+    const query = logConfigForm_input_query.value;
 
     // Create a JSON payload with the values
     const payload = {
@@ -52,6 +72,21 @@ analyzeLogsButton.addEventListener('click', async() => {
         application_name: applicationName,
         query: query
     };
+
+    // Scroll down to the lower end of the page
+    window.scrollTo(0, document.body.scrollHeight);
+
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    spinner.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    spinner.style.position = 'absolute';
+    spinner.style.top = '50%';
+    spinner.style.left = '50%';
+    spinner.style.transform = 'translate(-50%, -50%)';
+    spinner.style.fontSize = '36px'; // Increase font size
+    spinner.style.color = '#fff'; // Change color to white
+    spinner.style.zIndex = '1000'; // Increase z-index
+    analyzeLogsButton.appendChild(spinner);
 
     // Send the payload to the Flask endpoint using the Fetch API
     fetch('/AnalyzeLogs', {
@@ -75,6 +110,15 @@ analyzeLogsButton.addEventListener('click', async() => {
 
     })
     .catch(error => console.error(error));
+
+    spinner.remove();
+
+    // ENABLE THE BUTTON AND ACTIONS
+    analyzeLogsButton.disabled = false;
+    analyzeLogsButton.style.background = '#D32F2F';
+    analyzeLogsButton.style.cursor = 'pointer';
+
+
 });
 
 
@@ -134,6 +178,15 @@ testConnectionButton.addEventListener('click', () => {
 
             // Enable the logConfigForm
             logConfigForm.classList.remove('disabled-form');
+            logConfigForm_source_type.disabled = false;
+            logConfigForm_start_time.disabled = false;
+            logConfigForm_end_time.disabled = false;
+            logConfigForm_application_name.disabled = false;
+            logConfigForm_input_query.disabled = false;
+            analyzeLogsButton.disabled = false;
+            analyzeLogsButton.style.background = '#D32F2F';
+            analyzeLogsButton.style.cursor = 'pointer';
+
 
             // Make the prompt disappear after 3 seconds
             setTimeout(() => {
