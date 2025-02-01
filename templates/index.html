@@ -88,15 +88,12 @@
             <!-- Analysis Panel -->
             <section class="analysis-panel">
                 <div class="results-tabs">
-                    <button class="tab-button active">Raw Logs</button>
-                    <button class="tab-button">AI Analysis</button>
-                    <button class="tab-button">Happy Path</button>
+                    <button class="tab-button active" id="rawLogs-tab-button">Raw Logs</button>
+                    <button class="tab-button" id="AIAnalysis-tab-button">AI Analysis</button>
+                    <button class="tab-button" id="happyPath-tab-button">Happy Path</button>
                 </div>
 
                 <pre class="log-display" id="logOutput">
-[2023-11-20 14:23:45] ERROR ApplicationService: Failed to process request
-   at com.app.service.process(Request.java:123)
-   caused by: DatabaseConnectionException: Connection timeout
                 </pre>
 
                 <div class="ai-analysis">

@@ -102,7 +102,11 @@ def analyze_logs():
         print(f"Application Name: {application_name}")
         print(f"Log Level Filter: {log_level_filter}")
 
-        output = {}
+        output = {
+            "RawLogs": "[2023-11-20 14:23:45] ERROR ApplicationService: Failed to process request at com.app.service.process(Request.java:123) caused by: DatabaseConnectionException: Connection timeout",
+            "AIAnalysis": "[SIMULATED RESPONSE]\nFound 12 errors in specified timeframe\nMatching happy path logs detected in 3 instances\nRecommended resolution: Check database connection pool settings",
+            "HappyPath": "[SIMULATED RESPONSE]\nFound 0 Happy paths"
+        }
 
         # Return the analyzed log data
         return jsonify(output), 200
