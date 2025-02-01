@@ -8,7 +8,7 @@ from langchain.chains.query_constructor.base import (
 )
 
 import re
-import attribute_info
+from backend import attribute_info, parse_documents
 
 ANALYSER_PROMPT = """
 [ROLE] Professional Software Logs Analyzer  
@@ -167,8 +167,8 @@ def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
 def analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
 
     TRACE_IDS = get_trace_id(QUERY)
-    TIME_FROM = int(TIME_FROM)
-    TIME_TO = int(TIME_TO)
+    TIME_FROM = int(parse_documents.parse_unix_epoch_timestamp(TIME_FROM))
+    TIME_TO = int(parse_documents.parse_unix_epoch_timestamp(TIME_TO))
 
 
     EMBEDDING_QUERY = get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS) 

@@ -17,6 +17,8 @@ const happyPathTabButton = document.getElementById('happyPath-tab-button');
 // Get the Analyze Logs button
 logConfigForm.classList.add('disabled-form');
 
+
+
 // Create an object to store the results-tab-data fetched data
 const resultsTabData = {
     "RawLogs": "",
@@ -26,7 +28,7 @@ const resultsTabData = {
 
 
 // Add an event listener to the Analyze Logs button
-analyzeLogsButton.addEventListener('click', () => {
+analyzeLogsButton.addEventListener('click', async() => {
 
     // PREVENT DOM RELOAD ACTION
     event.preventDefault()
@@ -40,7 +42,7 @@ analyzeLogsButton.addEventListener('click', () => {
     const startTime = document.getElementById('start-time').value;
     const endTime = document.getElementById('end-time').value;
     const applicationName = document.getElementById('application-name').value;
-    const logLevelFilter = document.getElementById('log-level-filter').value;
+    const query = document.getElementById('input-query').value;
 
     // Create a JSON payload with the values
     const payload = {
@@ -48,7 +50,7 @@ analyzeLogsButton.addEventListener('click', () => {
         start_time: startTime,
         end_time: endTime,
         application_name: applicationName,
-        log_level_filter: logLevelFilter
+        query: query
     };
 
     // Send the payload to the Flask endpoint using the Fetch API

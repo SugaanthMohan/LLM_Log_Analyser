@@ -86,3 +86,7 @@ def preprocess_logs(log_text: str) -> str:
 
     # Remove leading '|||' if present
     return processed.lstrip("|||")
+
+
+if __name__ == '__main__':
+    print(parse_unix_epoch_timestamp('2025-02-01T21:39'))

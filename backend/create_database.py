@@ -8,34 +8,30 @@ import os
 import shutil
 import json
 
+from backend import parse_documents
+from backend import extract_metadata
 
-import parse_documents
-import extract_metadata
-
-APP_ID = 'APP_4'
-
-CHROMA_PATH = "chroma"
-DATA_PATH = f"data/logs/{APP_ID}"
-
-
-def main():
-    generate_data_store()
+def create(APP_ID):
+    print("In create database")
+    CHROMA_PATH = f"chroma/{APP_ID}"
+    DATA_PATH = f"data/logs/{APP_ID}"
+    generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH)
 
 
-def generate_data_store():
-    documents = load_documents()
-    chunks = split_text(documents)
-    save_to_chroma(chunks)
+def generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH):
+    documents = load_documents(DATA_PATH)
+    chunks = split_text(APP_ID, DATA_PATH, documents)
+    save_to_chroma(chunks, DATA_PATH, CHROMA_PATH)
 
 
-def load_documents():
+def load_documents(DATA_PATH):
     parse_documents.process_all_log_files(DATA_PATH)
     loader = DirectoryLoader(DATA_PATH, glob="*.log")
     documents = loader.load()
     return documents
 
 
-def split_text(documents: list[Document]):
+def split_text(APP_ID, DATA_PATH, documents: list[Document]):
 
     # First split by log entries
     text_splitter = RecursiveCharacterTextSplitter(
@@ -78,8 +74,8 @@ def split_text(documents: list[Document]):
     return final_chunks
 
 
-def save_to_chroma(chunks: list[Document]):
-    # Clear out the database first.
+def save_to_chroma(chunks: list[Document], DATA_PATH, CHROMA_PATH):
+    # Clear out the database first
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)
 
@@ -91,4 +87,4 @@ def save_to_chroma(chunks: list[Document]):
 
 
 if __name__ == "__main__":
-    main()
+    create()

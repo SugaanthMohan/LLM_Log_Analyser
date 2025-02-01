@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
-# from rag_pipeline import analyze_logs  # Your RAG implementation
+from backend import rag, create_database
+import os
+
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for cross-origin requests
@@ -69,7 +72,7 @@ def analyze_logs():
     - start_time: The starting time of the time range to analyze in ISO 8601 format.
     - end_time: The ending time of the time range to analyze in ISO 8601 format.
     - application_name: The name of the application to analyze.
-    - log_level_filter: The log level to filter by. Valid values are 'DEBUG', 'INFO', 'WARNING', 'ERROR', and 'CRITICAL'.
+    - query: User's query
 
     Returns:
     - 200 OK if the analysis was successful.
@@ -85,10 +88,10 @@ def analyze_logs():
         start_time = data.get('start_time')
         end_time = data.get('end_time')
         application_name = data.get('application_name')
-        log_level_filter = data.get('log_level_filter')
+        query = data.get('query')
 
         # Validate the parameters
-        if not all([source_type, start_time, end_time, application_name, log_level_filter]):
+        if not all([source_type, start_time, end_time, application_name, query]):
             return jsonify({'error': 'Missing required parameters'}), 400
 
 
@@ -100,13 +103,12 @@ def analyze_logs():
         print(f"Start Time: {start_time}")
         print(f"End Time: {end_time}")
         print(f"Application Name: {application_name}")
-        print(f"Log Level Filter: {log_level_filter}")
+        print(f"Query: {query}")
 
-        output = {
-            "RawLogs": "[2023-11-20 14:23:45] ERROR ApplicationService: Failed to process request at com.app.service.process(Request.java:123) caused by: DatabaseConnectionException: Connection timeout",
-            "AIAnalysis": "[SIMULATED RESPONSE]\nFound 12 errors in specified timeframe\nMatching happy path logs detected in 3 instances\nRecommended resolution: Check database connection pool settings",
-            "HappyPath": "[SIMULATED RESPONSE]\nFound 0 Happy paths"
-        }
+        if not os.path.exists(f"./chroma/{application_name}"):
+            create_database.create(application_name)
+
+        output = rag.analyse(application_name, start_time, end_time, query)
 
         # Return the analyzed log data
         return jsonify(output), 200
