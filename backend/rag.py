@@ -6,8 +6,11 @@ from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_huggingface import HuggingFaceEndpoint
 from dotenv import load_dotenv
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 from backend import analyzer
 from backend import extract_snippets
+from backend import parse_documents
+
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -60,19 +63,33 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    error_snippet = extract_snippets.error_flow(llm, QUERY, results)
    happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results)
 
+   # print(analysis)
+   # print("\n\n")
+   # print(error_snippet)
+   # print("\n\n")
+   # print(happy_path_snippet)
+   # print("\n\n")
+
+   summary, report, explanation, expected_flow, remediation = parse_documents.parse_response(analysis)
+
    output = {
       "RawLogs": error_snippet,
-      "AIAnalysis": analysis,
+      "Summary": summary,
+      "Report": report,
+      "Explanation": explanation,
+      "ExpectedFlow": expected_flow,
+      "Remediation": remediation,
       "HappyPath": happy_path_snippet
    }
+   print(output)
 
    return output
 
 if __name__ == "__main__":
-   APP_ID = input("APP ID: ")
-   TIME_FROM = input("TIME FROM: ")
-   TIME_TO = input("TIME TO: ")
-   QUERY = input("QUERY: ") 
+   # APP_ID = input("APP ID: ")
+   # TIME_FROM = input("TIME FROM: ")
+   # TIME_TO = input("TIME TO: ")
+   # QUERY = input("QUERY: ") 
 
    # filtered_docs = get_filtered_docs('APP_3', 1718445912345, 1718447418123)
    # print(f"\n\nAnalysing {len(filtered_docs['ids'])} log entries...\n\n")
@@ -84,18 +101,20 @@ if __name__ == "__main__":
    #    print(analysis)
    #    raise RuntimeError
    # except:
-   results, analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-   print("Below is my analysis without metadata usage based on your query")
-   print(analysis)
+   # results, analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+   # print("Below is my analysis without metadata usage based on your query")
+   # print(analysis)
 
    # Second usecase - to extract the error log snippets and happy path log snippets
 
-   error_snippet = extract_snippets.error_flow(llm, QUERY, results)
-   happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results)
+   # error_snippet = extract_snippets.error_flow(llm, QUERY, results)
+   # happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results)
 
-   print("\nError snippet: \n")
-   print(error_snippet)
+   # print("\nError snippet: \n")
+   # print(error_snippet)
 
-   print("\nHappy Path snippet: \n")
-   print(happy_path_snippet)
+   # print("\nHappy Path snippet: \n")
+   # print(happy_path_snippet)
 
+   QUERY = "What were the scenarios in which withdrawal transactions failed and what are the affected account numbers? "
+   analyse('APP_4', '2025-02-01T00:39', '2025-02-01T21:40', QUERY)

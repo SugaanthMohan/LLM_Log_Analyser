@@ -25,15 +25,15 @@ Please follow these steps and output the response using the structure below:
 
 2. Output Structure:  
    **1. Summary:**  
-   - Provide a high-level summary of the findings (issue description, insights, or happy path reference).
+   - Provide a summary of the findings (issue description, insights, or happy path reference).
 
    **2. Incident/Scenario Report:**  
-   - **Time:** <Timestamp of the event or relevant log entry>  
-   - **Faced By:** <Customer/Teller/User ID or context if available>  
-   - **Trace Id:** <TraceID/SessionID from logs>  
-   - **Application:** <Application Identifier>  
-   - **Component:** <Component involved, e.g., SpringBoot, Middleware, OracleDB>  
-   - **Additional Metadata:** <Other key-value pairs as available>
+   - Time: <Timestamp of the event or relevant log entry>  
+   - Faced By: <Customer/Teller/User ID or context if available>  
+   - Trace Id: <TraceID/SessionID from logs>  
+   - Application: <Application Identifier>  
+   - Component: <Component involved, e.g., SpringBoot, Middleware, OracleDB>  
+   - Additional Metadata: <Other key-value pairs as available>
 
    **3. Explanation:**  
    - Provide a detailed explanation of the root cause or context of the scenario.  
