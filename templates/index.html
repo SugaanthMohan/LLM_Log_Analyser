@@ -28,17 +28,16 @@
                 <h2>Splunk Login</h2>
                 <form id="SplunkLoginForm">
                         <div class="form-group">
-                            <label>Splunk Configuration</label>
                             <div class="host-port-container">
-                                <input type="text" class="input-field" placeholder="Host" required>
-                                <input type="number" class="input-field" placeholder="Port" required>
+                                <input type="text" class="input-field" placeholder="Host" id="splunk-host" required>
+                                <input type="number" class="input-field" placeholder="Port" id="splunk-port" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Authentication</label>
                             <div class="username-password-container">
-                                <input type="text" class="input-field" placeholder="Username" required>
-                                <input type="password" class="input-field" placeholder="Password" required>
+                                <input type="text" class="input-field" placeholder="Username" id="splunk-user" required>
+                                <input type="password" class="input-field" placeholder="Password" id="splunk-token" required>
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary" id="testConnectionButton">Test Connection</button>
@@ -48,7 +47,7 @@
                     <form id="logConfigForm">
                     <div class="form-group">
                         <label>Source Type</label>
-                        <select class="input-field" required>
+                        <select class="input-field" id="source-type" required>
                             <option value="">Select Source Type</option>
                             <option>syslog</option>
                             <option>http:access</option>
@@ -59,22 +58,22 @@
                     <div class="form-group time-range-group">
                         <div>
                             <label>Start Time</label>
-                            <input type="datetime-local" class="input-field" required>
+                            <input type="datetime-local" class="input-field" id="start-time" required>
                         </div>
                         <div>
                             <label>End Time</label>
-                            <input type="datetime-local" class="input-field" required>
+                            <input type="datetime-local" class="input-field" id="end-time" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Application Name</label>
-                        <input type="text" class="input-field" required>
+                        <input type="text" class="input-field" id="application-name" required>
                     </div>
 
                     <div class="form-group">
                         <label>Log Level Filter</label>
-                        <select class="input-field">
+                        <select class="input-field" id="log-level-filter" required>
                             <option value="all">All Levels</option>
                             <option>ERROR</option>
                             <option>WARN</option>
@@ -82,7 +81,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn-primary">Analyze Logs</button>
+                    <button type="submit" class="btn-primary" id="analyze-logs-button">Analyze Logs</button>
                 </form>
             </section>
 
