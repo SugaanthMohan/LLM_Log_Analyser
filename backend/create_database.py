@@ -12,7 +12,7 @@ import json
 import parse_documents
 import extract_metadata
 
-APP_ID = 'APP_3'
+APP_ID = 'APP_4'
 
 CHROMA_PATH = "chroma"
 DATA_PATH = f"data/logs/{APP_ID}"
@@ -40,22 +40,25 @@ def split_text(documents: list[Document]):
     # First split by log entries
     text_splitter = RecursiveCharacterTextSplitter(
         separators=["|||"],  # Split on the delimiter we added
-        chunk_size=100,      # Larger than the biggest log entry
-        chunk_overlap=0,
+        chunk_size=1000,      # Larger than the biggest log entry
+        chunk_overlap=500,
         keep_separator=False, # Remove '|||' from the output
     )
 
     final_chunks = text_splitter.split_documents(documents)
+    for chunk in final_chunks:
+        if "|||" in chunk.page_content:
+            chunk.page_content = chunk.page_content.replace("|||", "")
 
-    log_snippets = '\n'.join([extract_metadata.extract_metadata_snippet(chunk.page_content) for chunk in final_chunks[:10]])
+    log_snippets = '\n'.join([extract_metadata.extract_metadata_snippet(chunk.page_content) for chunk in final_chunks[:7]])
 
     metadata_keys = extract_metadata.get_metadata(log_snippets)
-    
+
     # Create dictionary mapping metadata fields to values
     for chunk in final_chunks:
         metadata_snippet = extract_metadata.extract_metadata_snippet(chunk.page_content)
-        metadata = metadata_snippet.split('|') 
-        metadata_dict = dict(zip(metadata_keys[:6], metadata[:6]))
+        metadata = metadata_snippet.split(' | ') 
+        metadata_dict = dict(zip(metadata_keys[:4], metadata[:4]))
         metadata_dict = {'APP_ID': APP_ID, **metadata_dict}
         
         for key in ['Timestamp', 'Date', 'Datetime']:  # List of potential keys
@@ -66,7 +69,7 @@ def split_text(documents: list[Document]):
 
         chunk.metadata = metadata_dict
     #     print(chunk)
-    #     print("\n~~~~\n")
+    #     print("\n\n~~~\n\n")
     # exit()
 
     with open(f'{DATA_PATH}/chunks-metadata.json', 'w') as file:
