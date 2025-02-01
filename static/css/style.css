@@ -219,7 +219,7 @@ h2 {
 
 .log-display {
   height: 200px; /* adjust this value to set the height of the element */
-  width: 750px;
+  width: 570px;
   overflow-y: auto;
   overflow-x: auto;
 }
