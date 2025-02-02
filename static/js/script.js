@@ -37,8 +37,12 @@ analyzeLogsButton.style.cursor = 'not-allowed';
 // Create an object to store the results-tab-data fetched data
 const resultsTabData = {
     "RawLogs": "",
-    "AIAnalysis": "",
-    "HappyPath": ""
+    "HappyPath": "",
+    "Summary": "",
+    "Explanation": "",
+    "ExpectedFlow": "",
+    "Remediation": "",
+    "Report": ""
 };
 
 
@@ -101,8 +105,13 @@ analyzeLogsButton.addEventListener('click', async() => {
 
         // Store the fetched data in the resultsData object
         resultsTabData.RawLogs = data.RawLogs;
-        resultsTabData.AIAnalysis = data.AIAnalysis;
         resultsTabData.HappyPath = data.HappyPath;
+        resultsTabData.Summary = data.Summary;
+        resultsTabData.Explanation = data.Explanation;
+        resultsTabData.ExpectedFlow = data.ExpectedFlow;
+        resultsTabData.Remediation = data.Remediation;
+        resultsTabData.Report = data.Report;
+
 
         // Set Active & Load the RawLogs tab content by default
         rawLogsTabButton.classList.add('active');
@@ -242,6 +251,7 @@ rawLogsTabButton.addEventListener('click', () => {
 });
 
 AiAnalysisTabButton.addEventListener('click', () => {
+    createAIAnalysisContainer()
     loadTabContent('AIAnalysis');
 });
 
@@ -252,13 +262,78 @@ happyPathTabButton.addEventListener('click', () => {
 // Function to load the tab content
 function loadTabContent(tabName) {
     const tabContentElement = document.getElementById('logOutput');
+    const aiAnalysisContainer = document.getElementById('ai-analysis-container');
 
     // Load the content from the resultsData object
     if (tabName === 'RawLogs') {
+        if (aiAnalysisContainer != null) {
+            aiAnalysisContainer.style.display = 'none';  // Hide AI analysis sections
+            clearAIAnalysisContent();  // Clear content when switching tabs
+        }
         tabContentElement.innerHTML = resultsTabData.RawLogs;
     } else if (tabName === 'AIAnalysis') {
-        tabContentElement.innerHTML = resultsTabData.AIAnalysis;
+
+        aiAnalysisContainer.style.display = 'block';  // Show AI analysis sections
+        populateAIAnalysisContent();  // Populate the content if it's available
+
     } else if (tabName === 'HappyPath') {
+        if (aiAnalysisContainer != null) {
+            aiAnalysisContainer.style.display = 'none';  // Hide AI analysis sections
+            clearAIAnalysisContent();  // Clear content when switching tabs
+        }
         tabContentElement.innerHTML = resultsTabData.HappyPath;
     }
+}
+
+// Function to populate the AI analysis sections with data
+function populateAIAnalysisContent() {
+
+    // Populate each subsection with data from the backend response
+    document.getElementById('summary-section').querySelector('p').textContent = resultsTabData.Summary || 'No data available';
+    document.getElementById('explanation-section').querySelector('p').textContent = resultsTabData.Explanation || 'No data available';
+    document.getElementById('expectedflow-section').querySelector('p').textContent = resultsTabData.ExpectedFlow || 'No data available';
+    document.getElementById('remediation-section').querySelector('p').textContent = resultsTabData.Remediation || 'No data available';
+    document.getElementById('report-section').querySelector('p').textContent = resultsTabData.Report || 'No data available';
+}
+
+// Function to clear AI analysis content (useful when switching tabs)
+function clearAIAnalysisContent() {
+    document.getElementById('summary-section').querySelector('p').textContent = '';
+    document.getElementById('explanation-section').querySelector('p').textContent = '';
+    document.getElementById('expectedflow-section').querySelector('p').textContent = '';
+    document.getElementById('remediation-section').querySelector('p').textContent = '';
+    document.getElementById('report-section').querySelector('p').textContent = '';
+}
+
+function createAIAnalysisContainer() {
+    // Create the HTML structure dynamically
+    const aiAnalysisHTML = `
+        <div id="ai-analysis-container" class="ai-analysis-container">
+            <h3>AI Analysis Result</h3>
+            <div id="summary-section" class="sub-section">
+                <h4>Summary</h4>
+                <p></p>
+            </div>
+            <div id="explanation-section" class="sub-section">
+                <h4>Explanation</h4>
+                <p></p>
+            </div>
+            <div id="expectedflow-section" class="sub-section">
+                <h4>Expected Flow</h4>
+                <p></p>
+            </div>
+            <div id="remediation-section" class="sub-section">
+                <h4>Remediation</h4>
+                <p></p>
+            </div>
+            <div id="report-section" class="sub-section">
+                <h4>Report</h4>
+                <p></p>
+            </div>
+        </div>
+    `;
+
+    const tabContentElement = document.getElementById('logOutput');
+
+    tabContentElement.innerHTML = aiAnalysisHTML;
 }
