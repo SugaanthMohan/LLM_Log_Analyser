@@ -263,7 +263,7 @@ function loadTabContent(tabName) {
         tabContentElement.innerHTML = resultsTabData.RawLogs;
     } else if (tabName === 'AIAnalysis') {
 
-        aiAnalysisContainer.style.display = 'block';  // Show AI analysis sections
+        // aiAnalysisContainer.style.display = 'block';  // Show AI analysis sections
         populateAIAnalysisContent();  // Populate the content if it's available
 
     } else if (tabName === 'HappyPath') {
@@ -298,27 +298,30 @@ function clearAIAnalysisContent() {
 function createAIAnalysisContainer() {
     // Create the HTML structure dynamically
     const aiAnalysisHTML = `
-        <div id="ai-analysis-container" class="ai-analysis-container">
-            <h3>AI Analysis Result</h3>
-            <div id="summary-section" class="sub-section">
-                <h4>Summary</h4>
-                <p></p>
+        <div class="ai-analysis-container">
+            <div class="ai-analysis-tabs">
+                <button class="tab-button active inner-tab" data-section="summary-section">Summary</button>
+                <button class="tab-button inner-tab" data-section="explanation-section">Explanation</button>
+                <button class="tab-button inner-tab" data-section="expectedflow-section">Expected Flow</button>
+                <button class="tab-button inner-tab" data-section="remediation-section">Remediation</button>
+                <button class="tab-button inner-tab" data-section="report-section">Report</button>
             </div>
-            <div id="explanation-section" class="sub-section">
-                <h4>Explanation</h4>
-                <p></p>
-            </div>
-            <div id="expectedflow-section" class="sub-section">
-                <h4>Expected Flow</h4>
-                <p></p>
-            </div>
-            <div id="remediation-section" class="sub-section">
-                <h4>Remediation</h4>
-                <p></p>
-            </div>
-            <div id="report-section" class="sub-section">
-                <h4>Report</h4>
-                <p></p>
+            <div class="ai-analysis-content">
+                <div id="summary-section" class="sub-section active">
+                    <p></p>
+                </div>
+                <div id="explanation-section" class="sub-section">
+                    <p></p>
+                </div>
+                <div id="expectedflow-section" class="sub-section">
+                    <p></p>
+                </div>
+                <div id="remediation-section" class="sub-section">
+                    <p></p>
+                </div>
+                <div id="report-section" class="sub-section">
+                    <p></p>
+                </div>
             </div>
         </div>
     `;
@@ -326,6 +329,8 @@ function createAIAnalysisContainer() {
     const tabContentElement = document.getElementById('logOutput');
 
     tabContentElement.innerHTML = aiAnalysisHTML;
+    
+    showInnerContainer();
 }
 
 function showSpinner() {
@@ -334,4 +339,22 @@ function showSpinner() {
 
 function hideSpinner() {
   document.getElementById('spinner').style.display = 'none';
+}
+
+function showInnerContainer() {
+
+    document.querySelectorAll(".inner-tab").forEach( button => {
+        const buttons = document.querySelectorAll('.inner-tab')
+        const sections = document.querySelectorAll(".sub-section");
+        button.addEventListener("click", () => {
+            // console.log("Clicked..")
+            // Remove active class from all buttons and sections
+            buttons.forEach((btn) => btn.classList.remove("active"));
+            sections.forEach((section) => section.classList.remove("active"));
+
+            // Add active class to clicked button and corresponding section
+            button.classList.add("active");
+            document.getElementById(button.dataset.section).classList.add("active");
+        });
+    });
 }

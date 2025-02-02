@@ -54,6 +54,16 @@ def get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO):
 
 
 def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
+   # output = {
+   #    "RawLogs": "raw",
+   #    "Summary": "summary",
+   #    "Report": "report",
+   #    "Explanation": "explanation",
+   #    "ExpectedFlow": "expected_flow",
+   #    "Remediation": "remediation",
+   #    "HappyPath": "happy_path_snippet"
+   # }
+   # return output
 
    llm, db = init(APP_ID)
 
@@ -83,6 +93,8 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
       "Remediation": remediation,
       "HappyPath": happy_path_snippet
    }
+
+   
    print(output)
 
    return output

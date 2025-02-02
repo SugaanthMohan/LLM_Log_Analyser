@@ -135,15 +135,22 @@ label {
 .tab-button {
     padding: 0.75rem 1.5rem;
     border: none;
-    background: var(--light-bg);
+    background: #DDDDDD;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
+/* Hover Effect */
+.tab-button:hover {
+    background: #a7a2a2;  /* Slightly darker gray */
+}
+
 .tab-button.active {
     background: var(--primary-red);
     color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .log-display {
@@ -253,4 +260,58 @@ label {
 
 .accordion-header.active:after {
     content: ' ▲';  /* Arrow pointing up when expanded */
+}
+
+
+/* Tab buttons */
+.ai-analysis-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+/* .tab-button {
+    flex: 1;
+    padding: 10px;
+    background: var(--light-bg);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+    border-radius: 5px;
+} */
+
+.tab-button.active {
+    background: var(--primary-red);
+    color: white;
+}
+
+/* AI Analysis Sections */
+.ai-analysis-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+}
+
+.sub-section {
+    display: none;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    flex: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Show active section */
+.sub-section.active {
+    display: block;
+}
+
+.ai-analysis-container{
+    padding-top: 0;
+    margin-top: 0;
 }

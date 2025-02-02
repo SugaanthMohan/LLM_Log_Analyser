@@ -116,10 +116,14 @@ def parse_response(text):
             if line.strip(): 
                 # Remove bold markers and preserve original line format
                 line = line.replace("**", "")
+                line = line.replace("### **Answer**", "")
+                line = line.replace("**Answer**", "")
                 # print(len(line))
                 if len(line) > 200:
                     line = line.split(". ")
                     line = '.\n  '.join(line)
+
+                line = line.strip()
                 response[key] += line + "\n"
     
 
