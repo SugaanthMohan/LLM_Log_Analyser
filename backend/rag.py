@@ -60,17 +60,19 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    # log_entry_count = get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO)
 
    results, analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-   error_snippet = extract_snippets.error_flow(llm, QUERY, results)
-   happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results)
-
-   # print(analysis)
-   # print("\n\n")
-   # print(error_snippet)
-   # print("\n\n")
-   # print(happy_path_snippet)
-   # print("\n\n")
-
    summary, report, explanation, expected_flow, remediation = parse_documents.parse_response(analysis)
+
+   error_snippet = extract_snippets.error_flow(llm, QUERY, results)
+
+   happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results, analysis)
+
+   print(analysis)
+   print("\n\n")
+   print(error_snippet)
+   print("\n\n")
+   print(happy_path_snippet)
+   print("\n\n")
+
 
    output = {
       "RawLogs": error_snippet,
@@ -116,5 +118,5 @@ if __name__ == "__main__":
    # print("\nHappy Path snippet: \n")
    # print(happy_path_snippet)
 
-   QUERY = "What were the scenarios in which withdrawal transactions failed and what are the affected account numbers? "
+   QUERY = "Was there a payment gateway error? "
    analyse('APP_4', '2025-02-01T00:39', '2025-02-01T21:40', QUERY)

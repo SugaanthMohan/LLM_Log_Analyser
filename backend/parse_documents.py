@@ -92,28 +92,34 @@ def preprocess_logs(log_text: str) -> str:
 def parse_response(text):
     # Define the headings
     headings = [
-        'Summary',
-        'Incident/Scenario Report',
-        'Explanation',
-        'Expected Ideal Flow (Happy Path)',
-        'Remediation / Recommendations'
+        ['Summary'],
+        ['Incident/Scenario Report', 'Incident Report', 'Scenario Report', 'Report :'],
+        ['Explanation'],
+        ['Expected Ideal Flow (Happy Path)'],
+        ['Remediation / Recommendations', 'Remediation', 'Recommendations']
     ]
 
     # Initialize the dictionary with empty strings instead of None
-    response = dict.fromkeys(headings, "")
+    keys = [heading[0] for heading in headings]
+    response = dict.fromkeys(keys, "")
 
     key = None
     for line in text.split('\n'):
         skip_line = False
         for heading in headings:
-            if heading in line:
-                key = heading
-                skip_line = True
-                break  # Exit inner loop once the heading is found
+            for name in heading:
+                if name in line:
+                    key = heading[0]
+                    skip_line = True
+                    break  # Exit inner loop once the heading is found
         if not skip_line and key is not None:
             if line.strip(): 
                 # Remove bold markers and preserve original line format
                 line = line.replace("**", "")
+                # print(len(line))
+                if len(line) > 200:
+                    line = line.split(". ")
+                    line = '.\n  '.join(line)
                 response[key] += line + "\n"
     
 
@@ -124,6 +130,15 @@ def parse_response(text):
         response.get("Expected Ideal Flow (Happy Path)", "").strip(),
         response.get("Remediation / Recommendations", "").strip(),
     )
+
+
+def parse_success_flow_snippets(success_flow):
+    lines = success_flow.split('\n')
+    if len(lines) > 5:
+        lines = lines[:-1]
+        lines.append("\nContinues...")
+    
+    return "\n".join(lines)
 
 
 if __name__ == '__main__':
