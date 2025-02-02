@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LogInsight AI - Splunk Log Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
@@ -23,6 +24,12 @@
 
     <main class="container">
         <div class="dashboard">
+            <!-- SPINNER PANEL -->
+
+            <div id="spinner" class="spinner" style="display: block;">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
             <!-- Configuration Panel -->
             <section class="config-panel">
                 <!-- Splunk Login Form Container -->
@@ -101,10 +108,9 @@
 
                 <div class="ai-analysis">
                     <h3>RAG-Powered Analysis</h3>
-                    <p>🔍 Detected recurring database connection issues during peak load times.
-                    Comparison with successful logs shows missing connection pool configuration
-                    in error cases. Recommended action: Increase connection pool size and
-                    implement retry logic.</p>
+                    <p>🔍 The RAG (Retrieval Augmented Generation) Based Log Analyzer significantly reduces the time and effort required to sift through vast log data, improving overall system monitoring and troubleshooting processes.
+                        It leverages advanced retrieval techniques to source relevant information and generate insightful summaries.
+                        Its effectiveness lies in combining retrieval and generative capabilities for a comprehensive and streamlined log analysis experience.</p>
                 </div>
             </section>
         </div>
