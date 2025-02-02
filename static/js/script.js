@@ -80,17 +80,7 @@ analyzeLogsButton.addEventListener('click', async() => {
     // Scroll down to the lower end of the page
     window.scrollTo(0, document.body.scrollHeight);
 
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner';
-    spinner.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-    spinner.style.position = 'absolute';
-    spinner.style.top = '50%';
-    spinner.style.left = '50%';
-    spinner.style.transform = 'translate(-50%, -50%)';
-    spinner.style.fontSize = '36px'; // Increase font size
-    spinner.style.color = '#fff'; // Change color to white
-    spinner.style.zIndex = '1000'; // Increase z-index
-    analyzeLogsButton.appendChild(spinner);
+    showSpinner();
 
     // Send the payload to the Flask endpoint using the Fetch API
     fetch('/AnalyzeLogs', {
@@ -120,7 +110,7 @@ analyzeLogsButton.addEventListener('click', async() => {
     })
     .catch(error => console.error(error));
 
-    spinner.remove();
+    hideSpinner();
 
     // ENABLE THE BUTTON AND ACTIONS
     analyzeLogsButton.disabled = false;
@@ -336,4 +326,12 @@ function createAIAnalysisContainer() {
     const tabContentElement = document.getElementById('logOutput');
 
     tabContentElement.innerHTML = aiAnalysisHTML;
+}
+
+function showSpinner() {
+  document.getElementById('spinner').style.display = 'block';
+}
+
+function hideSpinner() {
+  document.getElementById('spinner').style.display = 'none';
 }
