@@ -95,8 +95,8 @@ def parse_response(text):
         ['Summary'],
         ['Incident/Scenario Report', 'Incident Report', 'Scenario Report', 'Report :'],
         ['Explanation'],
-        ['Expected Ideal Flow (Happy Path)'],
-        ['Remediation / Recommendations', 'Remediation', 'Recommendations']
+        ['Expected Ideal Flow (Happy Path)', 'Expected Ideal Flow'],
+        ['Remediation / Recommendations', 'Remediation', 'Recommendation']
     ]
 
     # Initialize the dictionary with empty strings instead of None

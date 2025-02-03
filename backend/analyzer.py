@@ -22,7 +22,7 @@ Please follow these steps and output the response using the structure below:
    - **Step 3:** Look for discrepancies, anomalies, or inconsistencies in the logs. If none are found, select a representative “happy path” scenario.
    - **Step 4:** Provide a detailed chain-of-thought that outlines your analysis and reasoning.
    - **Step 5:** Summarize the issue (or the scenario) and suggest remediation or improvements, if applicable.
-
+ 
 2. Output Structure:  
    **1. Summary:**  
    - Provide a summary of the findings (issue description, insights, or happy path reference).
