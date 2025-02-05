@@ -38,19 +38,19 @@
                     <h2 id="splunk-login-title">Splunk Login</h2>
                     <form id="SplunkLoginForm">
                         <div class="form-group">
-                                <label>Host</label>
-                                <input type="text" class="input-field" placeholder="Host" id="splunk-host" required>
+                            <label for="splunk-host">Host</label>
+                            <input type="text" class="input-field" placeholder="Host" id="splunk-host" required>
                         </div>
                         <div class="form-group">
-                                <label>Port</label>
-                                <input type="number" class="input-field" placeholder="Port" id="splunk-port" required>
+                            <label for="splunk-port">Port</label>
+                            <input type="number" class="input-field" placeholder="Port" id="splunk-port" required>
                         </div>
                         <div class="form-group">
-                            <label>User Name</label>
+                            <label for="splunk-user">User Name</label>
                             <input type="text" class="input-field" placeholder="Username" id="splunk-user" required>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
+                            <label for="splunk-token">Password</label>
                             <input type="password" class="input-field" placeholder="Password" id="splunk-token" required>
                         </div>
                         <button type="button" class="btn btn-primary" id="testConnectionButton">Test Connection</button>
@@ -74,12 +74,12 @@
                     <h2>Splunk Configuration</h2>
                     <form id="logConfigForm">
                         <div class="form-group">
-                            <label>APP ID</label>
+                            <label for="application-name">APP ID</label>
                             <input type="text" class="input-field" id="application-name" required>
                         </div>
 
                         <div class="form-group">
-                            <label>Splunk Source Type</label>
+                            <label for="source-type">Splunk Source Type</label>
                             <select class="input-field" id="source-type" required>
                                 <option value="">Select Source Type</option>
                                 <option>syslog</option>
@@ -90,17 +90,17 @@
 
                         <div class="form-group time-range-group">
                             <div>
-                                <label>Start Time</label>
+                                <label for="start-time">Start Time</label>
                                 <input type="datetime-local" class="input-field" id="start-time" required>
                             </div>
                             <div>
-                                <label>End Time</label>
+                                <label for="end-time">End Time</label>
                                 <input type="datetime-local" class="input-field" id="end-time" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="query">Query</label>
+                            <label for="input-query">Query</label>
                             <input type="text" class="input-field" id="input-query" placeholder="Enter your query" required>
 
                             <div id="suggestions-container" style="display: none;">

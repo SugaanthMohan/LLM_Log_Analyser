@@ -189,15 +189,6 @@ testConnectionButton.addEventListener('click', () => {
             document.getElementById('splunk-user').disabled = true;
             document.getElementById('splunk-token').disabled = true;
 
-            // Hide the Splunk Login Form
-            splunkLoginForm.style.display = 'none';
-
-            // Change the Title From Splunk Login to
-            left_form_title.textContent = "";
-
-            // Show the Question Form
-            questionForm.style.display = 'block';
-
             // Enable the logConfigForm
             logConfigForm.classList.remove('disabled-form');
             logConfigForm_source_type.disabled = false;
@@ -213,6 +204,16 @@ testConnectionButton.addEventListener('click', () => {
             // Make the prompt disappear after 3 seconds
             setTimeout(() => {
                 promptElement.remove();
+
+                // Hide the Splunk Login Form
+                splunkLoginForm.style.display = 'none';
+
+                // Change the Title From Splunk Login to
+                left_form_title.textContent = "";
+
+                // Show the Question Form
+                questionForm.style.display = 'block';
+
             }, 3000);
 
         } else {
