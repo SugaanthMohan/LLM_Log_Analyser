@@ -1,6 +1,11 @@
 // Get the forms and button elements
 const splunkLoginForm = document.getElementById('SplunkLoginForm');
 const logConfigForm = document.getElementById('logConfigForm');
+const questionForm = document.getElementById('QuestionForm');
+
+// Splunk Login Title
+const left_form_title = document.getElementById('splunk-login-title');
+
 const logConfigForm_source_type = document.getElementById('source-type');
 const logConfigForm_start_time = document.getElementById('start-time');
 const logConfigForm_end_time = document.getElementById('end-time');
@@ -14,6 +19,7 @@ const suggestionText = document.getElementById('suggestion-text');
 const prevButton = document.getElementById('prev-suggestion');
 const nextButton = document.getElementById('next-suggestion');
 const suggestionCounter = document.getElementById('suggestion-counter');
+
 
 
 // Get Test Connection Button
@@ -183,6 +189,14 @@ testConnectionButton.addEventListener('click', () => {
             document.getElementById('splunk-user').disabled = true;
             document.getElementById('splunk-token').disabled = true;
 
+            // Hide the Splunk Login Form
+            splunkLoginForm.style.display = 'none';
+
+            // Change the Title From Splunk Login to
+            left_form_title.textContent = "";
+
+            // Show the Question Form
+            questionForm.style.display = 'block';
 
             // Enable the logConfigForm
             logConfigForm.classList.remove('disabled-form');
@@ -411,3 +425,13 @@ document.addEventListener('click', function(event) {
         suggestionsContainer.style.display = 'none';
     }
 });
+
+// Add event listeners to each question item
+const questionItems = document.querySelectorAll('.question-item');
+questionItems.forEach(item => {
+    item.addEventListener('click', function() {
+        // Fill the input-query field with the selected question
+        logConfigForm_input_query.value = item.textContent;
+    });
+});
+

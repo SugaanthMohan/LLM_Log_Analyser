@@ -35,7 +35,7 @@
             <section class="config-panel">
                 <!-- Splunk Login Form Container -->
                 <div class="form-container">
-                    <h2>Splunk Login</h2>
+                    <h2 id="splunk-login-title">Splunk Login</h2>
                     <form id="SplunkLoginForm">
                         <div class="form-group">
                                 <label>Host</label>
@@ -54,6 +54,18 @@
                             <input type="password" class="input-field" placeholder="Password" id="splunk-token" required>
                         </div>
                         <button type="button" class="btn btn-primary" id="testConnectionButton">Test Connection</button>
+                    </form>
+
+
+                    <!-- Question Form (Initially hidden) -->
+                    <form id="QuestionForm" style="display: none;">
+                        <h3>Frequently Asked Questions (FAQ) List:</h3>
+                        <ul id="question-list">
+                            <li class="question-item">What was the cause of MemCache?</li>
+                            <li class="question-item">How many withdrawal transaction errors happened?</li>
+                            <li class="question-item">How many transactions took longer than expected?</li>
+                            <li class="question-item">What was the error rate for the last hour?</li>
+                        </ul>
                     </form>
                 </div>
 
