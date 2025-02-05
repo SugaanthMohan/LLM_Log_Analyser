@@ -6,6 +6,14 @@ const logConfigForm_start_time = document.getElementById('start-time');
 const logConfigForm_end_time = document.getElementById('end-time');
 const logConfigForm_application_name = document.getElementById('application-name');
 const logConfigForm_input_query = document.getElementById('input-query');
+const SpinnerContainer = document.getElementById('spinner');
+
+// SUGGESTIONS ELEMENTS
+const suggestionsContainer = document.getElementById('suggestions-container');
+const suggestionText = document.getElementById('suggestion-text');
+const prevButton = document.getElementById('prev-suggestion');
+const nextButton = document.getElementById('next-suggestion');
+const suggestionCounter = document.getElementById('suggestion-counter');
 
 
 // Get Test Connection Button
@@ -47,10 +55,12 @@ const resultsTabData = {
 
 
 // Add an event listener to the Analyze Logs button
-analyzeLogsButton.addEventListener('click', async() => {
+analyzeLogsButton.addEventListener('click', () => {
 
     // PREVENT DOM RELOAD ACTION
     event.preventDefault()
+
+    spinner.classList.add('show');
 
     // DISABLE THE BUTTON AND ACTIONS
     analyzeLogsButton.disabled = true;
@@ -80,7 +90,6 @@ analyzeLogsButton.addEventListener('click', async() => {
     // Scroll down to the lower end of the page
     window.scrollTo(0, document.body.scrollHeight);
 
-    showSpinner();
 
     // Send the payload to the Flask endpoint using the Fetch API
     fetch('/AnalyzeLogs', {
@@ -110,7 +119,7 @@ analyzeLogsButton.addEventListener('click', async() => {
     })
     .catch(error => console.error(error));
 
-    hideSpinner();
+    spinner.classList.remove('show');
 
     // ENABLE THE BUTTON AND ACTIONS
     analyzeLogsButton.disabled = false;
@@ -333,14 +342,6 @@ function createAIAnalysisContainer() {
     showInnerContainer();
 }
 
-function showSpinner() {
-  document.getElementById('spinner').style.display = 'block';
-}
-
-function hideSpinner() {
-  document.getElementById('spinner').style.display = 'none';
-}
-
 function showInnerContainer() {
 
     document.querySelectorAll(".inner-tab").forEach( button => {
@@ -358,3 +359,55 @@ function showInnerContainer() {
         });
     });
 }
+
+// Example suggestion data (this can be fetched from an API or another source)
+const suggestions = [
+    "What was the cause of MemCache?",
+    "How many withdrawal transaction errors happened?",
+    "How many transaction took longer than expected?"
+];
+
+let currentSuggestionIndex = 0;
+
+// Function to update the suggestion and the counter
+function updateSuggestion() {
+    suggestionText.textContent = suggestions[currentSuggestionIndex];
+    suggestionCounter.textContent = `${currentSuggestionIndex + 1}/${suggestions.length}`;
+}
+
+// Show the suggestions box when the user clicks on the input field
+logConfigForm_input_query.addEventListener('click', function() {
+    if (!logConfigForm_input_query.value.trim()) {
+        suggestionsContainer.style.display = 'flex'; // Use flex to align items properly
+        updateSuggestion();
+    }
+});
+
+// Handle the previous suggestion
+prevButton.addEventListener('click', function() {
+    if (currentSuggestionIndex > 0) {
+        currentSuggestionIndex--;
+        updateSuggestion();
+    }
+});
+
+// Handle the next suggestion
+nextButton.addEventListener('click', function() {
+    if (currentSuggestionIndex < suggestions.length - 1) {
+        currentSuggestionIndex++;
+        updateSuggestion();
+    }
+});
+
+// When the user clicks the suggestion bubble, fill the suggestion in the input
+suggestionText.addEventListener('click', function() {
+    logConfigForm_input_query.value = suggestions[currentSuggestionIndex];
+    suggestionsContainer.style.display = 'none'; // Hide the suggestions after selecting
+});
+
+// Close the suggestion bubble when clicking outside the input field
+document.addEventListener('click', function(event) {
+    if (!logConfigForm_input_query.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+        suggestionsContainer.style.display = 'none';
+    }
+});

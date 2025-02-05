@@ -24,9 +24,10 @@
 
     <main class="container">
         <div class="dashboard">
+
             <!-- SPINNER PANEL -->
 
-            <div id="spinner" class="spinner" style="display: block;">
+            <div id="spinner" class="spinner">
                 <i class="fa fa-spinner fa-spin"></i>
             </div>
 
@@ -89,6 +90,16 @@
                         <div class="form-group">
                             <label for="query">Query</label>
                             <input type="text" class="input-field" id="input-query" placeholder="Enter your query" required>
+
+                            <div id="suggestions-container" style="display: none;">
+                                <button id="prev-suggestion" class="nav-button"><</button>
+                                <div id="suggestion-bubble">
+                                    <span id="suggestion-text"></span>
+                                    <div id="suggestion-counter"></div>
+                                </div>
+                                <button id="next-suggestion" class="nav-button">></button>
+                            </div>
+
                         </div>
 
                         <button type="submit" class="btn-primary" id="analyze-logs-button">Analyze Logs</button>
