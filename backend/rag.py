@@ -133,5 +133,5 @@ if __name__ == "__main__":
    # print("\nHappy Path snippet: \n")
    # print(happy_path_snippet)
 
-   QUERY = "List the app dependencies and REST or SOAP endpoints "
+   QUERY = "List the REST or SOAP URL endpoints application is communcating to"
    analyse('APP_4', '2025-02-01T00:39', '2025-02-01T21:40', QUERY)

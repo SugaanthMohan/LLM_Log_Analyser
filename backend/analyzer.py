@@ -16,18 +16,18 @@ ANALYSER_PROMPT = """
 
 Please follow these steps and output the response using the structure below:
 
-1. Steps and Reasoning:
+1. Steps and Reasoning (Do not print these at any cost):
    - **Step 1:** Identify the critical information in the query (e.g., errors, performance issues, process flows, metadata).
    - **Step 2:** Parse the provided log snippets and match relevant details with the query requirements.
    - **Step 3:** Look for discrepancies, anomalies, or inconsistencies in the logs. If none are found, select a representative “happy path” scenario.
    - **Step 4:** Provide a detailed chain-of-thought that outlines your analysis and reasoning.
    - **Step 5:** Summarize the issue (or the scenario) and suggest remediation or improvements, if applicable.
 
-2. Output Structure:  
+2. Output Structure (Strictly follow the same format):  
    **1. Summary:**  
    - Provide a summary of the findings (issue description, insights, or happy path reference).
 
-   **2. Incident/Scenario Report: (not more than three)**  
+   **2. Incident/Scenario Report:**  
    - Time: <Timestamp of the event or relevant log entry>  
    - Faced By: <Customer/Teller/User Id or name or context if available>  
    - Trace Id: <TraceID/SessionID from logs>  
@@ -192,7 +192,7 @@ def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
 
     embedding_query_snippets = []
     for line in response_text.split("\n"):
-        keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025', 'POST', 'GET']
+        keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025', 'POST', 'GET', "Customer", "customer"]
         if any(keyword in line for keyword in keywords):
             embedding_query_snippets.append(line)
     

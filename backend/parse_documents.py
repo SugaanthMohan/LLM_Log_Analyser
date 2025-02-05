@@ -93,7 +93,7 @@ def parse_response(text):
     # Define the headings
     headings = [
         ['Summary', 'Analysis'],
-        ['Incident/Scenario Report', 'Incident Report', 'Scenario Report', 'Report :'],
+        ['Incident/Scenario Report', 'Incident Report', 'Scenario Report', 'Report :', 'Incident Details'],
         ['Explanation'],
         ['Expected Ideal Flow (Happy Path)', 'Expected Ideal Flow'],
         ['Remediation / Recommendations', 'Remediation', 'Recommendation']
@@ -121,11 +121,15 @@ def parse_response(text):
                 # print(len(line))
                 if len(line) > 200:
                     line = line.split(". ")
-                    line = '.\n  '.join(line)
+                    line = '.\n'.join(line)
 
                 line = line.strip()
                 response[key] += line + "\n"
     
+    response['Summary'] = add_bullets(response["Summary"])
+    response['Explanation'] = add_bullets(response["Explanation"])
+    
+
     if response['Summary'] == "":
         response['Summary'] = text
 
@@ -144,8 +148,18 @@ def parse_log_flow_snippets(log_flow):
         lines = lines[:-1]
         # lines.append("\nContinues...")
     
+    lines = list(dict.fromkeys(lines))
     return "\n".join(lines)
 
+def add_bullets(text):
+    lines = text.strip().split("\n")  # Split text into lines
+
+    # Check if bullets are present
+    if all(not re.match(r"(\d+\.\s+|[-•*])", line.strip()) for line in lines):
+        # Add bullets to lines that are not empty
+        lines = [f"* {line}" if line.strip() else line for line in lines]
+
+    return "\n".join(lines)
 
 if __name__ == '__main__':
     print(parse_unix_epoch_timestamp('2025-02-01T21:39'))
