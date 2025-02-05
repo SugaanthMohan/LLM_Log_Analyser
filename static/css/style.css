@@ -35,7 +35,9 @@ body {
     color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
+    margin-bottom: 10px;
 }
+
 
 .header-content {
     display: flex;
@@ -48,13 +50,13 @@ body {
 }
 
 .branding h1 {
-    font-size: 1.8rem;
+    font-size: 45px;
     font-weight: 600;
     letter-spacing: -0.5px;
 }
 
 .branding p {
-    font-size: 0.9rem;
+    font-size: 30px;
     opacity: 0.9;
 }
 
@@ -63,8 +65,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-top: 2rem;
-
+    margin-top: -20px;
+    padding-top: 20px;
 }
 
 /* Configuration Panel */
@@ -444,7 +446,9 @@ h3 {
     padding: 10px 20px;
     background-color: #D32F2F;
     color: white;
-    border-radius: 25px;
+    /* border-radius: 25px; */
+    border-radius: 0px;
+    padding: 10px 20px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
