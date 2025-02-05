@@ -22,19 +22,18 @@ Please follow these steps and output the response using the structure below:
    - **Step 3:** Look for discrepancies, anomalies, or inconsistencies in the logs. If none are found, select a representative “happy path” scenario.
    - **Step 4:** Provide a detailed chain-of-thought that outlines your analysis and reasoning.
    - **Step 5:** Summarize the issue (or the scenario) and suggest remediation or improvements, if applicable.
- 
+
 2. Output Structure:  
    **1. Summary:**  
    - Provide a summary of the findings (issue description, insights, or happy path reference).
 
-   **2. Incident/Scenario Report:**  
+   **2. Incident/Scenario Report: (not more than three)**  
    - Time: <Timestamp of the event or relevant log entry>  
-   - Faced By: <Customer/Teller/User ID or context if available>  
+   - Faced By: <Customer/Teller/User Id or name or context if available>  
    - Trace Id: <TraceID/SessionID from logs>  
    - Application: <Application Identifier>  
    - Component: <Component involved, e.g., SpringBoot, Middleware, OracleDB>  
    - Additional Metadata: <Other key-value pairs as available>
-   - Do not generate more than 3 reports
 
    **3. Explanation:**  
    - Provide a detailed explanation of the root cause or context of the scenario.  
@@ -50,6 +49,10 @@ Please follow these steps and output the response using the structure below:
 
 Below are the contexts for you to refer:  
 {context}
+
+Below is the exact error snippet the user is referring to and make use of information in these snippets to fill in the information
+for incident report. Look for fields like traceId, time, faced by, application, component, customer Id, customer name and additional metadata.
+{error_snippet}
 
 Below is the query for you to answer:  
 {query}
@@ -195,7 +198,7 @@ def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
     
     return ("\n".join(embedding_query_snippets[:5]))
 
-def analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
+def get_relevant_docs(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
 
     TRACE_IDS = get_trace_id(QUERY)
     TIME_FROM = int(parse_documents.parse_unix_epoch_timestamp(TIME_FROM))
@@ -227,7 +230,7 @@ def analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
     retriever = db.as_retriever(
                 search_type="similarity", 
                 search_kwargs={
-                    'k': 30,  # Final results
+                    'k': 20,  # Final results
                     # 'fetch_k': 60,  # Initial candidate pool
                     # 'lambda_mult': 0.6,  # 65% relevance, 35% diversity
                     # 'score_threshold': 0.6,  # Minimum relevance floor
@@ -235,20 +238,26 @@ def analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
                 },
             )
     
+    results = []
+    for line in EMBEDDING_QUERY.split("\n"):
+        result = retriever.invoke(line)
+        results.extend(result[:10])
 
-    results = retriever.invoke(EMBEDDING_QUERY)
+    return results
+
+def analyze_without_metadata(llm, QUERY, results, error_snippet):
     context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
-
-
+    
     prompt = PromptTemplate.from_template(ANALYSER_PROMPT)
 
     llm_chain = prompt | llm
     response_text = llm_chain.invoke({
         "context": context_text,
         "query": QUERY,
+        "error_snippet": error_snippet
     })
 
-    return results, response_text
+    return response_text
 
 
 def analyze_with_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):

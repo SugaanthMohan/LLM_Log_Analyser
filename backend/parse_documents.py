@@ -92,7 +92,7 @@ def preprocess_logs(log_text: str) -> str:
 def parse_response(text):
     # Define the headings
     headings = [
-        ['Summary'],
+        ['Summary', 'Analysis'],
         ['Incident/Scenario Report', 'Incident Report', 'Scenario Report', 'Report :'],
         ['Explanation'],
         ['Expected Ideal Flow (Happy Path)', 'Expected Ideal Flow'],
@@ -126,6 +126,8 @@ def parse_response(text):
                 line = line.strip()
                 response[key] += line + "\n"
     
+    if response['Summary'] == "":
+        response['Summary'] = text
 
     return (
         response.get("Summary", "").strip(),
@@ -140,7 +142,7 @@ def parse_log_flow_snippets(log_flow):
     lines = log_flow.split('\n')
     if len(lines) > 5:
         lines = lines[:-1]
-        lines.append("\nContinues...")
+        # lines.append("\nContinues...")
     
     return "\n".join(lines)
 

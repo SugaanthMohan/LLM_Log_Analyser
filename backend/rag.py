@@ -69,19 +69,21 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
 
    # log_entry_count = get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO)
 
-   results, analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+   results = analyzer.get_relevant_docs(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+   error_snippet = extract_snippets.error_flow(llm, QUERY, results)
+
+   analysis = analyzer.analyze_without_metadata(llm, QUERY, results, error_snippet)
    summary, report, explanation, expected_flow, remediation = parse_documents.parse_response(analysis)
 
-   error_snippet = extract_snippets.error_flow(llm, QUERY, results)
 
    happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results, analysis)
 
-   # print(analysis)
-   # print("\n\n")
-   # print(error_snippet)
-   # print("\n\n")
-   # print(happy_path_snippet)
-   # print("\n\n")
+   print(analysis)
+   print("\n\n")
+   print(error_snippet)
+   print("\n\n")
+   print(happy_path_snippet)
+   print("\n\n")
 
 
    output = {
@@ -95,8 +97,8 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    }
 
    
-   # import pprint
-   # pprint.pprint(output)
+   import pprint
+   pprint.pprint(output)
 
    return output
 
@@ -131,5 +133,5 @@ if __name__ == "__main__":
    # print("\nHappy Path snippet: \n")
    # print(happy_path_snippet)
 
-   QUERY = "List all the REST / SOAP endpoints the application talks to"
+   QUERY = "List the app dependencies and REST or SOAP endpoints "
    analyse('APP_4', '2025-02-01T00:39', '2025-02-01T21:40', QUERY)

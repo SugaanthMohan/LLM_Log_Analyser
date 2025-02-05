@@ -1,0 +1,8 @@
+Show me the error hotspots in the logs for the selected time window
+Assess the customers impacted
+Determine anomalies observed
+Similar historical occurrence of payment failures in the last month
+List me the exception summary and counts
+Share the sequence of events for customer flow
+Transaction latency and response time analysis
+List the app dependencies and REST or SOAP endpoints
