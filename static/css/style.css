@@ -230,13 +230,7 @@ label {
   font-size: 150px;
   color: var(--accent-orange);
   z-index: 1000;
-  display: none; /* Set the initial display property to none */
 }
-
-.spinner.show {
-  display: block;
-}
-
 
 /* Accordion Styles */
 .accordion {

@@ -96,6 +96,8 @@ analyzeLogsButton.addEventListener('click', () => {
     // Scroll down to the lower end of the page
     window.scrollTo(0, document.body.scrollHeight);
 
+    // SHOW SPINNER
+    SpinnerContainer.style.display = 'block';
 
     // Send the payload to the Flask endpoint using the Fetch API
     fetch('/AnalyzeLogs', {
@@ -117,6 +119,9 @@ analyzeLogsButton.addEventListener('click', () => {
         resultsTabData.Remediation = data.Remediation;
         resultsTabData.Report = data.Report;
 
+        // HIDE SPINNER
+        SpinnerContainer.style.display = 'none';
+
 
         // Set Active & Load the RawLogs tab content by default
         rawLogsTabButton.classList.add('active');
@@ -125,7 +130,6 @@ analyzeLogsButton.addEventListener('click', () => {
     })
     .catch(error => console.error(error));
 
-    spinner.classList.remove('show');
 
     // ENABLE THE BUTTON AND ACTIONS
     analyzeLogsButton.disabled = false;
