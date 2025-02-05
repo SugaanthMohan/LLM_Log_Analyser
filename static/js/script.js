@@ -393,8 +393,8 @@ function updateSuggestion() {
 // Show the suggestions box when the user clicks on the input field
 logConfigForm_input_query.addEventListener('click', function() {
     if (!logConfigForm_input_query.value.trim()) {
-        suggestionsContainer.style.display = 'flex'; // Use flex to align items properly
-        updateSuggestion();
+//        suggestionsContainer.style.display = 'flex'; // Use flex to align items properly
+//        updateSuggestion();
     }
 });
 
