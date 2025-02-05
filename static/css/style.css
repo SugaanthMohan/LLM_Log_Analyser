@@ -429,11 +429,9 @@ h3 {
 
 /* Styling for the question list (bubbles) */
 #question-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 14px;
 }
 
 .question-item {
