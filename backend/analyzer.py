@@ -34,6 +34,7 @@ Please follow these steps and output the response using the structure below:
    - Application: <Application Identifier>  
    - Component: <Component involved, e.g., SpringBoot, Middleware, OracleDB>  
    - Additional Metadata: <Other key-value pairs as available>
+   - Do not generate more than 3 reports
 
    **3. Explanation:**  
    - Provide a detailed explanation of the root cause or context of the scenario.  
@@ -61,7 +62,7 @@ EMBEDDING_QUERY_PROMPT = """
 
 
 [DESCRIPTION]
-You will provided with bunch of enterprise software log snippets and a plain user query.
+You will be provided with bunch of enterprise software log snippets and a plain user query.
 Based on your understanding of the user's query you are to generate relevant log snippets that 
 can possibly represent user's query in the same format as the of context.
 
@@ -76,50 +77,80 @@ can possibly represent user's query in the same format as the of context.
 
 [CONTEXT FOR YOUR REFERENCE]
 
-2025-02-01T15:10:00.090Z [INFO ] [SpringBoot] [TRACE432109] Credit transaction confirmed. Finalizing funds transfer.
-2025-02-01T15:10:00.095Z [DEBUG] [SpringBoot] [TRACE432109] Initiating transaction record update in OracleDB.
-2025-02-01T15:10:00.100Z [DEBUG] [OracleDB] [TRACE432109] Executing query:
-INSERT INTO TRANSACTION_HISTORY (TRANSACTION_ID, FROM_ACCOUNT, TO_ACCOUNT, AMOUNT, STATUS, TIMESTAMP)
-VALUES ('TXN667788', '246810123', '135791357', 1000, 'COMPLETED', TO_TIMESTAMP('2025-02-01T15:10:00.100Z', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'));
-2025-02-01T15:10:00.105Z [INFO ] [OracleDB] [TRACE432109] Transaction record inserted successfully. Transaction ID: TXN667788.
-2025-02-01T15:10:00.110Z [INFO ] [SpringBoot] [TRACE432109] Transaction successfully recorded in DB. Proceeding to complete transaction.
-2025-02-01T16:00:00.055Z [INFO ] [SpringBoot] [TRACE981234] Debit confirmed. Initiating credit request.
-2025-02-01T16:00:00.060Z [DEBUG] [SpringBoot] [TRACE777888] Preparing credit request.
-2025-02-01T16:00:00.065Z [DEBUG] [SpringBoot] [TRACE777888] REST Request:
-POST /middleware/corebanking/credit
-{{
-   "accountNumber": "654123987",
-   "amount": 500,
-   "transactionId": "TXN123450",
-   "transactionType": "CREDIT"
-}}
-2025-02-01T16:00:00.070Z [INFO ] [Middleware] [TRACE777888] Processing credit request.
-2025-02-01T16:00:00.075Z [DEBUG] [Middleware] [TRACE777888] Validating recipient account.
-2025-02-01T16:00:00.080Z [INFO ] [Middleware] [TRACE777888] Credit successful. New balance: $3500.
-2025-02-01T16:00:00.085Z [DEBUG] [Middleware] [TRACE777888] REST Response:
-{{
-   "status": "SUCCESS",
-   "transactionId": "TXN123450",
-   "message": "Credit successful"
-}}
+2025-02-01T16:10:00.127Z [DEBUG] [SpringBoot] [TRACE123456] SOAP Request:
+<?xml version="1.0"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mid="http://middleware.example.com/CustInfo">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mid:GetCustomerInfoRequest>
+         <mid:AccountNumber>987654321</mid:AccountNumber>
+         <mid:CustomerId>1234123</mid:CustomerId>
+         <mid:CustomerName>John</mid:CustomerName>
+      </mid:GetCustomerInfoRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+2025-02-01T16:10:00.130Z [INFO ] [Middleware] [TRACE123456] Received SOAP request. Processing...
+2025-02-01T16:10:00.135Z [DEBUG] [Middleware] [TRACE123456] Validating account information for Account: 987654321.
+2025-02-01T16:10:00.145Z [ERROR] [Middleware] [TRACE123456] Account validation failed. Invalid account number format.
+2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction. Response time: 3 ms
+2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
+2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
+2025-02-01T16:10:00.165Z [DEBUG] [SpringBoot] [TRACE123456] Transaction aborted due to validation failure.
 2025-02-01T16:00:00.090Z [INFO ] [SpringBoot] [TRACE777888] Credit transaction confirmed.
-2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE334455] REST API call failed: HTTP 500 Internal Server Error.
+2025-02-01T16:10:10.330Z [INFO ] [SpringBoot] [TRACE876543] Received withdrawal request. Amount: $200, Account: 123987654.
+2025-02-01T16:10:10.340Z [DEBUG] [SpringBoot] [TRACE876543] Preparing REST request for Middleware.
+2025-02-01T16:10:10.345Z [DEBUG] [SpringBoot] [TRACE876543] REST Request:
+POST /api/v1/getCustomerInfo
+{{
+   "accountNumber": "123987654",
+   "customerId": "89213",
+   "customerName": "David"
+}}
+2025-02-01T16:10:10.355Z [INFO ] [Middleware] [TRACE876543] Received REST request. Processing...
+2025-02-01T16:10:10.360Z [DEBUG] [Middleware] [TRACE876543] Validating account information for Account: 123987654.
+2025-02-01T16:10:10.370Z [ERROR] [Middleware] [TRACE876543] Error occurred while validating account: Account number not found in database.
+2025-02-01T16:10:10.375Z [INFO ] [SpringBoot] [TRACE876543] Received failed response from Middleware. Aborting transaction. Response time: 1 ms
+2025-02-01T16:10:10.380Z [DEBUG] [UI] [TRACE876543] Displaying error message to user: "Account number not found. Please check your details."
+2025-02-01T16:10:10.385Z [ERROR] [UI] [TRACE876543] User interaction failed. Unable to process withdrawal due to account not found.
+2025-02-01T16:10:00.130Z [INFO ] [Middleware] [TRACE123456] Received SOAP request. Processing...
+2025-02-01T16:10:00.135Z [DEBUG] [Middleware] [TRACE123456] Validating account information for Account: 987654321.
+2025-02-01T16:10:00.145Z [ERROR] [Middleware] [TRACE123456] Account validation failed. Invalid account number format.
+2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction. Response time: 4 ms
+2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
+2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
+2025-02-01T16:10:00.165Z [DEBUG] [SpringBoot] [TRACE123456] Transaction aborted due to validation failure.
+2025-02-01T16:40:00.010Z [DEBUG] [SpringBoot] [TRACE334455] REST Request:
+POST /payment/charge
+{{
+   "accountNumber": "555666777",
+   "amount": 1000,
+   "customerId": "90912",
+   "customerName": "Marie"
+}}
+2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE334455] REST API call failed: HTTP 500 Internal Server Error. Response time: 1 ms
 2025-02-01T16:40:00.020Z [INFO ] [SpringBoot] [TRACE334455] Payment request failed due to PaymentGateway error.
 2025-02-01T16:40:00.025Z [ERROR] [UI] [TRACE334455] Displaying error to user: "Payment failed due to server error. Please try again later."
-2025-02-01T16:40:00.030Z [DEBUG] [SpringBoot] [TRACE334455] Initiating rollback for payment transaction.
+2025-02-01T16:30:15.485Z [ERROR] [SpringBoot] [TRACE556677] Error during shutdown: Failed to close one or more resources.
+2025-02-01T16:30:10.370Z [DEBUG] [SpringBoot] [TRACE556677] REST Request:
+POST /api/v1/getCustomerInfo
+{{
+   "accountNumber": "112233445",
+   "customerId": "124235",
+   "customerName": "Jacob"
+}}
+2025-02-01T16:30:10.375Z [INFO ] [Middleware] [TRACE556677] Received REST request. Processing...
 2025-02-01T16:30:10.380Z [DEBUG] [Middleware] [TRACE556677] Validating account information for Account: 112233445.
 2025-02-01T16:30:10.385Z [ERROR] [SpringBoot] [TRACE556677] Exception: NullPointerException in service layer while processing response.
-2025-02-01T16:30:10.390Z [INFO ] [SpringBoot] [TRACE556677] Transaction failed due to unexpected server error.
-2025-02-01T16:30:10.395Z [ERROR] [UI] [TRACE556677] Displaying error to user: "Withdrawal failed due to internal server error."
-2025-02-01T16:30:10.400Z [DEBUG] [SpringBoot] [TRACE556677] Initiating rollback of transaction due to NullPointerException.
-2025-02-01T16:30:00.155Z [INFO ] [Middleware] [TRACE111222] Processing debit request for account 123456789.
+2025-02-01T16:30:10.390Z [INFO ] [SpringBoot] [TRACE556677] Transaction failed due to unexpected server error. Response time: 1 ms
+2025-02-01T16:30:10.395Z [ERROR] [UI] [TRACE556677] Displaying error to user: "Withdrawal failed due to internal server error.
+2025-02-01T16:30:05.280Z [DEBUG] [Middleware] [TRACE223344] Error: Malformed JSON in incoming request.
+2025-02-01T16:30:05.285Z [ERROR] [Middleware] [TRACE223344] Request processing failed due to invalid JSON format. Response time: 3 ms
+2025-02-01T16:30:05.290Z [INFO ] [SpringBoot] [TRACE223344] Aborting transaction due to middleware error.
+2025-02-01T16:30:05.295Z [ERROR] [UI] [TRACE223344] User notified: "Withdrawal failed due to request format error."
 2025-02-01T16:30:00.160Z [DEBUG] [Middleware] [TRACE111222] Checking account balance.
 2025-02-01T16:30:00.165Z [ERROR] [OracleDB] [TRACE111222] Failed to execute INSERT query: ORA-00001: unique constraint (TRANSACTION_HISTORY_PK) violated.
 2025-02-01T16:30:00.170Z [INFO ] [SpringBoot] [TRACE111222] Transaction aborted due to database constraint violation.
-2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE111222] Displaying error to user: "Withdrawal failed due to duplicate transaction record."
-2025-02-01T16:10:00.123Z [INFO ] [UI] [TRACE123456] User initiated cash withdrawal request. Amount: $500, Account: 987654321.
-2025-02-01T16:10:00.124Z [DEBUG] [UI] [TRACE123456] Sending withdrawal request to Spring Boot server.
-2025-02-01T16:10:00.125Z [INFO ] [SpringBoot] [TRACE123456] Received withdrawal request. Amount: $500, Account: 987654321.
+2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE111222] Displaying error to user: "Withdrawal failed due to duplicate transaction record." Response time: 2 ms
 
 [QUERY]
 query: {QUERY}
@@ -158,11 +189,11 @@ def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
 
     embedding_query_snippets = []
     for line in response_text.split("\n"):
-        keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025']
+        keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025', 'POST', 'GET']
         if any(keyword in line for keyword in keywords):
             embedding_query_snippets.append(line)
     
-    return ("\n".join(embedding_query_snippets[:3]))
+    return ("\n".join(embedding_query_snippets[:5]))
 
 def analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
 
@@ -196,7 +227,7 @@ def analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
     retriever = db.as_retriever(
                 search_type="similarity", 
                 search_kwargs={
-                    'k': 20,  # Final results
+                    'k': 30,  # Final results
                     # 'fetch_k': 60,  # Initial candidate pool
                     # 'lambda_mult': 0.6,  # 65% relevance, 35% diversity
                     # 'score_threshold': 0.6,  # Minimum relevance floor

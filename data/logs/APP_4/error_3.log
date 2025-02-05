@@ -1,0 +1,52 @@
+2025-01-15T16:30:00.123Z [INFO ] [UI] [TRACE987654] User initiated cash withdrawal request. Amount: $450, Account: 654321987.
+|||2025-01-15T16:30:00.125Z [DEBUG] [UI] [TRACE987654] Sending withdrawal request to Spring Boot server.
+|||2025-01-15T16:30:00.130Z [INFO ] [SpringBoot] [TRACE987654] Received withdrawal request. Validating input.
+|||2025-01-15T16:30:00.135Z [DEBUG] [SpringBoot] [TRACE987654] Checking account status for 654321987.
+|||2025-01-15T16:30:00.140Z [INFO ] [SpringBoot] [TRACE987654] Account validation successful.
+|||2025-01-15T16:30:00.145Z [DEBUG] [SpringBoot] [TRACE987654] Preparing debit request for Middleware.
+|||2025-01-15T16:30:00.150Z [DEBUG] [SpringBoot] [TRACE987654] REST Request:
+POST /middleware/corebanking/debit
+{
+   "accountNumber": "654321987",
+   "amount": 450,
+   "transactionType": "DEBIT",
+   "customerId": "76543",
+   "customerName": "Chris"
+}
+|||2025-01-15T16:30:00.155Z [INFO ] [Middleware] [TRACE987654] Processing debit request for account 654321987.
+|||2025-01-15T16:30:00.160Z [DEBUG] [Middleware] [TRACE987654] Checking account balance.
+|||2025-01-15T16:30:00.165Z [ERROR] [OracleDB] [TRACE987654] Failed to execute INSERT query: ORA-00001: unique constraint (TRANSACTION_HISTORY_PK) violated.
+|||2025-01-15T16:30:00.170Z [INFO ] [SpringBoot] [TRACE987654] Transaction aborted due to database constraint violation.
+|||2025-01-15T16:30:00.175Z [ERROR] [UI] [TRACE987654] Displaying error to user: "Withdrawal failed due to duplicate transaction record." Response time: 2 ms
+|||2025-01-15T16:30:00.180Z [DEBUG] [SpringBoot] [TRACE987654] Rolling back transaction due to OracleDB error.
+|||2025-01-15T16:30:00.185Z [INFO ] [LoggingService] [TRACE987654] Audit log entry skipped due to transaction rollback.
+|||2025-01-15T16:30:05.250Z [INFO ] [UI] [TRACE456789] User initiated cash withdrawal request. Amount: $600, Account: 112358132.
+|||2025-01-15T16:30:05.255Z [DEBUG] [UI] [TRACE456789] Sending withdrawal request to Spring Boot server.
+|||2025-01-15T16:30:05.260Z [INFO ] [SpringBoot] [TRACE456789] Received withdrawal request. Validating input.
+|||2025-01-15T16:30:05.265Z [DEBUG] [SpringBoot] [TRACE456789] Preparing REST request for Middleware.
+|||2025-01-15T16:30:05.270Z [DEBUG] [SpringBoot] [TRACE456789] REST Request:
+POST /api/v1/getCustomerInfo
+{
+   "accountNumber": "112358132",
+   "customerId": "99988",
+   "customerName": "Daniel"
+}
+|||2025-01-15T16:30:05.275Z [INFO ] [Middleware] [TRACE456789] Received REST request. Processing...
+|||2025-01-15T16:30:05.280Z [DEBUG] [Middleware] [TRACE456789] Error: Malformed JSON in incoming request.
+|||2025-01-15T16:30:05.285Z [ERROR] [Middleware] [TRACE456789] Request processing failed due to invalid JSON format. Response time: 3 ms
+|||2025-01-15T16:30:05.290Z [INFO ] [SpringBoot] [TRACE456789] Aborting transaction due to middleware error.
+|||2025-01-15T16:30:05.295Z [ERROR] [UI] [TRACE456789] User notified: "Withdrawal failed due to request format error."
+|||2025-01-15T16:40:00.000Z [INFO ] [UI] [TRACE112233] User initiated payment request. Amount: $1200, Account: 777888999.
+|||2025-01-15T16:40:00.005Z [DEBUG] [SpringBoot] [TRACE112233] Initiating REST call to PaymentGateway at /payment/charge.
+|||2025-01-15T16:40:00.010Z [DEBUG] [SpringBoot] [TRACE112233] REST Request:
+POST /payment/charge
+{
+   "accountNumber": "777888999",
+   "amount": 1200,
+   "customerId": "44477",
+   "customerName": "Sophia"
+}
+|||2025-01-15T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE112233] REST API call failed: HTTP 500 Internal Server Error. Response time: 1 ms
+|||2025-01-15T16:40:00.020Z [INFO ] [SpringBoot] [TRACE112233] Payment request failed due to PaymentGateway error.
+|||2025-01-15T16:40:00.025Z [ERROR] [UI] [TRACE112233] Displaying error to user: "Payment failed due to server error. Please try again later."
+|||2025-01-15T16:40:00.030Z [DEBUG] [SpringBoot] [TRACE112233] Initiating rollback for payment transaction.

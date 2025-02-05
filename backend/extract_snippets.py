@@ -3,28 +3,32 @@ from backend import parse_documents
 
 def get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE, results, error_summary=None):
     
-    prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
+   prompt = PromptTemplate.from_template(PROMPT_TEMPLATE)
 
      # Using the 'invoke' method instead of 'get_relevant_documents'
     
-    context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
+   context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
 
     # Update the prompt with conversation history
-    llm_chain = prompt | llm
+   llm_chain = prompt | llm
 
-    prompt_parameters = {
+   prompt_parameters = {
         "context": context_text,
         "query": QUERY,
-    }
+   }
 
-    if error_summary is not None:
+   if error_summary is not None:
       prompt_parameters.update({'error_summary':error_summary})
 
-    response_text = llm_chain.invoke(prompt_parameters)
+   response_text = llm_chain.invoke(prompt_parameters)
    
-    response_text = response_text.replace('<<< RESPONSE START >>>', '')
-    response_text = response_text.replace('<<< RESPONSE END >>>', '')
-    return response_text
+   response_text = response_text.replace('<<< RESPONSE START >>>', '')
+   response_text = response_text.replace('<<< RESPONSE END >>>', '')
+
+   line = [line for line in response_text.split('\n') if line.strip()]
+   response_text = '\n'.join(line)
+
+   return response_text
 
 
 
@@ -76,7 +80,9 @@ No error log snippets available
 ### **User Query**
 {query}
 """
-    return get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE, results)
+    error_flow_snippets = get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE, results)
+    error_flow_snippets = parse_documents.parse_log_flow_snippets(error_flow_snippets)
+    return error_flow_snippets
 
 
 
@@ -181,5 +187,5 @@ Generate a sequence (or a plausible simulation) of log snippets representing the
 
    success_flow_snippets = get_relevant_snippets(llm, QUERY, PROMPT_TEMPLATE_v2, results, error_summary)
 
-   success_flow_snippets = parse_documents.parse_success_flow_snippets(success_flow_snippets)
+   success_flow_snippets = parse_documents.parse_log_flow_snippets(success_flow_snippets)
    return success_flow_snippets

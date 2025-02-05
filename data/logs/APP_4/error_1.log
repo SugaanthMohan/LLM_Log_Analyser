@@ -9,13 +9,15 @@
    <soapenv:Body>
       <mid:GetCustomerInfoRequest>
          <mid:AccountNumber>987654321</mid:AccountNumber>
+         <mid:CustomerId>1234123</mid:CustomerId>
+         <mid:CustomerName>John</mid:CustomerName>
       </mid:GetCustomerInfoRequest>
    </soapenv:Body>
 </soapenv:Envelope>
 |||2025-02-01T16:10:00.130Z [INFO ] [Middleware] [TRACE123456] Received SOAP request. Processing...
 |||2025-02-01T16:10:00.135Z [DEBUG] [Middleware] [TRACE123456] Validating account information for Account: 987654321.
 |||2025-02-01T16:10:00.145Z [ERROR] [Middleware] [TRACE123456] Account validation failed. Invalid account number format.
-|||2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction.
+|||2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction. Response time: 3 ms
 |||2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
 |||2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
 |||2025-02-01T16:10:00.165Z [DEBUG] [SpringBoot] [TRACE123456] Transaction aborted due to validation failure.
@@ -26,12 +28,14 @@
 |||2025-02-01T16:10:05.227Z [DEBUG] [SpringBoot] [TRACE987654] REST Request:
 POST /api/v1/getCustomerInfo
 {
-   "accountNumber": "543216789"
+   "accountNumber": "543216789",
+   "customerId": "81294",
+   "customerName": "Robert"
 }
 |||2025-02-01T16:10:05.235Z [INFO ] [Middleware] [TRACE987654] Received REST request. Processing...
 |||2025-02-01T16:10:05.240Z [DEBUG] [Middleware] [TRACE987654] Validating account information for Account: 543216789.
 |||2025-02-01T16:10:05.250Z [DEBUG] [Middleware] [TRACE987654] Account validated successfully.
-|||2025-02-01T16:10:05.255Z [INFO ] [SpringBoot] [TRACE987654] Received successful response from Middleware. Proceeding with transaction.
+|||2025-02-01T16:10:05.255Z [INFO ] [SpringBoot] [TRACE987654] Received successful response from Middleware. Proceeding with transaction. Response time: 2 ms
 |||2025-02-01T16:10:05.260Z [DEBUG] [UI] [TRACE987654] Transaction approved. Displaying confirmation to user.
 |||2025-02-01T16:10:05.265Z [INFO ] [UI] [TRACE987654] User confirmed withdrawal completion.
 |||2025-02-01T16:10:05.270Z [DEBUG] [SpringBoot] [TRACE987654] Initiating Oracle DB insert query for transaction record.
@@ -48,12 +52,14 @@ VALUES ('TXN987654', '543216789', 1000, 'COMPLETED', TO_DATE('2025-02-01 16:10:0
 |||2025-02-01T16:10:10.345Z [DEBUG] [SpringBoot] [TRACE876543] REST Request:
 POST /api/v1/getCustomerInfo
 {
-   "accountNumber": "123987654"
+   "accountNumber": "123987654",
+   "customerId": "89213",
+   "customerName": "David"
 }
 |||2025-02-01T16:10:10.355Z [INFO ] [Middleware] [TRACE876543] Received REST request. Processing...
 |||2025-02-01T16:10:10.360Z [DEBUG] [Middleware] [TRACE876543] Validating account information for Account: 123987654.
 |||2025-02-01T16:10:10.370Z [ERROR] [Middleware] [TRACE876543] Error occurred while validating account: Account number not found in database.
-|||2025-02-01T16:10:10.375Z [INFO ] [SpringBoot] [TRACE876543] Received failed response from Middleware. Aborting transaction.
+|||2025-02-01T16:10:10.375Z [INFO ] [SpringBoot] [TRACE876543] Received failed response from Middleware. Aborting transaction. Response time: 1 ms
 |||2025-02-01T16:10:10.380Z [DEBUG] [UI] [TRACE876543] Displaying error message to user: "Account number not found. Please check your details."
 |||2025-02-01T16:10:10.385Z [ERROR] [UI] [TRACE876543] User interaction failed. Unable to process withdrawal due to account not found.
 |||2025-02-01T16:10:10.390Z [DEBUG] [SpringBoot] [TRACE876543] Transaction aborted due to validation failure.
@@ -79,13 +85,15 @@ POST /api/v1/getCustomerInfo
    <soapenv:Body>
       <mid:GetCustomerInfoRequest>
          <mid:AccountNumber>987654321</mid:AccountNumber>
+         <mid:CustomerId>1234123</mid:CustomerId>
+         <mid:CustomerName>John</mid:CustomerName>
       </mid:GetCustomerInfoRequest>
    </soapenv:Body>
 </soapenv:Envelope>
 |||2025-02-01T16:10:00.130Z [INFO ] [Middleware] [TRACE123456] Received SOAP request. Processing...
 |||2025-02-01T16:10:00.135Z [DEBUG] [Middleware] [TRACE123456] Validating account information for Account: 987654321.
 |||2025-02-01T16:10:00.145Z [ERROR] [Middleware] [TRACE123456] Account validation failed. Invalid account number format.
-|||2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction.
+|||2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction. Response time: 4 ms
 |||2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
 |||2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
 |||2025-02-01T16:10:00.165Z [DEBUG] [SpringBoot] [TRACE123456] Transaction aborted due to validation failure.
@@ -96,12 +104,14 @@ POST /api/v1/getCustomerInfo
 |||2025-02-01T16:10:05.227Z [DEBUG] [SpringBoot] [TRACE987654] REST Request:
 POST /api/v1/getCustomerInfo
 {
-   "accountNumber": "543216789"
+   "accountNumber": "543216789",
+   "customerId": "12287",
+   "customerName": "Florence"
 }
 |||2025-02-01T16:10:05.235Z [INFO ] [Middleware] [TRACE987654] Received REST request. Processing...
 |||2025-02-01T16:10:05.240Z [DEBUG] [Middleware] [TRACE987654] Validating account information for Account: 543216789.
 |||2025-02-01T16:10:05.250Z [DEBUG] [Middleware] [TRACE987654] Account validated successfully.
-|||2025-02-01T16:10:05.255Z [INFO ] [SpringBoot] [TRACE987654] Received successful response from Middleware. Proceeding with transaction.
+|||2025-02-01T16:10:05.255Z [INFO ] [SpringBoot] [TRACE987654] Received successful response from Middleware. Proceeding with transaction. Response time: 2 ms
 |||2025-02-01T16:10:05.260Z [DEBUG] [UI] [TRACE987654] Transaction approved. Displaying confirmation to user.
 |||2025-02-01T16:10:05.265Z [INFO ] [UI] [TRACE987654] User confirmed withdrawal completion.
 |||2025-02-01T16:10:05.270Z [DEBUG] [SpringBoot] [TRACE987654] Initiating Oracle DB insert query for transaction record.
@@ -118,12 +128,14 @@ VALUES ('TXN987654', '543216789', 1000, 'COMPLETED', TO_DATE('2025-02-01 16:10:0
 |||2025-02-01T16:10:10.345Z [DEBUG] [SpringBoot] [TRACE876543] REST Request:
 POST /api/v1/getCustomerInfo
 {
-   "accountNumber": "123987654"
+   "accountNumber": "123987654",
+   "customerId": "10089",
+   "customerName": "Alice"
 }
 |||2025-02-01T16:10:10.355Z [INFO ] [Middleware] [TRACE876543] Received REST request. Processing...
 |||2025-02-01T16:10:10.360Z [DEBUG] [Middleware] [TRACE876543] Validating account information for Account: 123987654.
 |||2025-02-01T16:10:10.370Z [ERROR] [Middleware] [TRACE876543] Error occurred while validating account: Account number not found in database.
-|||2025-02-01T16:10:10.375Z [INFO ] [SpringBoot] [TRACE876543] Received failed response from Middleware. Aborting transaction.
+|||2025-02-01T16:10:10.375Z [INFO ] [SpringBoot] [TRACE876543] Received failed response from Middleware. Aborting transaction. Response time: 1 ms
 |||2025-02-01T16:10:10.380Z [DEBUG] [UI] [TRACE876543] Displaying error message to user: "Account number not found. Please check your details."
 |||2025-02-01T16:10:10.385Z [ERROR] [UI] [TRACE876543] User interaction failed. Unable to process withdrawal due to account not found.
 |||2025-02-01T16:10:10.390Z [DEBUG] [SpringBoot] [TRACE876543] Transaction aborted due to validation failure.

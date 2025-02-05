@@ -18,7 +18,8 @@ POST /middleware/corebanking/debit
 {
    "status": "SUCCESS",
    "transactionId": "TXN123450",
-   "message": "Debit successful"
+   "message": "Debit successful",
+   "responseTime": "3 ms"
 }
 |||2025-02-01T16:00:00.055Z [INFO ] [SpringBoot] [TRACE981234] Debit confirmed. Initiating credit request.
 |||2025-02-01T16:00:00.060Z [DEBUG] [SpringBoot] [TRACE777888] Preparing credit request.
@@ -37,7 +38,8 @@ POST /middleware/corebanking/credit
 {
    "status": "SUCCESS",
    "transactionId": "TXN123450",
-   "message": "Credit successful"
+   "message": "Credit successful",
+   "responseTime": "2 ms"
 }
 |||2025-02-01T16:00:00.090Z [INFO ] [SpringBoot] [TRACE777888] Credit transaction confirmed.
 |||2025-02-01T16:00:00.095Z [DEBUG] [SpringBoot] [TRACE555666] Logging transaction to database.
@@ -63,7 +65,9 @@ POST /notification/send
    "toAccount": "654123987",
    "amount": 500,
    "status": "COMPLETED",
-   "timestamp": "2025-02-01T16:00:00.135Z"
+   "timestamp": "2025-02-01T16:00:00.135Z",
+   "responseTime": "4 ms"
+
 }
 |||2025-02-01T16:00:00.140Z [INFO ] [LoggingService] [TRACE111222] Audit log entry recorded successfully.
 |||2025-02-01T16:00:00.145Z [INFO ] [SpringBoot] [TRACE999000] Cleaning up session data.
@@ -77,7 +81,8 @@ POST /middleware/corebanking/credit
    "accountNumber": "854621973",
    "amount": 1200,
    "transactionId": "TXN456789",
-   "transactionType": "CREDIT"
+   "transactionType": "CREDIT",
+   "responseTime": "2 ms"
 }
 |||2025-02-01T16:05:00.070Z [INFO ] [Middleware] [TRACE888999] Processing credit request.
 |||2025-02-01T16:05:00.075Z [DEBUG] [Middleware] [TRACE888999] Validating recipient account.

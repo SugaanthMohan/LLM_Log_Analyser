@@ -9,13 +9,15 @@ POST /middleware/corebanking/debit
 {
    "accountNumber": "123456789",
    "amount": 300,
-   "transactionType": "DEBIT"
+   "transactionType": "DEBIT",
+   "customerId": "23125",
+   "customerName": "Bob"
 }
 |||2025-02-01T16:30:00.155Z [INFO ] [Middleware] [TRACE111222] Processing debit request for account 123456789.
 |||2025-02-01T16:30:00.160Z [DEBUG] [Middleware] [TRACE111222] Checking account balance.
 |||2025-02-01T16:30:00.165Z [ERROR] [OracleDB] [TRACE111222] Failed to execute INSERT query: ORA-00001: unique constraint (TRANSACTION_HISTORY_PK) violated.
 |||2025-02-01T16:30:00.170Z [INFO ] [SpringBoot] [TRACE111222] Transaction aborted due to database constraint violation.
-|||2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE111222] Displaying error to user: "Withdrawal failed due to duplicate transaction record."
+|||2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE111222] Displaying error to user: "Withdrawal failed due to duplicate transaction record." Response time: 2 ms
 |||2025-02-01T16:30:00.180Z [DEBUG] [SpringBoot] [TRACE111222] Rolling back transaction due to OracleDB error.
 |||2025-02-01T16:30:00.185Z [INFO ] [LoggingService] [TRACE111222] Audit log entry skipped due to transaction rollback.
 |||2025-02-01T16:30:05.250Z [INFO ] [UI] [TRACE223344] User initiated cash withdrawal request. Amount: $500, Account: 987654321.
@@ -25,11 +27,13 @@ POST /middleware/corebanking/debit
 |||2025-02-01T16:30:05.270Z [DEBUG] [SpringBoot] [TRACE223344] REST Request:
 POST /api/v1/getCustomerInfo
 {
-   "accountNumber": "987654321"
+   "accountNumber": "987654321",
+   "customerId": "12879",
+   "customerName": "Gabriel"
 }
 |||2025-02-01T16:30:05.275Z [INFO ] [Middleware] [TRACE223344] Received REST request. Processing...
 |||2025-02-01T16:30:05.280Z [DEBUG] [Middleware] [TRACE223344] Error: Malformed JSON in incoming request.
-|||2025-02-01T16:30:05.285Z [ERROR] [Middleware] [TRACE223344] Request processing failed due to invalid JSON format.
+|||2025-02-01T16:30:05.285Z [ERROR] [Middleware] [TRACE223344] Request processing failed due to invalid JSON format. Response time: 3 ms
 |||2025-02-01T16:30:05.290Z [INFO ] [SpringBoot] [TRACE223344] Aborting transaction due to middleware error.
 |||2025-02-01T16:30:05.295Z [ERROR] [UI] [TRACE223344] User notified: "Withdrawal failed due to request format error."
 |||2025-02-01T16:30:10.350Z [INFO ] [UI] [TRACE556677] User initiated cash withdrawal request. Amount: $800, Account: 112233445.
@@ -39,12 +43,14 @@ POST /api/v1/getCustomerInfo
 |||2025-02-01T16:30:10.370Z [DEBUG] [SpringBoot] [TRACE556677] REST Request:
 POST /api/v1/getCustomerInfo
 {
-   "accountNumber": "112233445"
+   "accountNumber": "112233445",\
+   "customerId": "124235",
+   "customerName": "Jacob"
 }
 |||2025-02-01T16:30:10.375Z [INFO ] [Middleware] [TRACE556677] Received REST request. Processing...
 |||2025-02-01T16:30:10.380Z [DEBUG] [Middleware] [TRACE556677] Validating account information for Account: 112233445.
 |||2025-02-01T16:30:10.385Z [ERROR] [SpringBoot] [TRACE556677] Exception: NullPointerException in service layer while processing response.
-|||2025-02-01T16:30:10.390Z [INFO ] [SpringBoot] [TRACE556677] Transaction failed due to unexpected server error.
+|||2025-02-01T16:30:10.390Z [INFO ] [SpringBoot] [TRACE556677] Transaction failed due to unexpected server error. Response time: 1 ms
 |||2025-02-01T16:30:10.395Z [ERROR] [UI] [TRACE556677] Displaying error to user: "Withdrawal failed due to internal server error."
 |||2025-02-01T16:30:10.400Z [DEBUG] [SpringBoot] [TRACE556677] Initiating rollback of transaction due to NullPointerException.
 |||2025-02-01T16:30:15.450Z [INFO ] [SpringBoot] [TRACE556677] Finalizing transaction cleanup.
@@ -64,9 +70,11 @@ POST /api/v1/getCustomerInfo
 POST /payment/charge
 {
    "accountNumber": "555666777",
-   "amount": 1000
+   "amount": 1000,
+   "customerId": "90912",
+   "customerName": "Marie"
 }
-|||2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE334455] REST API call failed: HTTP 500 Internal Server Error.
+|||2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE334455] REST API call failed: HTTP 500 Internal Server Error. Response time: 1 ms
 |||2025-02-01T16:40:00.020Z [INFO ] [SpringBoot] [TRACE334455] Payment request failed due to PaymentGateway error.
 |||2025-02-01T16:40:00.025Z [ERROR] [UI] [TRACE334455] Displaying error to user: "Payment failed due to server error. Please try again later."
 |||2025-02-01T16:40:00.030Z [DEBUG] [SpringBoot] [TRACE334455] Initiating rollback for payment transaction.

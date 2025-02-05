@@ -20,7 +20,8 @@ Content-Type: application/json
 {
    "status": "SUCCESS",
    "transactionId": "TXN667788",
-   "message": "Debit transaction completed successfully."
+   "message": "Debit transaction completed successfully.",
+   "responseTime": "2 ms"
 }
 |||2025-02-01T15:10:00.055Z [INFO ] [SpringBoot] [TRACE784512] Debit transaction confirmed. Proceeding with credit to recipient account: 135791357.
 |||2025-02-01T15:10:00.060Z [DEBUG] [SpringBoot] [TRACE432109] Preparing REST request for Middleware (credit).
@@ -41,7 +42,8 @@ Content-Type: application/json
 {
    "status": "SUCCESS",
    "transactionId": "TXN667788",
-   "message": "Credit transaction completed successfully."
+   "message": "Credit transaction completed successfully.",
+   "responseTime": "1 ms"
 }
 |||2025-02-01T15:10:00.090Z [INFO ] [SpringBoot] [TRACE432109] Credit transaction confirmed. Finalizing funds transfer.
 |||2025-02-01T15:10:00.095Z [DEBUG] [SpringBoot] [TRACE432109] Initiating transaction record update in OracleDB.
@@ -72,7 +74,8 @@ Content-Type: application/json
    "accountTo": "135791357",
    "amount": 1000,
    "status": "COMPLETED",
-   "timestamp": "2025-02-01T15:10:00.150Z"
+   "timestamp": "2025-02-01T15:10:00.150Z",
+   "responseTime": "3 ms"
 }
 |||2025-02-01T15:10:00.155Z [INFO ] [LoggingService] [TRACE112233] Audit log entry successfully recorded.
 |||2025-02-01T15:10:00.160Z [INFO ] [SpringBoot] [TRACE112233] Transaction completed. Cleaning up session.
@@ -103,7 +106,8 @@ Content-Type: application/json
 {
    "status": "SUCCESS",
    "transactionId": "TXN667788",
-   "message": "Debit transaction completed successfully."
+   "message": "Debit transaction completed successfully.",
+   "responseTime": "2 ms"
 }
 |||2025-02-01T15:10:00.055Z [INFO ] [SpringBoot] [TRACE784512] Debit transaction confirmed. Proceeding with credit to recipient account: 135791357.
 |||2025-02-01T15:10:00.060Z [DEBUG] [SpringBoot] [TRACE432109] Preparing REST request for Middleware (credit).
@@ -125,6 +129,8 @@ Content-Type: application/json
    "status": "SUCCESS",
    "transactionId": "TXN667788",
    "message": "Credit transaction completed successfully."
+   "responseTime": "8 ms"
+
 }
 |||2025-02-01T15:10:00.090Z [INFO ] [SpringBoot] [TRACE432109] Credit transaction confirmed. Finalizing funds transfer.
 |||2025-02-01T15:10:00.095Z [DEBUG] [SpringBoot] [TRACE432109] Initiating transaction record update in OracleDB.
@@ -155,7 +161,9 @@ Content-Type: application/json
    "accountTo": "135791357",
    "amount": 1000,
    "status": "COMPLETED",
-   "timestamp": "2025-02-01T15:10:00.150Z"
+   "timestamp": "2025-02-01T15:10:00.150Z",
+   "responseTime": "9 ms"
+
 }
 |||2025-02-01T15:10:00.155Z [INFO ] [LoggingService] [TRACE112233] Audit log entry successfully recorded.
 |||2025-02-01T15:10:00.160Z [INFO ] [SpringBoot] [TRACE112233] Transaction completed. Cleaning up session.

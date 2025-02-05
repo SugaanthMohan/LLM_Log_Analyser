@@ -76,12 +76,12 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
 
    happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results, analysis)
 
-   print(analysis)
-   print("\n\n")
-   print(error_snippet)
-   print("\n\n")
-   print(happy_path_snippet)
-   print("\n\n")
+   # print(analysis)
+   # print("\n\n")
+   # print(error_snippet)
+   # print("\n\n")
+   # print(happy_path_snippet)
+   # print("\n\n")
 
 
    output = {
@@ -95,7 +95,8 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    }
 
    
-   print(output)
+   # import pprint
+   # pprint.pprint(output)
 
    return output
 
@@ -130,5 +131,5 @@ if __name__ == "__main__":
    # print("\nHappy Path snippet: \n")
    # print(happy_path_snippet)
 
-   QUERY = "Was there a payment gateway error? "
+   QUERY = "List all the REST / SOAP endpoints the application talks to"
    analyse('APP_4', '2025-02-01T00:39', '2025-02-01T21:40', QUERY)

@@ -5,14 +5,16 @@ from langchain_chroma import Chroma
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 
 import os
+import sys
 import shutil
 import json
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 
 from backend import parse_documents
 from backend import extract_metadata
 
 def create(APP_ID):
-    print("In create database")
     CHROMA_PATH = f"chroma/{APP_ID}"
     DATA_PATH = f"data/logs/{APP_ID}"
     generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH)
@@ -87,4 +89,4 @@ def save_to_chroma(chunks: list[Document], DATA_PATH, CHROMA_PATH):
 
 
 if __name__ == "__main__":
-    create()
+    create('APP_4')

@@ -108,7 +108,7 @@ def parse_response(text):
         skip_line = False
         for heading in headings:
             for name in heading:
-                if name in line:
+                if name in line :
                     key = heading[0]
                     skip_line = True
                     break  # Exit inner loop once the heading is found
@@ -136,8 +136,8 @@ def parse_response(text):
     )
 
 
-def parse_success_flow_snippets(success_flow):
-    lines = success_flow.split('\n')
+def parse_log_flow_snippets(log_flow):
+    lines = log_flow.split('\n')
     if len(lines) > 5:
         lines = lines[:-1]
         lines.append("\nContinues...")
