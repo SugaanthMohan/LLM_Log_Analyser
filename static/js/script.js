@@ -33,6 +33,15 @@ const rawLogsTabButton = document.getElementById('rawLogs-tab-button');
 const AiAnalysisTabButton = document.getElementById('AIAnalysis-tab-button');
 const happyPathTabButton = document.getElementById('happyPath-tab-button');
 
+// Get the Sub-results-tab
+const summaryTabButton = document.getElementById('AIAnalysis-summary-tabs-button');
+const explanationTabButton = document.getElementById('AIAnalysis-explanation-tabs-button');
+const expectedflowTabButton = document.getElementById('AIAnalysis-expectedflow-tabs-button');
+const remediationTabButton = document.getElementById('AIAnalysis-remediation-tabs-button');
+const reportTabButton = document.getElementById('AIAnalysis-report-tabs-button');
+
+// AI Analysis Sub Section
+const AIAnalysisSubSection = document.getElementById('AI-Analysis-Sub-Section');
 
 // DISABLE LOG CONFIG FORM ELEMENTS
 logConfigForm.classList.add('disabled-form');
@@ -265,17 +274,40 @@ document.querySelectorAll('.btn-primary').forEach(button => {
 
 // Add event listeners to the tab buttons
 rawLogsTabButton.addEventListener('click', () => {
+    AIAnalysisSubSection.style.display = 'none';
     loadTabContent('RawLogs');
 });
 
 AiAnalysisTabButton.addEventListener('click', () => {
-    createAIAnalysisContainer()
-    loadTabContent('AIAnalysis');
+    AIAnalysisSubSection.style.display = 'block';
 });
 
 happyPathTabButton.addEventListener('click', () => {
+    AIAnalysisSubSection.style.display = 'none';
     loadTabContent('HappyPath');
 });
+
+summaryTabButton.addEventListener('click', () => {
+    loadTabContent('Summary');
+});
+
+explanationTabButton.addEventListener('click', () => {
+    loadTabContent('Explanation');
+});
+
+expectedflowTabButton.addEventListener('click', () => {
+    loadTabContent('ExpectedFlow');
+});
+
+remediationTabButton.addEventListener('click', () => {
+    loadTabContent('Remediation');
+});
+
+reportTabButton.addEventListener('click', () => {
+    loadTabContent('Report');
+});
+
+
 
 // Function to load the tab content
 function loadTabContent(tabName) {
@@ -284,22 +316,19 @@ function loadTabContent(tabName) {
 
     // Load the content from the resultsData object
     if (tabName === 'RawLogs') {
-        if (aiAnalysisContainer != null) {
-            aiAnalysisContainer.style.display = 'none';  // Hide AI analysis sections
-            clearAIAnalysisContent();  // Clear content when switching tabs
-        }
         tabContentElement.innerHTML = resultsTabData.RawLogs;
-    } else if (tabName === 'AIAnalysis') {
-
-        // aiAnalysisContainer.style.display = 'block';  // Show AI analysis sections
-        populateAIAnalysisContent();  // Populate the content if it's available
-
     } else if (tabName === 'HappyPath') {
-        if (aiAnalysisContainer != null) {
-            aiAnalysisContainer.style.display = 'none';  // Hide AI analysis sections
-            clearAIAnalysisContent();  // Clear content when switching tabs
-        }
         tabContentElement.innerHTML = resultsTabData.HappyPath;
+    } else if (tabName === 'Summary') {
+        tabContentElement.innerHTML = resultsTabData.Summary;
+    } else if (tabName === 'Explanation') {
+        tabContentElement.innerHTML = resultsTabData.Explanation;
+    } else if (tabName === 'ExpectedFlow') {
+        tabContentElement.innerHTML = resultsTabData.ExpectedFlow;
+    } else if (tabName === 'Remediation') {
+        tabContentElement.innerHTML = resultsTabData.Remediation;
+    } else if (tabName === 'Report') {
+        tabContentElement.innerHTML = resultsTabData.Report;
     }
 }
 
@@ -324,41 +353,20 @@ function clearAIAnalysisContent() {
 }
 
 function createAIAnalysisContainer() {
+
     // Create the HTML structure dynamically
     const aiAnalysisHTML = `
-        <div class="ai-analysis-container">
-            <div class="ai-analysis-tabs">
-                <button class="tab-button active inner-tab" data-section="summary-section">Summary</button>
-                <button class="tab-button inner-tab" data-section="explanation-section">Explanation</button>
-                <button class="tab-button inner-tab" data-section="expectedflow-section">Expected Flow</button>
-                <button class="tab-button inner-tab" data-section="remediation-section">Remediation</button>
-                <button class="tab-button inner-tab" data-section="report-section">Report</button>
-            </div>
-            <div class="ai-analysis-content">
-                <div id="summary-section" class="sub-section active">
-                    <p></p>
-                </div>
-                <div id="explanation-section" class="sub-section">
-                    <p></p>
-                </div>
-                <div id="expectedflow-section" class="sub-section">
-                    <p></p>
-                </div>
-                <div id="remediation-section" class="sub-section">
-                    <p></p>
-                </div>
-                <div id="report-section" class="sub-section">
-                    <p></p>
-                </div>
-            </div>
-        </div>
+        <div class="ai-analysis-tabs">
+        <button class="tab-button active inner-tab" data-section="summary-section">Summary</button>
+        <button class="tab-button inner-tab" data-section="explanation-section">Explanation</button>
+        <button class="tab-button inner-tab" data-section="expectedflow-section">Expected Flow</button>
+        <button class="tab-button inner-tab" data-section="remediation-section">Remediation</button>
+        <button class="tab-button inner-tab" data-section="report-section">Report</button>
     `;
 
-    const tabContentElement = document.getElementById('logOutput');
+    subResultsDiv.innerHTML = aiAnalysisHTML;
 
-    tabContentElement.innerHTML = aiAnalysisHTML;
-    
-    showInnerContainer();
+    const tabContentElement = document.getElementById('logOutput');
 }
 
 function showInnerContainer() {
