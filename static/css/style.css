@@ -329,7 +329,7 @@ label {
 
 .ai-analysis-container{
     padding-top: 0;
-    margin-top: 0;
+    margin-top: -80px;
 }
 
 #suggestions-container {
@@ -411,83 +411,73 @@ label {
     overflow: hidden;
 }
 
-/* Styling for QuestionForm */
-#QuestionForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    animation: fadeIn 1s ease-out;
-}
-
-h3 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-    font-family: 'Arial', sans-serif;
-}
-
 /* Styling for the question list (bubbles) */
 #question-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 14px;
+    display: flex; /* Change to flexbox for row-wise layout */
+    flex-direction: column; /* Stack items vertically */
+    gap: 15px; /* Space between items */
+    padding: 10px 20px; /* Padding for better spacing */
+    max-width: 800px; /* Limit width for better readability */
+    margin: 0 auto; /* Center the list */
 }
 
 .question-item {
-    padding: 10px 20px;
-    background-color: #D32F2F;
+    padding: 15px 15px; /* Slightly larger padding for better readability */
     color: white;
-    /* border-radius: 25px; */
-    border-radius: 0px;
-    padding: 10px 20px;
+    border-radius: 12px; /* Slightly rounded corners for a modern look */
     cursor: pointer;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
     opacity: 0;
     animation: popIn 0.5s forwards;
+    background: linear-gradient(135deg, #D32F2F, #e12d2d); /* Gradient background */
 }
 
-/* Hover effect for question bubbles - changes background color */
+/* Hover effect for question bubbles - smoother and more refined */
 .question-item:hover {
-    background-color: #9C2A2A;  /* Darker red on hover */
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #e12d2d, #a62525); /* Reverse gradient on hover */
+    transform: scale(1.02); /* Slightly smaller scale for a subtle effect */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
 }
 
-/* Focus effect (optional) */
+/* Focus effect (optional) - more subtle and modern */
 .question-item:focus {
     outline: none;
-    box-shadow: 0 0 10px rgba(211, 47, 47, 0.8); /* Highlight with a red glow */
+    box-shadow: 0 0 12px rgba(211, 47, 47, 0.6); /* Softer red glow */
 }
 
-/* Fade-in animation for the form */
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Pop-in animation for question bubbles */
+/* Animation for pop-in effect */
 @keyframes popIn {
     0% {
         opacity: 0;
-        transform: scale(0);
-    }
-    50% {
-        opacity: 0.7;
-        transform: scale(1.2);
+        transform: scale(0.9);
     }
     100% {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+/* Optional: Add a smooth fade-in effect for the entire form */
+#QuestionForm {
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#QuestionForm h2{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    text-align: center;
+    margin-top: -10px;
 }
