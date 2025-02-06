@@ -25,11 +25,11 @@ Please follow these steps and output the response using the structure below:
 
 2. Output Structure (Strictly follow the same format):  
    **1. Summary:**  
-   - Provide a summary of the findings (issue description, insights, or happy path reference).
+   - Provide a summary of the findings (issue description, insights, impacts, or happy path reference).
 
    **2. Incident/Scenario Report:**  
    - Time: <Timestamp of the event or relevant log entry>  
-   - Faced By: <Customer/Teller/User Id or name or context if available>  
+   - Faced By: <Customer, teller, account number details>  
    - Trace Id: <TraceID/SessionID from logs>  
    - Application: <Application Identifier>  
    - Component: <Component involved, e.g., TellerApplication, AccountProcessSystem, OracleDB>  
@@ -46,9 +46,6 @@ Please follow these steps and output the response using the structure below:
    **5. Remediation / Recommendations:**  
    - Suggest actionable remediation steps or improvements based on the analysis.  
    - Include at least three recommendations.
-
-Below are the contexts for you to refer:  
-{context}
 
 Below is the exact error snippet the user is referring to and make use of information in these snippets to fill in the information
 for incident report. Look for fields like traceId, time, faced by, application, component, customer Id, customer name and additional metadata.
@@ -79,8 +76,8 @@ can possibly represent user's query in the same format as the of context.
 - Try to mask the numbers in trace id if not provided in the query
 
 [CONTEXT FOR YOUR REFERENCE]
-
-2025-02-01T16:10:00.127Z [DEBUG] [TellerApplication] [TRACE123456] SOAP Request:
+2025-02-01T16:10:00.126Z [DEBUG] [TellerApplication] [TRACE_123456_98765_100_1706803800] Preparing SOAP request for AccountProcessSystem.
+2025-02-01T16:10:00.127Z [DEBUG] [TellerApplication] [TRACE_123456_98765_100_1706803800] SOAP Request:
 <?xml version="1.0"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mid="http://AccountProcessSystem.example.com/CustInfo">
    <soapenv:Header/>
@@ -92,68 +89,48 @@ can possibly represent user's query in the same format as the of context.
       </mid:GetCustomerInfoRequest>
    </soapenv:Body>
 </soapenv:Envelope>
-2025-02-01T16:10:00.130Z [INFO ] [AccountProcessSystem] [TRACE123456] Received SOAP request. Processing...
-2025-02-01T16:10:00.135Z [DEBUG] [AccountProcessSystem] [TRACE123456] Validating account information for Account: 987654321.
-2025-02-01T16:10:00.145Z [ERROR] [AccountProcessSystem] [TRACE123456] Account validation failed. Invalid account number format.
-2025-02-01T16:10:00.150Z [INFO ] [TellerApplication] [TRACE123456] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 3 ms
-2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
-2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
-2025-02-01T16:10:00.165Z [DEBUG] [TellerApplication] [TRACE123456] Transaction aborted due to validation failure.
-2025-02-01T16:00:00.090Z [INFO ] [TellerApplication] [TRACE777888] Credit transaction confirmed.
-2025-02-01T16:10:10.330Z [INFO ] [TellerApplication] [TRACE876543] Received withdrawal request. Amount: $200, Account: 123987654.
-2025-02-01T16:10:10.340Z [DEBUG] [TellerApplication] [TRACE876543] Preparing REST request for AccountProcessSystem.
-2025-02-01T16:10:10.345Z [DEBUG] [TellerApplication] [TRACE876543] REST Request:
+2025-02-01T16:10:00.145Z [ERROR] [AccountProcessSystem] [TRACE_123456_98765_100_1706803800] Account validation failed. Invalid account number format.
+2025-02-01T16:10:00.150Z [INFO ] [TellerApplication] [TRACE_123456_98765_100_1706803800] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 4 ms
+2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE_123456_98765_100_1706803800] Displaying error message to user: "Invalid account number format. Please check your details."
+2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE_123456_98765_100_1706803800] User interaction failed. Unable to process withdrawal due to invalid account.
+2025-02-01T16:10:05.225Z [INFO ] [TellerApplication] [TRACE_987654_54321_200_1706803805] Received withdrawal request. Amount: $1000, Account: 543216789.
+2025-02-01T16:10:05.226Z [DEBUG] [TellerApplication] [TRACE_987654_54321_200_1706803805] Preparing REST request for AccountProcessSystem.
+2025-02-01T16:10:05.227Z [DEBUG] [TellerApplication] [TRACE_987654_54321_200_1706803805] REST Request:
 POST /api/v1/getCustomerInfo
 {{
-   "accountNumber": "123987654",
-   "customerId": "89213",
-   "customerName": "David"
+   "accountNumber": "543216789",
+   "customerId": "81294",
+   "customerName": "Robert"
 }}
-2025-02-01T16:10:10.355Z [INFO ] [AccountProcessSystem] [TRACE876543] Received REST request. Processing...
-2025-02-01T16:10:10.360Z [DEBUG] [AccountProcessSystem] [TRACE876543] Validating account information for Account: 123987654.
-2025-02-01T16:10:10.370Z [ERROR] [AccountProcessSystem] [TRACE876543] Error occurred while validating account: Account number not found in database.
-2025-02-01T16:10:10.375Z [INFO ] [TellerApplication] [TRACE876543] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 1 ms
-2025-02-01T16:10:10.380Z [DEBUG] [UI] [TRACE876543] Displaying error message to user: "Account number not found. Please check your details."
-2025-02-01T16:10:10.385Z [ERROR] [UI] [TRACE876543] User interaction failed. Unable to process withdrawal due to account not found.
-2025-02-01T16:10:00.130Z [INFO ] [AccountProcessSystem] [TRACE123456] Received SOAP request. Processing...
-2025-02-01T16:10:00.135Z [DEBUG] [AccountProcessSystem] [TRACE123456] Validating account information for Account: 987654321.
-2025-02-01T16:10:00.145Z [ERROR] [AccountProcessSystem] [TRACE123456] Account validation failed. Invalid account number format.
-2025-02-01T16:10:00.150Z [INFO ] [TellerApplication] [TRACE123456] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 4 ms
-2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
-2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
-2025-02-01T16:10:00.165Z [DEBUG] [TellerApplication] [TRACE123456] Transaction aborted due to validation failure.
-2025-02-01T16:40:00.010Z [DEBUG] [TellerApplication] [TRACE334455] REST Request:
-POST /payment/charge
+2025-02-01T16:10:05.235Z [INFO ] [AccountProcessSystem] [TRACE_987654_54321_200_1706803805] Received REST request. Processing...
+2025-02-01T16:10:05.240Z [DEBUG] [AccountProcessSystem] [TRACE_987654_54321_200_1706803805] Validating account information for Account: 543216789.
+2025-02-01T16:10:05.250Z [DEBUG] [AccountProcessSystem] [TRACE_987654_54321_200_1706803805] Account validated successfully.
+2025-02-01T16:10:05.255Z [INFO ] [TellerApplication] [TRACE_987654_54321_200_1706803805] Received successful response from AccountProcessSystem. Proceeding with transaction. Response time: 2 ms
+2025-02-01T16:10:05.255Z [DEBUG] [TellerApplication] [TRACE_987654_54321_200_1706803805] REST Response:
 {{
-   "accountNumber": "555666777",
-   "amount": 1000,
-   "customerId": "90912",
-   "customerName": "Marie"
+   "status": "SUCCESS",
+   "accountNumber": "543216789",
+   "customerName": "Robert",
+   "balance": 15000.00
 }}
-2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE334455] REST API call failed: HTTP 500 Internal Server Error. Response time: 1 ms
-2025-02-01T16:40:00.020Z [INFO ] [TellerApplication] [TRACE334455] Payment request failed due to PaymentGateway error.
-2025-02-01T16:40:00.025Z [ERROR] [UI] [TRACE334455] Displaying error to user: "Payment failed due to server error. Please try again later."
-2025-02-01T16:30:15.485Z [ERROR] [TellerApplication] [TRACE556677] Error during shutdown: Failed to close one or more resources.
-2025-02-01T16:30:10.370Z [DEBUG] [TellerApplication] [TRACE556677] REST Request:
-POST /api/v1/getCustomerInfo
+2025-02-01T16:10:10.370Z [ERROR] [AccountProcessSystem] [TRACE_876543_12398_300_1706803810] Error occurred while validating account: Account number not found in database.
+2025-02-01T16:10:10.375Z [INFO ] [TellerApplication] [TRACE_876543_12398_300_1706803810] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 1 ms
+2025-02-01T16:10:10.375Z [DEBUG] [TellerApplication] [TRACE_876543_12398_300_1706803810] REST Response:
 {{
-   "accountNumber": "112233445",
-   "customerId": "124235",
-   "customerName": "Jacob"
+   "status": "FAILED",
+   "errorCode": "ACCOUNT_NOT_FOUND",
+   "message": "Account number not found in database."
 }}
-2025-02-01T16:30:10.375Z [INFO ] [AccountProcessSystem] [TRACE556677] Received REST request. Processing...
-2025-02-01T16:30:10.380Z [DEBUG] [AccountProcessSystem] [TRACE556677] Validating account information for Account: 112233445.
-2025-02-01T16:30:10.385Z [ERROR] [TellerApplication] [TRACE556677] Exception: NullPointerException in service layer while processing response.
-2025-02-01T16:30:10.390Z [INFO ] [TellerApplication] [TRACE556677] Transaction failed due to unexpected server error. Response time: 1 ms
-2025-02-01T16:30:10.395Z [ERROR] [UI] [TRACE556677] Displaying error to user: "Withdrawal failed due to internal server error.
-2025-02-01T16:30:05.280Z [DEBUG] [AccountProcessSystem] [TRACE223344] Error: Malformed JSON in incoming request.
-2025-02-01T16:30:05.285Z [ERROR] [AccountProcessSystem] [TRACE223344] Request processing failed due to invalid JSON format. Response time: 3 ms
-2025-02-01T16:30:05.290Z [INFO ] [TellerApplication] [TRACE223344] Aborting transaction due to AccountProcessSystem error.
-2025-02-01T16:30:05.295Z [ERROR] [UI] [TRACE223344] User notified: "Withdrawal failed due to request format error."
-2025-02-01T16:30:00.160Z [DEBUG] [AccountProcessSystem] [TRACE111222] Checking account balance.
-2025-02-01T16:30:00.165Z [ERROR] [OracleDB] [TRACE111222] Failed to execute INSERT query: ORA-00001: unique constraint (TRANSACTION_HISTORY_PK) violated.
-2025-02-01T16:30:00.170Z [INFO ] [TellerApplication] [TRACE111222] Transaction aborted due to database constraint violation.
-2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE111222] Displaying error to user: "Withdrawal failed due to duplicate transaction record." Response time: 2 ms
+2025-02-01T16:10:10.380Z [DEBUG] [UI] [TRACE_876543_12398_300_1706803810] Displaying error message to user: "Account number not found. Please check your details."
+2025-02-01T16:10:10.385Z [ERROR] [UI] [TRACE_876543_12398_300_1706803810] User interaction failed. Unable to process withdrawal due to account not found.
+2025-02-01T16:30:00.165Z [ERROR] [OracleDB] [TRACE_98672_0012_100_1706807400] Failed to execute INSERT query: ORA-00001: unique constraint (TRANSACTION_HISTORY_PK) violated.
+2025-02-01T16:30:00.170Z [INFO ] [TellerApplication] [TRACE_98672_0012_100_1706807400] Transaction aborted due to database constraint violation.
+2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE_98672_0012_100_1706807400] Displaying error to user: "Withdrawal failed due to duplicate transaction record."
+2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE_334455_030506_600_1706808000] REST API call failed: HTTP 500 Internal Server Error. Response time: 1 ms
+2025-02-01T16:40:00.020Z [INFO ] [TellerApplication] [TRACE_334455_030506_600_1706808000] Payment request failed due to PaymentGateway error.
+2025-02-01T16:40:00.025Z [ERROR] [UI] [TRACE_334455_030506_600_1706808000] Displaying error to user: "Payment failed due to server error. Please try again later."
+2025-02-01T16:30:10.385Z [ERROR] [TellerApplication] [TRACE_556677_020304_400_1706807410] Exception: NullPointerException in service layer while processing response.
+
 
 [QUERY]
 query: {QUERY}
@@ -175,7 +152,7 @@ trace_ids: {TRACE_IDS}
 
 
 def get_trace_id(QUERY):
-    pattern = r"TRACE\d+"
+    pattern = r"TRACE(\d_)+"
     return re.findall(pattern, QUERY)
 
 def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
@@ -189,21 +166,20 @@ def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
         "TIME_TO": TIME_TO,
         "TRACE_IDS": TRACE_IDS
     })
-
-    embedding_query_snippets = []
-    for line in response_text.split("\n"):
-        keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025', 'POST', 'GET', "Customer", "customer"]
-        if any(keyword in line for keyword in keywords):
-            embedding_query_snippets.append(line)
+    return response_text
+    # embedding_query_snippets = []
+    # for line in response_text.split("\n"):
+    #     keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025', 'POST', 'GET', "Customer", "customer"]
+    #     if any(keyword in line for keyword in keywords):
+    #         embedding_query_snippets.append(line)
     
-    return ("\n".join(embedding_query_snippets[:5]))
+    # return ("\n".join(embedding_query_snippets[:10]))
 
 def get_relevant_docs(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
 
     TRACE_IDS = get_trace_id(QUERY)
     TIME_FROM = int(parse_documents.parse_unix_epoch_timestamp(TIME_FROM))
     TIME_TO = int(parse_documents.parse_unix_epoch_timestamp(TIME_TO))
-
 
     EMBEDDING_QUERY = get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS) 
     print("\n\nGenerated Embedding Query: ")
@@ -238,11 +214,11 @@ def get_relevant_docs(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
                 },
             )
     
-    results = []
-    for line in EMBEDDING_QUERY.split("\n"):
-        result = retriever.invoke(line)
-        results.extend(result[:10])
-
+    # results = []
+    # for line in EMBEDDING_QUERY.split("\n"):
+    #     result = retriever.invoke(line)
+    #     results.extend(result[:5])
+    results = retriever.invoke(EMBEDDING_QUERY)
     return results
 
 def analyze_without_metadata(llm, QUERY, results, error_snippet):

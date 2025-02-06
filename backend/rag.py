@@ -1,6 +1,7 @@
 import os
 import sys
 import warnings
+import json
 from langchain_chroma import Chroma
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_huggingface import HuggingFaceEndpoint
@@ -41,6 +42,9 @@ def init(APP_ID):
 
 
 def get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO):
+   TIME_FROM = int(parse_documents.parse_unix_epoch_timestamp(TIME_FROM))
+   TIME_TO = int(parse_documents.parse_unix_epoch_timestamp(TIME_TO))
+
    docs = db.get(
       where = {
          "$and": [
@@ -50,7 +54,9 @@ def get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO):
         ]
       }
    )
-   return docs
+
+   count = len(docs['documents'])
+   return count
 
 
 def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
@@ -67,24 +73,26 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
 
    llm, db = init(APP_ID)
 
-   # log_entry_count = get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO)
+   log_entry_count = get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO)
+   print(log_entry_count)
 
    results = analyzer.get_relevant_docs(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
+
    error_snippet = extract_snippets.error_flow(llm, QUERY, results)
+   print(error_snippet)
+   print("\n\n")
 
    analysis = analyzer.analyze_without_metadata(llm, QUERY, results, error_snippet)
    summary, report, explanation, expected_flow, remediation = parse_documents.parse_response(analysis)
 
-
-   happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results, analysis)
-
+   # summary = f"<i>Analyzed {log_entry_count} log snippets...<i>\n\n" + summary
    print(analysis)
    print("\n\n")
-   print(error_snippet)
-   print("\n\n")
+
+
+   happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results, analysis)
    print(happy_path_snippet)
    print("\n\n")
-
 
    output = {
       "RawLogs": error_snippet,
@@ -100,38 +108,11 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    import pprint
    pprint.pprint(output)
 
+   with open('output.json', 'w') as f:
+      json.dump(output, f, indent=4)
+
    return output
 
 if __name__ == "__main__":
-   # APP_ID = input("APP ID: ")
-   # TIME_FROM = input("TIME FROM: ")
-   # TIME_TO = input("TIME TO: ")
-   # QUERY = input("QUERY: ") 
-
-   # filtered_docs = get_filtered_docs('APP_3', 1718445912345, 1718447418123)
-   # print(f"\n\nAnalysing {len(filtered_docs['ids'])} log entries...\n\n")
-   
-   # First usecase - to summarise in plain English about the problem noticed 
-   # try:
-   #    analysis = analyzer.analyze_with_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-   #    print("\n\nBelow is my analysis with metadata usage based on your query")
-   #    print(analysis)
-   #    raise RuntimeError
-   # except:
-   # results, analysis = analyzer.analyze_without_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY)
-   # print("Below is my analysis without metadata usage based on your query")
-   # print(analysis)
-
-   # Second usecase - to extract the error log snippets and happy path log snippets
-
-   # error_snippet = extract_snippets.error_flow(llm, QUERY, results)
-   # happy_path_snippet = extract_snippets.success_flow(llm, QUERY, results)
-
-   # print("\nError snippet: \n")
-   # print(error_snippet)
-
-   # print("\nHappy Path snippet: \n")
-   # print(happy_path_snippet)
-
-   QUERY = "List the REST or SOAP URL endpoints application is communcating to"
-   analyse('APP_4', '2025-02-01T00:39', '2025-02-01T21:40', QUERY)
+   QUERY = "List the REST or SOAP URL endpoints application is communicating to"
+   analyse('APP_4', '2025-02-01T00:39', '2025-02-05T21:40', QUERY)

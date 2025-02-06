@@ -66,9 +66,6 @@ def split_text(APP_ID, DATA_PATH, documents: list[Document]):
                 metadata_dict[key] = timestamp
 
         chunk.metadata = metadata_dict
-    #     print(chunk)
-    #     print("\n\n~~~\n\n")
-    # exit()
 
     with open(f'{DATA_PATH}/chunks-metadata.json', 'w') as file:
         json.dump(final_chunks[0].metadata, file, indent=4) 
