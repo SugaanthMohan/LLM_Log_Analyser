@@ -330,9 +330,9 @@ function createAIAnalysisContainer() {
             <div class="ai-analysis-tabs">
                 <button class="tab-button active inner-tab" data-section="summary-section">Summary</button>
                 <button class="tab-button inner-tab" data-section="explanation-section">Explanation</button>
-                <button class="tab-button inner-tab" data-section="expectedflow-section">Expected Flow</button>
+                <button class="tab-button inner-tab" data-section="expectedflow-section">Event Sequence</button>
                 <button class="tab-button inner-tab" data-section="remediation-section">Remediation</button>
-                <button class="tab-button inner-tab" data-section="report-section">Report</button>
+                <button class="tab-button inner-tab" data-section="report-section">Impacted Entities</button>
             </div>
             <div class="ai-analysis-content">
                 <div id="summary-section" class="sub-section active">

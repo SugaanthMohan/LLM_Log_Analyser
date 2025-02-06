@@ -32,7 +32,7 @@ Please follow these steps and output the response using the structure below:
    - Faced By: <Customer/Teller/User Id or name or context if available>  
    - Trace Id: <TraceID/SessionID from logs>  
    - Application: <Application Identifier>  
-   - Component: <Component involved, e.g., SpringBoot, Middleware, OracleDB>  
+   - Component: <Component involved, e.g., TellerApplication, AccountProcessSystem, OracleDB>  
    - Additional Metadata: <Other key-value pairs as available>
 
    **3. Explanation:**  
@@ -80,9 +80,9 @@ can possibly represent user's query in the same format as the of context.
 
 [CONTEXT FOR YOUR REFERENCE]
 
-2025-02-01T16:10:00.127Z [DEBUG] [SpringBoot] [TRACE123456] SOAP Request:
+2025-02-01T16:10:00.127Z [DEBUG] [TellerApplication] [TRACE123456] SOAP Request:
 <?xml version="1.0"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mid="http://middleware.example.com/CustInfo">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mid="http://AccountProcessSystem.example.com/CustInfo">
    <soapenv:Header/>
    <soapenv:Body>
       <mid:GetCustomerInfoRequest>
@@ -92,37 +92,37 @@ can possibly represent user's query in the same format as the of context.
       </mid:GetCustomerInfoRequest>
    </soapenv:Body>
 </soapenv:Envelope>
-2025-02-01T16:10:00.130Z [INFO ] [Middleware] [TRACE123456] Received SOAP request. Processing...
-2025-02-01T16:10:00.135Z [DEBUG] [Middleware] [TRACE123456] Validating account information for Account: 987654321.
-2025-02-01T16:10:00.145Z [ERROR] [Middleware] [TRACE123456] Account validation failed. Invalid account number format.
-2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction. Response time: 3 ms
+2025-02-01T16:10:00.130Z [INFO ] [AccountProcessSystem] [TRACE123456] Received SOAP request. Processing...
+2025-02-01T16:10:00.135Z [DEBUG] [AccountProcessSystem] [TRACE123456] Validating account information for Account: 987654321.
+2025-02-01T16:10:00.145Z [ERROR] [AccountProcessSystem] [TRACE123456] Account validation failed. Invalid account number format.
+2025-02-01T16:10:00.150Z [INFO ] [TellerApplication] [TRACE123456] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 3 ms
 2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
 2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
-2025-02-01T16:10:00.165Z [DEBUG] [SpringBoot] [TRACE123456] Transaction aborted due to validation failure.
-2025-02-01T16:00:00.090Z [INFO ] [SpringBoot] [TRACE777888] Credit transaction confirmed.
-2025-02-01T16:10:10.330Z [INFO ] [SpringBoot] [TRACE876543] Received withdrawal request. Amount: $200, Account: 123987654.
-2025-02-01T16:10:10.340Z [DEBUG] [SpringBoot] [TRACE876543] Preparing REST request for Middleware.
-2025-02-01T16:10:10.345Z [DEBUG] [SpringBoot] [TRACE876543] REST Request:
+2025-02-01T16:10:00.165Z [DEBUG] [TellerApplication] [TRACE123456] Transaction aborted due to validation failure.
+2025-02-01T16:00:00.090Z [INFO ] [TellerApplication] [TRACE777888] Credit transaction confirmed.
+2025-02-01T16:10:10.330Z [INFO ] [TellerApplication] [TRACE876543] Received withdrawal request. Amount: $200, Account: 123987654.
+2025-02-01T16:10:10.340Z [DEBUG] [TellerApplication] [TRACE876543] Preparing REST request for AccountProcessSystem.
+2025-02-01T16:10:10.345Z [DEBUG] [TellerApplication] [TRACE876543] REST Request:
 POST /api/v1/getCustomerInfo
 {{
    "accountNumber": "123987654",
    "customerId": "89213",
    "customerName": "David"
 }}
-2025-02-01T16:10:10.355Z [INFO ] [Middleware] [TRACE876543] Received REST request. Processing...
-2025-02-01T16:10:10.360Z [DEBUG] [Middleware] [TRACE876543] Validating account information for Account: 123987654.
-2025-02-01T16:10:10.370Z [ERROR] [Middleware] [TRACE876543] Error occurred while validating account: Account number not found in database.
-2025-02-01T16:10:10.375Z [INFO ] [SpringBoot] [TRACE876543] Received failed response from Middleware. Aborting transaction. Response time: 1 ms
+2025-02-01T16:10:10.355Z [INFO ] [AccountProcessSystem] [TRACE876543] Received REST request. Processing...
+2025-02-01T16:10:10.360Z [DEBUG] [AccountProcessSystem] [TRACE876543] Validating account information for Account: 123987654.
+2025-02-01T16:10:10.370Z [ERROR] [AccountProcessSystem] [TRACE876543] Error occurred while validating account: Account number not found in database.
+2025-02-01T16:10:10.375Z [INFO ] [TellerApplication] [TRACE876543] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 1 ms
 2025-02-01T16:10:10.380Z [DEBUG] [UI] [TRACE876543] Displaying error message to user: "Account number not found. Please check your details."
 2025-02-01T16:10:10.385Z [ERROR] [UI] [TRACE876543] User interaction failed. Unable to process withdrawal due to account not found.
-2025-02-01T16:10:00.130Z [INFO ] [Middleware] [TRACE123456] Received SOAP request. Processing...
-2025-02-01T16:10:00.135Z [DEBUG] [Middleware] [TRACE123456] Validating account information for Account: 987654321.
-2025-02-01T16:10:00.145Z [ERROR] [Middleware] [TRACE123456] Account validation failed. Invalid account number format.
-2025-02-01T16:10:00.150Z [INFO ] [SpringBoot] [TRACE123456] Received failed response from Middleware. Aborting transaction. Response time: 4 ms
+2025-02-01T16:10:00.130Z [INFO ] [AccountProcessSystem] [TRACE123456] Received SOAP request. Processing...
+2025-02-01T16:10:00.135Z [DEBUG] [AccountProcessSystem] [TRACE123456] Validating account information for Account: 987654321.
+2025-02-01T16:10:00.145Z [ERROR] [AccountProcessSystem] [TRACE123456] Account validation failed. Invalid account number format.
+2025-02-01T16:10:00.150Z [INFO ] [TellerApplication] [TRACE123456] Received failed response from AccountProcessSystem. Aborting transaction. Response time: 4 ms
 2025-02-01T16:10:00.155Z [DEBUG] [UI] [TRACE123456] Displaying error message to user: "Invalid account number format. Please check your details."
 2025-02-01T16:10:00.160Z [ERROR] [UI] [TRACE123456] User interaction failed. Unable to process withdrawal due to invalid account.
-2025-02-01T16:10:00.165Z [DEBUG] [SpringBoot] [TRACE123456] Transaction aborted due to validation failure.
-2025-02-01T16:40:00.010Z [DEBUG] [SpringBoot] [TRACE334455] REST Request:
+2025-02-01T16:10:00.165Z [DEBUG] [TellerApplication] [TRACE123456] Transaction aborted due to validation failure.
+2025-02-01T16:40:00.010Z [DEBUG] [TellerApplication] [TRACE334455] REST Request:
 POST /payment/charge
 {{
    "accountNumber": "555666777",
@@ -131,28 +131,28 @@ POST /payment/charge
    "customerName": "Marie"
 }}
 2025-02-01T16:40:00.015Z [ERROR] [PaymentGateway] [TRACE334455] REST API call failed: HTTP 500 Internal Server Error. Response time: 1 ms
-2025-02-01T16:40:00.020Z [INFO ] [SpringBoot] [TRACE334455] Payment request failed due to PaymentGateway error.
+2025-02-01T16:40:00.020Z [INFO ] [TellerApplication] [TRACE334455] Payment request failed due to PaymentGateway error.
 2025-02-01T16:40:00.025Z [ERROR] [UI] [TRACE334455] Displaying error to user: "Payment failed due to server error. Please try again later."
-2025-02-01T16:30:15.485Z [ERROR] [SpringBoot] [TRACE556677] Error during shutdown: Failed to close one or more resources.
-2025-02-01T16:30:10.370Z [DEBUG] [SpringBoot] [TRACE556677] REST Request:
+2025-02-01T16:30:15.485Z [ERROR] [TellerApplication] [TRACE556677] Error during shutdown: Failed to close one or more resources.
+2025-02-01T16:30:10.370Z [DEBUG] [TellerApplication] [TRACE556677] REST Request:
 POST /api/v1/getCustomerInfo
 {{
    "accountNumber": "112233445",
    "customerId": "124235",
    "customerName": "Jacob"
 }}
-2025-02-01T16:30:10.375Z [INFO ] [Middleware] [TRACE556677] Received REST request. Processing...
-2025-02-01T16:30:10.380Z [DEBUG] [Middleware] [TRACE556677] Validating account information for Account: 112233445.
-2025-02-01T16:30:10.385Z [ERROR] [SpringBoot] [TRACE556677] Exception: NullPointerException in service layer while processing response.
-2025-02-01T16:30:10.390Z [INFO ] [SpringBoot] [TRACE556677] Transaction failed due to unexpected server error. Response time: 1 ms
+2025-02-01T16:30:10.375Z [INFO ] [AccountProcessSystem] [TRACE556677] Received REST request. Processing...
+2025-02-01T16:30:10.380Z [DEBUG] [AccountProcessSystem] [TRACE556677] Validating account information for Account: 112233445.
+2025-02-01T16:30:10.385Z [ERROR] [TellerApplication] [TRACE556677] Exception: NullPointerException in service layer while processing response.
+2025-02-01T16:30:10.390Z [INFO ] [TellerApplication] [TRACE556677] Transaction failed due to unexpected server error. Response time: 1 ms
 2025-02-01T16:30:10.395Z [ERROR] [UI] [TRACE556677] Displaying error to user: "Withdrawal failed due to internal server error.
-2025-02-01T16:30:05.280Z [DEBUG] [Middleware] [TRACE223344] Error: Malformed JSON in incoming request.
-2025-02-01T16:30:05.285Z [ERROR] [Middleware] [TRACE223344] Request processing failed due to invalid JSON format. Response time: 3 ms
-2025-02-01T16:30:05.290Z [INFO ] [SpringBoot] [TRACE223344] Aborting transaction due to middleware error.
+2025-02-01T16:30:05.280Z [DEBUG] [AccountProcessSystem] [TRACE223344] Error: Malformed JSON in incoming request.
+2025-02-01T16:30:05.285Z [ERROR] [AccountProcessSystem] [TRACE223344] Request processing failed due to invalid JSON format. Response time: 3 ms
+2025-02-01T16:30:05.290Z [INFO ] [TellerApplication] [TRACE223344] Aborting transaction due to AccountProcessSystem error.
 2025-02-01T16:30:05.295Z [ERROR] [UI] [TRACE223344] User notified: "Withdrawal failed due to request format error."
-2025-02-01T16:30:00.160Z [DEBUG] [Middleware] [TRACE111222] Checking account balance.
+2025-02-01T16:30:00.160Z [DEBUG] [AccountProcessSystem] [TRACE111222] Checking account balance.
 2025-02-01T16:30:00.165Z [ERROR] [OracleDB] [TRACE111222] Failed to execute INSERT query: ORA-00001: unique constraint (TRANSACTION_HISTORY_PK) violated.
-2025-02-01T16:30:00.170Z [INFO ] [SpringBoot] [TRACE111222] Transaction aborted due to database constraint violation.
+2025-02-01T16:30:00.170Z [INFO ] [TellerApplication] [TRACE111222] Transaction aborted due to database constraint violation.
 2025-02-01T16:30:00.175Z [ERROR] [UI] [TRACE111222] Displaying error to user: "Withdrawal failed due to duplicate transaction record." Response time: 2 ms
 
 [QUERY]

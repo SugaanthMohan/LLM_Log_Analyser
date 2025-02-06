@@ -1,54 +1,54 @@
 2025-02-01T16:00:00.000Z [INFO ] [UI] [TRACE981234] User initiated funds transfer. Amount: $500, From: 789456123, To: 654123987.
 |||2025-02-01T16:00:00.005Z [DEBUG] [UI] [TRACE981234] Sending transfer request to backend.
-|||2025-02-01T16:00:00.010Z [INFO ] [SpringBoot] [TRACE981234] Received transfer request. Validating input.
-|||2025-02-01T16:00:00.015Z [DEBUG] [SpringBoot] [TRACE981234] Checking account status for 789456123.
-|||2025-02-01T16:00:00.020Z [INFO ] [SpringBoot] [TRACE981234] Account 789456123 validation successful.
-|||2025-02-01T16:00:00.025Z [DEBUG] [SpringBoot] [TRACE981234] Preparing debit request to Middleware.
-|||2025-02-01T16:00:00.030Z [DEBUG] [SpringBoot] [TRACE981234] REST Request:
-POST /middleware/corebanking/debit
+|||2025-02-01T16:00:00.010Z [INFO ] [TellerApplication] [TRACE981234] Received transfer request. Validating input.
+|||2025-02-01T16:00:00.015Z [DEBUG] [TellerApplication] [TRACE981234] Checking account status for 789456123.
+|||2025-02-01T16:00:00.020Z [INFO ] [TellerApplication] [TRACE981234] Account 789456123 validation successful.
+|||2025-02-01T16:00:00.025Z [DEBUG] [TellerApplication] [TRACE981234] Preparing debit request to AccountProcessSystem.
+|||2025-02-01T16:00:00.030Z [DEBUG] [TellerApplication] [TRACE981234] REST Request:
+POST /AccountProcessSystem/corebanking/debit
 {
    "accountNumber": "789456123",
    "amount": 500,
    "transactionType": "DEBIT"
 }
-|||2025-02-01T16:00:00.035Z [INFO ] [Middleware] [TRACE981234] Processing debit request for account 789456123.
-|||2025-02-01T16:00:00.040Z [DEBUG] [Middleware] [TRACE981234] Checking account balance.
-|||2025-02-01T16:00:00.045Z [INFO ] [Middleware] [TRACE981234] Debit successful. Remaining balance: $4500.
-|||2025-02-01T16:00:00.050Z [DEBUG] [Middleware] [TRACE981234] REST Response:
+|||2025-02-01T16:00:00.035Z [INFO ] [AccountProcessSystem] [TRACE981234] Processing debit request for account 789456123.
+|||2025-02-01T16:00:00.040Z [DEBUG] [AccountProcessSystem] [TRACE981234] Checking account balance.
+|||2025-02-01T16:00:00.045Z [INFO ] [AccountProcessSystem] [TRACE981234] Debit successful. Remaining balance: $4500.
+|||2025-02-01T16:00:00.050Z [DEBUG] [AccountProcessSystem] [TRACE981234] REST Response:
 {
    "status": "SUCCESS",
    "transactionId": "TXN123450",
    "message": "Debit successful",
    "responseTime": "3 ms"
 }
-|||2025-02-01T16:00:00.055Z [INFO ] [SpringBoot] [TRACE981234] Debit confirmed. Initiating credit request.
-|||2025-02-01T16:00:00.060Z [DEBUG] [SpringBoot] [TRACE777888] Preparing credit request.
-|||2025-02-01T16:00:00.065Z [DEBUG] [SpringBoot] [TRACE777888] REST Request:
-POST /middleware/corebanking/credit
+|||2025-02-01T16:00:00.055Z [INFO ] [TellerApplication] [TRACE981234] Debit confirmed. Initiating credit request.
+|||2025-02-01T16:00:00.060Z [DEBUG] [TellerApplication] [TRACE777888] Preparing credit request.
+|||2025-02-01T16:00:00.065Z [DEBUG] [TellerApplication] [TRACE777888] REST Request:
+POST /AccountProcessSystem/corebanking/credit
 {
    "accountNumber": "654123987",
    "amount": 500,
    "transactionId": "TXN123450",
    "transactionType": "CREDIT"
 }
-|||2025-02-01T16:00:00.070Z [INFO ] [Middleware] [TRACE777888] Processing credit request.
-|||2025-02-01T16:00:00.075Z [DEBUG] [Middleware] [TRACE777888] Validating recipient account.
-|||2025-02-01T16:00:00.080Z [INFO ] [Middleware] [TRACE777888] Credit successful. New balance: $3500.
-|||2025-02-01T16:00:00.085Z [DEBUG] [Middleware] [TRACE777888] REST Response:
+|||2025-02-01T16:00:00.070Z [INFO ] [AccountProcessSystem] [TRACE777888] Processing credit request.
+|||2025-02-01T16:00:00.075Z [DEBUG] [AccountProcessSystem] [TRACE777888] Validating recipient account.
+|||2025-02-01T16:00:00.080Z [INFO ] [AccountProcessSystem] [TRACE777888] Credit successful. New balance: $3500.
+|||2025-02-01T16:00:00.085Z [DEBUG] [AccountProcessSystem] [TRACE777888] REST Response:
 {
    "status": "SUCCESS",
    "transactionId": "TXN123450",
    "message": "Credit successful",
    "responseTime": "2 ms"
 }
-|||2025-02-01T16:00:00.090Z [INFO ] [SpringBoot] [TRACE777888] Credit transaction confirmed.
-|||2025-02-01T16:00:00.095Z [DEBUG] [SpringBoot] [TRACE555666] Logging transaction to database.
+|||2025-02-01T16:00:00.090Z [INFO ] [TellerApplication] [TRACE777888] Credit transaction confirmed.
+|||2025-02-01T16:00:00.095Z [DEBUG] [TellerApplication] [TRACE555666] Logging transaction to database.
 |||2025-02-01T16:00:00.100Z [DEBUG] [OracleDB] [TRACE555666] Executing query:
 INSERT INTO TRANSACTION_HISTORY (TRANSACTION_ID, FROM_ACCOUNT, TO_ACCOUNT, AMOUNT, STATUS, TIMESTAMP)
 VALUES ('TXN123450', '789456123', '654123987', 500, 'COMPLETED', TO_TIMESTAMP('2025-02-01T16:00:00.100Z', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'));
 |||2025-02-01T16:00:00.105Z [INFO ] [OracleDB] [TRACE555666] Transaction recorded successfully.
-|||2025-02-01T16:00:00.110Z [DEBUG] [SpringBoot] [TRACE333444] Preparing user notification request.
-|||2025-02-01T16:00:00.115Z [DEBUG] [SpringBoot] [TRACE333444] REST Request:
+|||2025-02-01T16:00:00.110Z [DEBUG] [TellerApplication] [TRACE333444] Preparing user notification request.
+|||2025-02-01T16:00:00.115Z [DEBUG] [TellerApplication] [TRACE333444] REST Request:
 POST /notification/send
 {
    "recipient": "+1234567890",
@@ -57,7 +57,7 @@ POST /notification/send
 }
 |||2025-02-01T16:00:00.120Z [INFO ] [NotificationService] [TRACE333444] Sending SMS notification.
 |||2025-02-01T16:00:00.125Z [INFO ] [NotificationService] [TRACE333444] Notification sent successfully.
-|||2025-02-01T16:00:00.130Z [DEBUG] [SpringBoot] [TRACE111222] Initiating audit log entry.
+|||2025-02-01T16:00:00.130Z [DEBUG] [TellerApplication] [TRACE111222] Initiating audit log entry.
 |||2025-02-01T16:00:00.135Z [DEBUG] [LoggingService] [TRACE111222] Executing log entry:
 {
    "transactionId": "TXN123450",
@@ -70,13 +70,13 @@ POST /notification/send
 
 }
 |||2025-02-01T16:00:00.140Z [INFO ] [LoggingService] [TRACE111222] Audit log entry recorded successfully.
-|||2025-02-01T16:00:00.145Z [INFO ] [SpringBoot] [TRACE999000] Cleaning up session data.
-|||2025-02-01T16:00:00.150Z [DEBUG] [SpringBoot] [TRACE999000] Session cleanup successful.
+|||2025-02-01T16:00:00.145Z [INFO ] [TellerApplication] [TRACE999000] Cleaning up session data.
+|||2025-02-01T16:00:00.150Z [DEBUG] [TellerApplication] [TRACE999000] Session cleanup successful.
 |||2025-02-01T16:00:00.155Z [DEBUG] [UI] [TRACE981234] Displaying success message to user.
 |||2025-02-01T16:00:00.160Z [INFO ] [UI] [TRACE981234] User acknowledged transaction completion.
-|||2025-02-01T16:05:00.060Z [DEBUG] [SpringBoot] [TRACE888999] Preparing credit request.
-|||2025-02-01T16:05:00.065Z [DEBUG] [SpringBoot] [TRACE888999] REST Request:
-POST /middleware/corebanking/credit
+|||2025-02-01T16:05:00.060Z [DEBUG] [TellerApplication] [TRACE888999] Preparing credit request.
+|||2025-02-01T16:05:00.065Z [DEBUG] [TellerApplication] [TRACE888999] REST Request:
+POST /AccountProcessSystem/corebanking/credit
 {
    "accountNumber": "854621973",
    "amount": 1200,
@@ -84,23 +84,23 @@ POST /middleware/corebanking/credit
    "transactionType": "CREDIT",
    "responseTime": "2 ms"
 }
-|||2025-02-01T16:05:00.070Z [INFO ] [Middleware] [TRACE888999] Processing credit request.
-|||2025-02-01T16:05:00.075Z [DEBUG] [Middleware] [TRACE888999] Validating recipient account.
-|||2025-02-01T16:05:00.080Z [INFO ] [Middleware] [TRACE888999] Credit successful. New balance: $6200.
-|||2025-02-01T16:05:00.085Z [DEBUG] [Middleware] [TRACE888999] REST Response:
+|||2025-02-01T16:05:00.070Z [INFO ] [AccountProcessSystem] [TRACE888999] Processing credit request.
+|||2025-02-01T16:05:00.075Z [DEBUG] [AccountProcessSystem] [TRACE888999] Validating recipient account.
+|||2025-02-01T16:05:00.080Z [INFO ] [AccountProcessSystem] [TRACE888999] Credit successful. New balance: $6200.
+|||2025-02-01T16:05:00.085Z [DEBUG] [AccountProcessSystem] [TRACE888999] REST Response:
 {
    "status": "SUCCESS",
    "transactionId": "TXN456789",
    "message": "Credit successful"
 }
-|||2025-02-01T16:05:00.090Z [INFO ] [SpringBoot] [TRACE888999] Credit transaction confirmed.
-|||2025-02-01T16:05:00.095Z [DEBUG] [SpringBoot] [TRACE555111] Logging transaction to database.
+|||2025-02-01T16:05:00.090Z [INFO ] [TellerApplication] [TRACE888999] Credit transaction confirmed.
+|||2025-02-01T16:05:00.095Z [DEBUG] [TellerApplication] [TRACE555111] Logging transaction to database.
 |||2025-02-01T16:05:00.100Z [DEBUG] [OracleDB] [TRACE555111] Executing query:
 INSERT INTO TRANSACTION_HISTORY (TRANSACTION_ID, FROM_ACCOUNT, TO_ACCOUNT, AMOUNT, STATUS, TIMESTAMP)
 VALUES ('TXN456789', '951357246', '854621973', 1200, 'COMPLETED', TO_TIMESTAMP('2025-02-01T16:05:00.100Z', 'YYYY-MM-DD"T"HH24:MI:SS.FF3"Z"'));
 |||2025-02-01T16:05:00.105Z [INFO ] [OracleDB] [TRACE555111] Transaction recorded successfully.
-|||2025-02-01T16:05:00.110Z [DEBUG] [SpringBoot] [TRACE333444] Preparing user notification request.
-|||2025-02-01T16:05:00.115Z [DEBUG] [SpringBoot] [TRACE333444] REST Request:
+|||2025-02-01T16:05:00.110Z [DEBUG] [TellerApplication] [TRACE333444] Preparing user notification request.
+|||2025-02-01T16:05:00.115Z [DEBUG] [TellerApplication] [TRACE333444] REST Request:
 POST /notification/send
 {
    "recipient": "+9876543210",
@@ -109,16 +109,16 @@ POST /notification/send
 }
 |||2025-02-01T16:05:00.120Z [INFO ] [NotificationService] [TRACE333444] Sending SMS notification.
 |||2025-02-01T16:05:00.125Z [INFO ] [NotificationService] [TRACE333444] Notification sent successfully.
-|||2025-02-01T16:05:00.165Z [INFO ] [SpringBoot] [TRACE999888] Finalizing transaction and closing resources.
-|||2025-02-01T16:05:00.170Z [DEBUG] [SpringBoot] [TRACE999888] Closing database connections.
+|||2025-02-01T16:05:00.165Z [INFO ] [TellerApplication] [TRACE999888] Finalizing transaction and closing resources.
+|||2025-02-01T16:05:00.170Z [DEBUG] [TellerApplication] [TRACE999888] Closing database connections.
 |||2025-02-01T16:05:00.175Z [INFO ] [DatabaseConnectionPool] [TRACE999888] All database connections closed successfully.
-|||2025-02-01T16:05:00.180Z [DEBUG] [SpringBoot] [TRACE999888] Closing external API connections.
+|||2025-02-01T16:05:00.180Z [DEBUG] [TellerApplication] [TRACE999888] Closing external API connections.
 |||2025-02-01T16:05:00.185Z [INFO ] [APIClient] [TRACE999888] All external API connections closed successfully.
-|||2025-02-01T16:05:00.190Z [INFO ] [SpringBoot] [TRACE999888] All pending sessions cleared.
+|||2025-02-01T16:05:00.190Z [INFO ] [TellerApplication] [TRACE999888] All pending sessions cleared.
 |||2025-02-01T16:05:00.195Z [INFO ] [UI] [TRACE672384] User session cleared and terminated.
-|||2025-02-01T16:05:00.200Z [INFO ] [SpringBoot] [TRACE999888] Application shutdown initiated.
-|||2025-02-01T16:05:00.205Z [DEBUG] [SpringBoot] [TRACE999888] Closing application context.
-|||2025-02-01T16:05:00.210Z [INFO ] [SpringBoot] [TRACE999888] Application context closed successfully.
-|||2025-02-01T16:05:00.215Z [INFO ] [SpringBoot] [TRACE999888] Application shutdown completed. All resources have been released.
-|||2025-02-01T16:05:00.210Z [INFO ] [SpringBoot] [TRACE999888] Application context closed successfully.
-|||2025-02-01T16:05:00.215Z [INFO ] [SpringBoot] [TRACE999888] Application shutdown completed. All resources have been released.
+|||2025-02-01T16:05:00.200Z [INFO ] [TellerApplication] [TRACE999888] Application shutdown initiated.
+|||2025-02-01T16:05:00.205Z [DEBUG] [TellerApplication] [TRACE999888] Closing application context.
+|||2025-02-01T16:05:00.210Z [INFO ] [TellerApplication] [TRACE999888] Application context closed successfully.
+|||2025-02-01T16:05:00.215Z [INFO ] [TellerApplication] [TRACE999888] Application shutdown completed. All resources have been released.
+|||2025-02-01T16:05:00.210Z [INFO ] [TellerApplication] [TRACE999888] Application context closed successfully.
+|||2025-02-01T16:05:00.215Z [INFO ] [TellerApplication] [TRACE999888] Application shutdown completed. All resources have been released.
