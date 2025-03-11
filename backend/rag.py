@@ -4,7 +4,7 @@ import warnings
 import json
 from langchain_chroma import Chroma
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
-from langchain_huggingface import HuggingFaceEndpoint
+from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
@@ -18,26 +18,26 @@ warnings.filterwarnings("ignore")
 
 load_dotenv()
 
-hf_token = os.getenv("HF_TOKEN")
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_token
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+os.environ["GOOGLE_API_KEY"] = gemini_api_key
+
 
 
 def init(APP_ID):
-   llm = HuggingFaceEndpoint(
-      repo_id="mistralai/Mistral-7B-Instruct-v0.2", 
-      max_new_tokens=1024,
-      top_k=10,
+   llm = ChatGoogleGenerativeAI(
+      model="gemini-2.0-flash",
+      convert_system_message_to_human=True,
+      temperature=0.1,
       top_p=0.95,
-      typical_p=0.95,
-      temperature=0.01,
-      repetition_penalty=1.03
+      top_k=40,
+      max_output_tokens=2048,
    )
 
    CHROMA_PATH = f"chroma/{APP_ID}"
    embedding_function = HuggingFaceEmbeddings(model_name="Snowflake/snowflake-arctic-embed-m-long", \
                                              model_kwargs={'trust_remote_code': True})
    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
-
+   print("")
    return llm, db
 
 
@@ -60,6 +60,8 @@ def get_filtered_docs(db, APP_ID, TIME_FROM, TIME_TO):
 
 
 def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
+   
+
    # output = {
    #    "RawLogs": "raw",
    #    "Summary": "summary",
@@ -108,11 +110,13 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    import pprint
    pprint.pprint(output)
 
-   with open('output.json', 'w') as f:
-      json.dump(output, f, indent=4)
+   with open('output_.json', 'r') as f:
+      text = json.load(f)
+      # pprint.pprint(text)
 
+   return text
    return output
-
+   
 if __name__ == "__main__":
-   QUERY = "List the REST or SOAP URL endpoints application is communicating to"
+   QUERY = "Show me the error hotspots in the logs for the selected time window"
    analyse('APP_4', '2025-02-01T00:39', '2025-02-05T21:40', QUERY)

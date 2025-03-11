@@ -11,23 +11,22 @@ import re
 from backend import attribute_info, parse_documents
 
 ANALYSER_PROMPT = """
-[ROLE] Professional Software Logs Analyzer  
-[TASK] Based on the provided log snippets and query context, analyze and summarize the information in a structured manner. Your response should address any discrepancies, anomalies, or questions raised in the query. If no issues are found, identify and reference a "happy path" scenario from the logs. This analysis should be generic enough to handle any query regarding the logs—not solely error reporting.
+You are a Professional Software Logs Analyzer. Based on the provided log snippets and query context, analyze and summarize the information in a structured manner. Your response should address any discrepancies, anomalies, or questions raised in the query. If no issues are found, identify and reference a "happy path" scenario from the logs. This analysis should be generic enough to handle any query regarding the logs—not solely error reporting.
 
 Please follow these steps and output the response using the structure below:
 
 1. Steps and Reasoning (Do not print these at any cost):
-   - **Step 1:** Identify the critical information in the query (e.g., errors, performance issues, process flows, metadata).
-   - **Step 2:** Parse the provided log snippets and match relevant details with the query requirements.
-   - **Step 3:** Look for discrepancies, anomalies, or inconsistencies in the logs. If none are found, select a representative “happy path” scenario.
-   - **Step 4:** Provide a detailed chain-of-thought that outlines your analysis and reasoning.
-   - **Step 5:** Summarize the issue (or the scenario) and suggest remediation or improvements, if applicable.
+   - Step 1: Identify the critical information in the query (e.g., errors, performance issues, process flows, metadata).
+   - Step 2: Parse the provided log snippets and match relevant details with the query requirements.
+   - Step 3: Look for discrepancies, anomalies, or inconsistencies in the logs. If none are found, select a representative "happy path" scenario.
+   - Step 4: Provide a detailed chain-of-thought that outlines your analysis and reasoning.
+   - Step 5: Summarize the issue (or the scenario) and suggest remediation or improvements, if applicable.
 
 2. Output Structure (Strictly follow the same format):  
-   **1. Summary:**  
+   1. Summary:  
    - Provide a summary of the findings (issue description, insights, impacts, or happy path reference).
 
-   **2. Incident/Scenario Report:**  
+   2. Incident/Scenario Report:  
    - Time: <Timestamp of the event or relevant log entry>  
    - Faced By: <Customer, teller, account number details>  
    - Trace Id: <TraceID/SessionID from logs>  
@@ -35,20 +34,20 @@ Please follow these steps and output the response using the structure below:
    - Component: <Component involved, e.g., TellerApplication, AccountProcessSystem, OracleDB>  
    - Additional Metadata: <Other key-value pairs as available>
 
-   **3. Explanation:**  
+   3. Explanation:  
    - Provide a detailed explanation of the root cause or context of the scenario.  
    - Explain your reasoning in at least five lines, linking the log evidence to the analysis.
 
-   **4. Expected Ideal Flow (Happy Path):**  
+   4. Expected Ideal Flow (Happy Path):  
    - Describe what the ideal, error-free scenario should look like (if applicable).  
    - Provide at least three key points that define the optimal process.
 
-   **5. Remediation / Recommendations:**  
+   5. Remediation / Recommendations:  
    - Suggest actionable remediation steps or improvements based on the analysis.  
    - Include at least three recommendations.
 
 Below is the exact error snippet the user is referring to and make use of information in these snippets to fill in the information
-for incident report. Look for fields like traceId, time, faced by, application, component, customer Id, customer name and additional metadata.
+for incident report:
 {error_snippet}
 
 Below is the query for you to answer:  
@@ -166,7 +165,7 @@ def get_embedding_query(llm, QUERY, TIME_FROM, TIME_TO, TRACE_IDS):
         "TIME_TO": TIME_TO,
         "TRACE_IDS": TRACE_IDS
     })
-    return response_text
+    return response_text.content
     # embedding_query_snippets = []
     # for line in response_text.split("\n"):
     #     keywords = ['TRACE', 'DEBUG', 'INFO', 'ERROR', '2025', 'POST', 'GET', "Customer", "customer"]
@@ -233,7 +232,7 @@ def analyze_without_metadata(llm, QUERY, results, error_snippet):
         "error_snippet": error_snippet
     })
 
-    return response_text
+    return response_text.content
 
 
 def analyze_with_metadata(db, llm, APP_ID, TIME_FROM, TIME_TO, QUERY):
