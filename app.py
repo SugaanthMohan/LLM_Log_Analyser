@@ -131,6 +131,22 @@ def analyze_logs():
 
         output = rag.analyse(application_name, start_time, end_time, query)
 
+        # ADD MERMAID JS HARDCODED VALUE
+        output['ExpectedFlow'] = """
+            sequenceDiagram
+            participant UI
+            participant TellerApplication
+            participant AccountProcessSystem
+            participant PaymentGateway
+            
+            UI->>TellerApplication: Initiate withdrawal request
+            TellerApplication->>AccountProcessSystem: Send request for account validation
+            AccountProcessSystem-->>TellerApplication: Validate account and send response
+            TellerApplication->>PaymentGateway: Send confirmation for fund transfer
+            PaymentGateway-->>TellerApplication: Complete fund transfer and send response
+            TellerApplication-->>UI: Notify user of withdrawal completion
+        """
+
         # Cache the result
         cache.set(cache_key, output, timeout=60 * 60 * 24)  # Cache for 24 hours
 

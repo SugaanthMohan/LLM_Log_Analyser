@@ -312,6 +312,7 @@ function populateAIAnalysisContent() {
     document.getElementById('expectedflow-section').querySelector('p').textContent = resultsTabData.ExpectedFlow || 'No data available';
     document.getElementById('remediation-section').querySelector('p').textContent = resultsTabData.Remediation || 'No data available';
     document.getElementById('report-section').querySelector('p').textContent = resultsTabData.Report || 'No data available';
+    mermaid.contentLoaded();
 }
 
 // Function to clear AI analysis content (useful when switching tabs)
@@ -321,6 +322,7 @@ function clearAIAnalysisContent() {
     document.getElementById('expectedflow-section').querySelector('p').textContent = '';
     document.getElementById('remediation-section').querySelector('p').textContent = '';
     document.getElementById('report-section').querySelector('p').textContent = '';
+    mermaid.contentLoaded();
 }
 
 function createAIAnalysisContainer() {
@@ -342,7 +344,7 @@ function createAIAnalysisContainer() {
                     <p></p>
                 </div>
                 <div id="expectedflow-section" class="sub-section">
-                    <p></p>
+                    <p class="mermaid"></p>
                 </div>
                 <div id="remediation-section" class="sub-section">
                     <p></p>

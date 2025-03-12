@@ -6,9 +6,13 @@
     <title>LogInsight AI - Splunk Log Analyzer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
     <main class="container">
         <header class="main-header">
             <div class="container header-content">
