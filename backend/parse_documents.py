@@ -88,6 +88,15 @@ def preprocess_logs(log_text: str) -> str:
     return processed.lstrip("|||")
 
 
+def parse_mermaid_llm_output(llm_output):
+
+    # Remove the enclosing characters like '```mermaid\n' and '```'
+    if llm_output.startswith("```mermaid") and llm_output.endswith("```"):
+        # Extract the content between '```mermaid\n' and '```'
+        mermaid_code = llm_output[len("```mermaid\n"):-len("```")].strip()
+        return mermaid_code
+    else:
+        return llm_output
 
 def parse_response(text):
     # Define the headings

@@ -54,6 +54,17 @@ Below is the query for you to answer:
 {query}
 """
 
+DIAGRAM_GENERATION_PROMPT = """
+You are to act a MermaidJS Content Generator.
+
+The output should strictly contain only the raw MermaidJS code. 
+Do not include any comments, highlights, explanations, or extra characters
+
+Below is the context that you need to use for content generation:
+{context}
+"""
+
+
 EMBEDDING_QUERY_PROMPT = """
 [ROLE] Log Snippet Generator
 [TASK] To generate log snippets for the provided query similar to the provided context
@@ -230,6 +241,18 @@ def analyze_without_metadata(llm, QUERY, results, error_snippet):
         "context": context_text,
         "query": QUERY,
         "error_snippet": error_snippet
+    })
+
+    return response_text.content
+
+def generate_mermaidjs_diagram_code(llm, expected_flow):
+
+    prompt = PromptTemplate.from_template(DIAGRAM_GENERATION_PROMPT)
+
+    llm_chain = prompt | llm
+
+    response_text = llm_chain.invoke({
+        "context": expected_flow,
     })
 
     return response_text.content

@@ -87,6 +87,15 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    analysis = analyzer.analyze_without_metadata(llm, QUERY, results, error_snippet)
    summary, report, explanation, expected_flow, remediation = parse_documents.parse_response(analysis)
 
+   # DIAGRAM GENERATION ADDED HERE
+   expected_flow_diagram_code = analyzer.generate_mermaidjs_diagram_code(llm, expected_flow)
+   expected_flow_diagram_code = parse_documents.parse_mermaid_llm_output(expected_flow_diagram_code)
+
+   print("RAW EXPECTED FLOW :", expected_flow)
+   print("\n\n")
+   print("DIAGRAM EXPECTED FLOW :", expected_flow_diagram_code)
+   print("\n\n")
+
    # summary = f"<i>Analyzed {log_entry_count} log snippets...<i>\n\n" + summary
    print(analysis)
    print("\n\n")
@@ -101,7 +110,7 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
       "Summary": summary,
       "Report": report,
       "Explanation": explanation,
-      "ExpectedFlow": expected_flow,
+      "ExpectedFlow": expected_flow_diagram_code,
       "Remediation": remediation,
       "HappyPath": happy_path_snippet
    }
@@ -110,11 +119,12 @@ def analyse(APP_ID, TIME_FROM, TIME_TO, QUERY):
    import pprint
    pprint.pprint(output)
 
-   with open('output_.json', 'r') as f:
-      text = json.load(f)
-      # pprint.pprint(text)
 
-   return text
+   # with open('output_.json', 'r') as f:
+   #    text = json.load(f)
+   #    # pprint.pprint(text)
+   #
+   # return text
    return output
    
 if __name__ == "__main__":
