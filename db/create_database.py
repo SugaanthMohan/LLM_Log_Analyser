@@ -11,33 +11,34 @@ import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 
-from backend import parse_documents
-from backend import extract_metadata
+from rag import parser
+from db import metadata_extractor
 
-def create(APP_ID):
-    CHROMA_PATH = f"chroma/{APP_ID}"
+
+def create(APP_ID, llm):
+    CHROMA_PATH = f"db/chroma/{APP_ID}"
     DATA_PATH = f"data/logs/{APP_ID}"
-    generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH)
+    generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH, llm)
 
 
-def generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH):
+def generate_data_store(APP_ID, DATA_PATH, CHROMA_PATH, llm):
     documents = load_documents(DATA_PATH)
-    chunks = split_text(APP_ID, DATA_PATH, documents)
+    chunks = split_text(APP_ID, DATA_PATH, documents, llm)
     save_to_chroma(chunks, DATA_PATH, CHROMA_PATH)
 
 
 def load_documents(DATA_PATH):
-    parse_documents.process_all_log_files(DATA_PATH)
+    parser.process_all_log_files(DATA_PATH)
     loader = DirectoryLoader(DATA_PATH, glob="*.log")
     documents = loader.load()
     return documents
 
 
-def split_text(APP_ID, DATA_PATH, documents: list[Document]):
+def split_text(APP_ID, DATA_PATH, documents: list[Document], llm):
 
     # First split by log entries
     text_splitter = RecursiveCharacterTextSplitter(
-        separators=["|||"],  # Split on the delimiter we added
+        separators=["|||"],   # Split on the delimiter we added
         chunk_size=1000,      # Larger than the biggest log entry
         chunk_overlap=500,
         keep_separator=False, # Remove '|||' from the output
@@ -48,21 +49,22 @@ def split_text(APP_ID, DATA_PATH, documents: list[Document]):
         if "|||" in chunk.page_content:
             chunk.page_content = chunk.page_content.replace("|||", "")
 
-    log_snippets = '\n'.join([extract_metadata.extract_metadata_snippet(chunk.page_content) for chunk in final_chunks[:7]])
+    log_snippets = '\n'.join([metadata_extractor.get_metadatas(chunk.page_content) for chunk in final_chunks[:7]])
 
-    metadata_keys = extract_metadata.get_metadata(log_snippets)
+    metadata_keys = metadata_extractor.extract_keys(log_snippets, llm)
 
     # Create dictionary mapping metadata fields to values
     for chunk in final_chunks:
-        metadata_snippet = extract_metadata.extract_metadata_snippet(chunk.page_content)
+        metadata_snippet = metadata_extractor.get_metadatas(chunk.page_content)
         metadata = metadata_snippet.split(' | ') 
         metadata_dict = dict(zip(metadata_keys[:4], metadata[:4]))
         metadata_dict = {'APP_ID': APP_ID, **metadata_dict}
         
-        for key in ['Timestamp', 'Date', 'Datetime']:  # List of potential keys
+        for key in ['Timestamp', 'Date', 'Datetime', 'timestamp', 'time', 'Time']:  # List of potential keys
             if key in metadata_dict.keys():
                 timestamp_str = metadata_dict[key]
-                timestamp = parse_documents.parse_unix_epoch_timestamp(timestamp_str)
+                print(timestamp_str)
+                timestamp = int(parser.parse_unix_epoch_timestamp(timestamp_str))
                 metadata_dict[key] = timestamp
 
         chunk.metadata = metadata_dict

@@ -1,8 +1,9 @@
 import time
 
+from database import create_database
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
-from backend import rag, create_database
+from backend import rag
 import os
 from flask_caching import Cache
 import diskcache
